@@ -7,6 +7,7 @@
 
 #ifndef ENGINE_H_
     #define ENGINE_H_
+    #define LIST_OBJS engine.list_objs
     #include <SFML/Graphics.h>
     #include <stdbool.h>
     #include <unistd.h>

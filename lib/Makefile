@@ -19,6 +19,7 @@ SRC =	$(LINK)append_link.c 	\
 		$(LINK)len_link.c 		\
 		$(LINK)remove_link.c 	\
 		$(LINK)swap_link.c 		\
+		$(MY)char_in_list.c 	\
 		$(MY)find_str.c 		\
 		$(MY)openfile.c 		\
 		$(MY)strcat.c 			\

@@ -18,6 +18,9 @@
     #include <string.h>
     #include "constants.h"
 
+//* It's checking if the character is in the list.
+int char_in_list(char c, char *list);
+
 //* It's checking if the string src is in the string str.
 bool find_str(char *str, const char *src);
 
