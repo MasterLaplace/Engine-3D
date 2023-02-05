@@ -8,9 +8,9 @@
 -include .env
 export
 
-SRC_DIR 	= 	src/
+SRC_DIR 	= 	src/engine/
 
-TEST_DIR 	= 	test/
+TEST_DIR 	= 	test/engine/
 
 BIN 		=	bin/
 
@@ -33,11 +33,11 @@ OBJ			=	$(SRC:.c=.o) $(MAIN:.c=.o)
 
 TEST_OBJ	=	$(SRC:.c=.o) $(TEST:.c=.o)
 
-NAME		=	$(BIN)engine
+NAME		=	$(BIN)engine.out
 
 SHARE_NAME = 	$(BIN)engine.so
 
-TEST_NAME 	=	$(BIN)test_engine
+TEST_NAME 	=	$(BIN)test_engine.out
 
 INCLUDE 	=	./includes
 
@@ -49,7 +49,7 @@ LDFLAGS		=	-L $(LIB_FOLDER) -l $(LIB_NAME) -lm
 
 CFLAGS		=	$(FLAGS) -I $(INCLUDE)
 
-TEST_FLAGS	=	-I ./test
+TEST_FLAGS	=	-I ./test/include
 
 CSFML_F		=	-l csfml-graphics -l csfml-system -l csfml-window -l csfml-audio
 
