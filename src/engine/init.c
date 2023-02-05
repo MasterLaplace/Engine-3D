@@ -21,7 +21,7 @@ static bool load_file(char *filename, char *filepath)
         return false;
     read(fd, buf, st.st_size);
     buf[st.st_size] = '\0';
-    list_append(&(engine.list_objs), create_link(create_obj(stwa(buf, "\n"))));
+    list_append(&(LIST_OBJS), create_link(create_obj(stwa(buf, "\n"))));
     free(buf);
     free(file);
     close(fd);
@@ -33,7 +33,7 @@ bool open_folder(char *path)
     DIR *dp = NULL;
     struct dirent *dirp = NULL;
 
-    engine.list_objs = NULL;
+    LIST_OBJS = NULL;
     if (!(dp = opendir(path)))
         return false;
     while ((dirp = readdir(dp))) {
