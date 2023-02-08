@@ -1,6 +1,6 @@
 ##
-## ME PROJECT, 2022
-## DEN-GINER-Master-Laplace
+## EPITECH PROJECT, 2023
+## Engine-3D
 ## File description:
 ## Makefile
 ##
@@ -23,8 +23,10 @@ TEST	=	$(TEST_DIR)test.c
 builder:
 ifeq ($(OS), linux)
 CC := gcc
+NAME :=	$(BIN)engine.out
 else
 CC := x86_64-w64-mingw32-gcc
+NAME :=	$(BIN)engine.exe
 endif
 
 MAIN		=	$(SRC_DIR)core.c
@@ -32,8 +34,6 @@ MAIN		=	$(SRC_DIR)core.c
 OBJ			=	$(SRC:.c=.o) $(MAIN:.c=.o)
 
 TEST_OBJ	=	$(SRC:.c=.o) $(TEST:.c=.o)
-
-NAME		=	$(BIN)engine.out
 
 SHARE_NAME = 	$(BIN)engine.so
 
@@ -56,7 +56,7 @@ CSFML_F		=	-l csfml-graphics -l csfml-system -l csfml-window -l csfml-audio
 SRC_COUNT 	:= 	$(words $(SRC))
 NB 	= 0
 
-$(NAME): $(OBJ)
+$(NAME): builder $(OBJ)
 	@make -C $(LIB_FOLDER) $(NO_PRINT)
 	@$(CC) -Os $(FLAGS) -o $(NAME) $(OBJ) $(LDFLAGS) $(CSFML_F) \
 	&& $(ECHO) $(BOLD) $(GREEN)"\n► BUILD SUCCESS !"$(DEFAULT) \
@@ -76,6 +76,8 @@ fclean:	clean
 	@$(RM) $(NAME)
 	@$(RM) $(TEST_NAME)
 	@make -C $(LIB_FOLDER) fclean $(NO_PRINT)
+	@make -C ./src/server fclean $(NO_PRINT)
+	@make -C ./src/client fclean $(NO_PRINT)
 	@$(RM) *.gcda
 	@$(RM) *.gcno
 	@$(RM) vgcore.*
@@ -104,6 +106,12 @@ test: fclean builder $(TEST_OBJ)
 	@$(eval NB=$(shell echo $$(($(NB)+1))))
 	@$(CC) -c -o $@ $^ $(CFLAGS) \
 	&& python3 build/build.py $< $(NB) $(SRC_COUNT)
+
+server:
+	@make all -C ./src/server $(NO_PRINT)
+
+client:
+	@make all -C ./src/client $(NO_PRINT)
 
 .PHONY: all re clean fclean debug test %.o
 .SILENT: all re clean fclean debug test %.o

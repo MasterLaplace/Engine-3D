@@ -43,8 +43,17 @@ Il faut : ✅
 ### **RUNNING**
 
 ```shell
+# Engine
 $ make fclean all
-$ ./bin/engine
+$ ./bin/engine.out
+
+# Server
+$ make server
+$ ./src/server/server.out
+
+# Client
+$ make client
+$ ./src/client/client.out [vocal mode: -v]
 ```
 
 
@@ -53,6 +62,7 @@ $ ./bin/engine
 ### **DOCUMENTATION**
 
 - lib CSFML
+- vosk-api
 - langage C
 
 
