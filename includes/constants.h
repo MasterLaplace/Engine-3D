@@ -9,7 +9,6 @@
     #define CONSTANTS_H_
     #define UNUSED __attribute__((unused))
     #define CLEAR "\033[H\033[J"
-    #define sizint unsigned int
     #define FRAMERATE 24.0
     #define PI 3.14159f
     #define WINDOW_SIZE 1920, 1080
@@ -22,6 +21,9 @@
     #define RAND(min, max) min + (rand() % (max - min))
     #define PERCENT(min, max) ((min * 100) / max)
     #define SWAP(a, b) { typeof(a) tmp = a; a = b; b = tmp; }
+    #define KEY_PRESSED sfKeyboard_isKeyPressed
     #define EXIT_84 84
+
+typedef unsigned int sizint;
 
 #endif/* !CONSTANTS_H_ */

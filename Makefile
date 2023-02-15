@@ -14,9 +14,14 @@ TEST_DIR 	= 	test/engine/
 
 BIN 		=	bin/
 
-SRC		=   $(SRC_DIR)init.c		\
-			$(SRC_DIR)clean.c		\
-			$(SRC_DIR)parser_obj.c 	\
+SRC		=   $(SRC_DIR)init.c			\
+			$(SRC_DIR)clean.c			\
+			$(SRC_DIR)parser_obj.c 		\
+			$(SRC_DIR)loop.c 			\
+			$(SRC_DIR)event.c			\
+			$(SRC_DIR)rasterization.c	\
+			$(SRC_DIR)merge_sort.c		\
+			$(SRC_DIR)draw.c			\
 
 TEST	=	$(TEST_DIR)test.c
 
@@ -86,7 +91,7 @@ fclean:	clean
 re: fclean all
 
 debug:	CFLAGS += -g
-debug:	clean $(OBJ)
+debug:	fclean $(OBJ)
 	@make debug -C $(LIB_FOLDER) $(NO_PRINT)
 	@$(CC) -Og $(OBJ) -o $(NAME) $(LDFLAGS) $(CSFML_F)
 

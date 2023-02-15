@@ -10,7 +10,6 @@
 mesh_t *create_obj(char **buf)
 {
     mesh_t *mesh = malloc(sizeof(mesh_t));
-    sfVector4f_t *list_v = NULL;
     triangle_t *tri = NULL;
     char **info = NULL;
     sizint nb_v = 0;
@@ -23,7 +22,7 @@ mesh_t *create_obj(char **buf)
     }
 
     // add vectors in list
-    list_v = malloc(sizeof(sfVector4f_t) * nb_v);
+    sfVector4f_t list_v[nb_v];
 
     for (register sizint i = 0; buf[i]; i++) {
         if (!(info = stwa(buf[i], " ")));
@@ -49,7 +48,6 @@ mesh_t *create_obj(char **buf)
         }
         two_free(info);
     }
-    free(list_v);
     two_free(buf);
     return mesh;
 }

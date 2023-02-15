@@ -47,3 +47,12 @@ bool open_folder(char *path)
     closedir(dp);
     return true;
 }
+
+void display_init()
+{
+    sfVideoMode mode = {WIN_X, WIN_Y, 32};
+
+    engine.window = sfRenderWindow_create(mode, "Engine-3D",
+    sfResize | sfClose, NULL); // sfResize/sfFullscreen
+    sfRenderWindow_setFramerateLimit(engine.window, FRAMERATE);
+}

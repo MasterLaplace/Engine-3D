@@ -7,15 +7,22 @@
 
 #include "engine.h"
 
+void clean_triangles(link_t *mesh)
+{
+    if (!mesh)
+        return;
+    while (mesh) {
+        free((triangle_t *) mesh->obj);
+        list_remove(&(mesh), mesh);
+    }
+}
+
 void clean_mesh()
 {
     if (!LIST_OBJS)
         return;
     while (LIST_OBJS) {
-        while ((triangle_t *)((mesh_t *) LIST_OBJS->obj)->lTriangle) {
-            free((triangle_t *)((mesh_t *) LIST_OBJS->obj)->lTriangle->obj);
-            list_remove(&(((mesh_t *) LIST_OBJS->obj)->lTriangle), ((mesh_t *) LIST_OBJS->obj)->lTriangle);
-        }
+        clean_triangles((link_t *)((mesh_t *) LIST_OBJS->obj)->lTriangle);
         free((mesh_t *) LIST_OBJS->obj);
         list_remove(&(LIST_OBJS), LIST_OBJS);
     }
@@ -23,5 +30,7 @@ void clean_mesh()
 
 void destroying()
 {
+    sfClock_destroy(engine.clock);
+    sfRenderWindow_destroy(WINDOW);
     clean_mesh();
 }

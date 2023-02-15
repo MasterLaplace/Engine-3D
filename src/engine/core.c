@@ -16,6 +16,21 @@ void init(void)
 {
     if (!open_folder( "./assets/obj_examples/" ))
         exit(EXIT_FAILURE);
+    /*graphic*/
+    display_init();
+    engine.clock = sfClock_create();
+    /*camera*/
+    engine.Pos = (sfVector4f_t){ 0.f, 0.f, 0.f, 1.f};
+    engine.Dir = (sfVector4f_t){ 0.f, 0.f, 0.f, 1.f};
+    engine.fawZ = 0.f;
+    engine.fawY = 0.f;
+    engine.fawX = 0.f;
+    /*matrix*/
+    memset(engine.ModeltoWorld, 0.f, sizeof(engine.ModeltoWorld));
+    memset(engine.WorldtoView, 0.f, sizeof(engine.WorldtoView));
+    // View to Projection (V2P)
+    memset(engine.ViewtoProjection, 0.f, sizeof(engine.ViewtoProjection));
+    Matrix_MakeProjection(90.0f, (float) WIN_Y / (float) WIN_X, 0.1f, 1000.0f);
 }
 
 void clean(void)
@@ -23,40 +38,8 @@ void clean(void)
     destroying();
 }
 
-static void manage_triangle(mesh_t *mesh)
-{
-    link_t *actual = mesh->lTriangle;
-    triangle_t *tetrimi = NULL;
-    sizint i = 0;
-
-    if (!actual)
-        return;
-    do {
-        tetrimi = (triangle_t *) actual->obj;
-        printf("%d: [0] (%.1f, %.1f, %.1f) | ", i, tetrimi->sommet[0].x, tetrimi->sommet[0].y, tetrimi->sommet[0].z);
-        printf("[1] (%.1f, %.1f, %.1f) | ", tetrimi->sommet[1].x, tetrimi->sommet[1].y, tetrimi->sommet[1].z);
-        printf("[2] (%.1f, %.1f, %.1f)\n", tetrimi->sommet[2].x, tetrimi->sommet[2].y, tetrimi->sommet[2].z);
-        i++;
-        actual = actual->next;
-    } while (mesh->lTriangle && actual != mesh->lTriangle);
-}
-
-static void draw_mesh(void)
-{
-    link_t *actual = engine.list_objs;
-    mesh_t *tetrimi = NULL;
-
-    if (!actual)
-        return;
-    do {
-        tetrimi = (mesh_t *) actual->obj;
-        manage_triangle(tetrimi);
-        actual = actual->next;
-    } while (engine.list_objs && actual != engine.list_objs);
-}
-
 int main()
 {
-    draw_mesh();
+    loop_engine();
     return EXIT_SUCCESS;
 }
