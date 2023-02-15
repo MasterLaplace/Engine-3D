@@ -7,6 +7,26 @@
 
 #include "engine.h"
 
+
+static sfVertexArray *create_triangle(sfVector2f pt1, sfVector2f pt2, sfVector2f pt3, int color)
+{
+    sfVertexArray *vertex_array = sfVertexArray_create();
+    sfVertex vertex1, vertex2, vertex3;
+
+    if ((color = color * 255) <= 50)
+        color = 50;
+
+    vertex1 = (sfVertex){.position = pt1, .color = (sfColor){color, color, color, 255}};
+    vertex2 = (sfVertex){.position = pt2, .color = (sfColor){color, color, color, 255}};
+    vertex3 = (sfVertex){.position = pt3, .color = (sfColor){color, color, color, 255}};
+
+    sfVertexArray_append(vertex_array, vertex1);
+    sfVertexArray_append(vertex_array, vertex2);
+    sfVertexArray_append(vertex_array, vertex3);
+    sfVertexArray_setPrimitiveType(vertex_array, sfTriangleFan);
+    return vertex_array;
+}
+
 void display_triangles(link_t *mesh)
 {
     sfVertexArray *vertex_array = NULL;
@@ -25,7 +45,8 @@ void display_triangles(link_t *mesh)
         vertex_array = create_triangle(
             (sfVector2f){node->sommet[0].x, node->sommet[0].y},
             (sfVector2f){node->sommet[1].x, node->sommet[1].y},
-            (sfVector2f){node->sommet[2].x, node->sommet[2].y}
+            (sfVector2f){node->sommet[2].x, node->sommet[2].y},
+            (int)node->dp
         );
         sfRenderWindow_drawVertexArray(WINDOW, vertex_array, NULL);
         sfVertexArray_destroy(vertex_array);

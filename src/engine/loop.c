@@ -22,6 +22,14 @@ static void manage_triangle(mesh_t *mesh)
     link_t *actual = mesh->lTriangle;
     triangle_t *tetrimi = NULL;
     sfVector4f_t normal;
+
+    // Set Lightening
+    static sfVector4f_t light_dir = (sfVector4f_t) {0.0f, 1.0f, -1.0f, 1.0f};
+    if (light_dir.z <= 0.999)
+        light_dir.z += 0.005f;
+    else
+        light_dir.z = -1.0f;
+
     if (!actual)
         return;
     do {
@@ -40,6 +48,8 @@ static void manage_triangle(mesh_t *mesh)
         sfVector4f_t CameraRay = Vector_Sub(triTransformed.sommet[0], engine.Pos);
 
         if (Vector_DotProduct(normal, CameraRay) < 0.0f) {
+            // Get Lightening
+            triProjected.dp = Vector_DotProduct(normal, Vector_Normalise(light_dir));
 
             // World to View (W2V)
             triViewed.sommet[0] = Matrix_MultiplyVector(triViewed.sommet[0], engine.WorldtoView, triTransformed.sommet[0]);
@@ -55,7 +65,6 @@ static void manage_triangle(mesh_t *mesh)
             Scale_in_Screen(&triProjected);
 
             add_in_FinalMesh(&triProjected);
-
         }
         actual = actual->next;
     } while (mesh->lTriangle && actual != mesh->lTriangle);

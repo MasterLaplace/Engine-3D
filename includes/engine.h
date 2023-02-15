@@ -82,16 +82,22 @@ void manage_move();
 /* RASTERIZEING */
 void vectors_3d_to_2d();
 void Matrix_MakeProjection(float fFovDegrees, float fAspectRatio, float fNear, float fFar);
-sfVector4f_t Matrix_MultiplyVector(sfVector4f_t v, float (*m)[4], sfVector4f_t i);
 sfVector4f_t get_surface_normal(triangle_t triangle);
+void Scale_in_Screen(triangle_t *triangle);
+void merge_sorting_list(link_t **list);
+
+/* UTILS */
 sfVector4f_t Vector_Add(sfVector4f_t v, sfVector4f_t w);
 sfVector4f_t Vector_Sub(sfVector4f_t v, sfVector4f_t w);
 sfVector4f_t Vector_Mul(sfVector4f_t v, float w);
-sfVector4f_t Vector_Normalise(sfVector4f_t v);
+sfVector4f_t Vector_Div(sfVector4f_t v, float w);
 float Vector_DotProduct(sfVector4f_t v, sfVector4f_t w);
-void Scale_in_Screen(triangle_t *triangle);
-void merge_sorting_list(link_t **list);
-sfVertexArray *create_triangle(sfVector2f point1, sfVector2f point2, sfVector2f point3);
+float Vector_Length(sfVector4f_t v);
+sfVector4f_t Vector_Normalise(sfVector4f_t v);
+sfVector4f_t Vector_CrossProduct(sfVector4f_t a, sfVector4f_t b);
+sfVector4f_t Matrix_MultiplyVector(sfVector4f_t v, float (*m)[4], sfVector4f_t w);
+void Matrix_Multiply(float (*m)[4], float (*m1)[4], float (*m2)[4]);
+void Matrix_QuickInverse(float (*m)[4]);
 
 /* DRAW */
 void display_triangles(link_t *mesh);
