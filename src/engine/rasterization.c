@@ -29,6 +29,18 @@ void Matrix_MakeRotateZYX(float (*matrix)[4], float angleZ, float angleY, float 
     memcpy(*matrix, rot_matrix, sizeof(rot_matrix));
 }
 
+void Matrix_MakeRotateX(float (*matrix)[4], float angle)
+{
+    float rot_matrix[4][4] = {
+        { 1, 0, 0, 0 },
+        { 0, cosf(angle), -sinf(angle), 0 },
+        { 0, sinf(angle), cosf(angle), 0 },
+        { 0, 0, 0, 1 }
+    };
+
+    memcpy(*matrix, rot_matrix, sizeof(rot_matrix));
+}
+
 void Matrix_MakeRotateY(float (*matrix)[4], float angle)
 {
     float rot_matrix[4][4] = {
@@ -90,8 +102,8 @@ void Matrix_View(sfVector4f_t pos, sfVector4f_t dir, sfVector4f_t up)
         {  pos.x,  pos.y,  pos.z, 1 }
     };
 
-    Matrix_QuickInverse(view_matrix);
-    memcpy(engine.WorldtoView, view_matrix, sizeof(view_matrix));
+    matrix matrix = Matrix_QuickInverse(view_matrix);
+    memcpy(engine.WorldtoView, matrix.m, sizeof(view_matrix));
 }
 
 
@@ -147,16 +159,18 @@ void vectors_3d_to_2d()
 {
     // Model to World (M2W)
     float Rotate[4][4];
+    float RotateY[4][4];
+    float RotateX[4][4];
     float Translate[4][4];
     float Scale[4][4];
 
     // Rotation matrices : around the z-axis - around the y-axis - around the x-axis
-    Matrix_MakeRotateZYX(Rotate, engine.fawZ, 0, engine.fawX);
+    Matrix_MakeRotateZYX(Rotate, 0, 0, 0);
     // Translation matrix
     Matrix_MakeTranslate(Translate, 0.f, 0.f, 0.f);
     Matrix_Multiply(engine.ModeltoWorld, Rotate, Translate);
     // Scaling matrix
-    Matrix_MakeScale(Scale, 0.5f, 0.5f, 0.5f);
+    Matrix_MakeScale(Scale, 1.f, 1.f, 1.f);
     Matrix_Multiply(engine.ModeltoWorld, engine.ModeltoWorld, Scale);
 
     // World to View (W2V)
@@ -164,7 +178,9 @@ void vectors_3d_to_2d()
     sfVector4f_t Up = {0, 1, 0, 1};
     
     memset(Rotate, 0, sizeof(Rotate));
-    Matrix_MakeRotateY(Rotate, engine.fawY);
+    Matrix_MakeRotateX(RotateX, engine.fawX);
+    Matrix_MakeRotateY(RotateY, engine.fawY);
+    Matrix_Multiply(Rotate, RotateX, RotateY);
     engine.Dir = Matrix_MultiplyVector(engine.Dir, Rotate, Dir);
     Dir = Vector_Add(engine.Pos, engine.Dir);
     Matrix_View(engine.Pos, Dir, Up);

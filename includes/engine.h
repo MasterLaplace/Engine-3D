@@ -24,9 +24,18 @@
 
 typedef struct engine_s engine_t;
 
+typedef enum {
+    NONE,
+    JUMP,
+} player_state;
+
 typedef struct sfVector4f_s {
     float x, y, z, w;
 } sfVector4f_t;
+
+typedef struct matrix {
+	float m[4][4];
+} matrix;
 
 typedef struct triangle_s {
     sfVector4f_t sommet[3];
@@ -50,6 +59,8 @@ struct engine_s {
     float fawZ;
     float fawY;
     float fawX;
+    /*player*/
+    player_state state;
     /*matrix*/
     float ModeltoWorld[4][4];
     float WorldtoView[4][4];
@@ -103,7 +114,7 @@ float Vector_DotProduct(sfVector4f_t v, sfVector4f_t w);
 float Vector_Length(sfVector4f_t v);
 float calcul_dist(sfVector4f_t p, sfVector4f_t pp, sfVector4f_t n);
 void Matrix_Multiply(float (*m)[4], float (*m1)[4], float (*m2)[4]);
-void Matrix_QuickInverse(float (*m)[4]);
+matrix Matrix_QuickInverse(float (*m)[4]);
 
 /* DRAW */
 void display_triangles(link_t *mesh);

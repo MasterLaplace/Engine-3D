@@ -25,6 +25,7 @@ void init(void)
     engine.fawZ = 0.f;
     engine.fawY = 0.f;
     engine.fawX = 0.f;
+    engine.state = NONE;
     /*matrix*/
     memset(engine.ModeltoWorld, 0.f, sizeof(engine.ModeltoWorld));
     memset(engine.WorldtoView, 0.f, sizeof(engine.WorldtoView));

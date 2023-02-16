@@ -74,6 +74,7 @@ void clipping(triangle_t triangle)
         triProjected.sommet[0] = Matrix_MultiplyVector(triProjected.sommet[0], engine.ViewtoProjection, Clipped[i].sommet[0]);
         triProjected.sommet[1] = Matrix_MultiplyVector(triProjected.sommet[1], engine.ViewtoProjection, Clipped[i].sommet[1]);
         triProjected.sommet[2] = Matrix_MultiplyVector(triProjected.sommet[2], engine.ViewtoProjection, Clipped[i].sommet[2]);
+        triProjected.dp = Clipped[i].dp;
 
         // Scale to Screen (S2S)
         Scale_in_Screen(&triProjected);

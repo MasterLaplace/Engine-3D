@@ -26,7 +26,7 @@ static void manage_triangle(mesh_t *mesh)
     // Set Lightening
     static sfVector4f_t light_dir = (sfVector4f_t) {0.0f, 1.0f, -1.0f, 1.0f};
     if (light_dir.z <= 0.999)
-        light_dir.z += 0.05f;
+        light_dir.z += 0.005f;
     else
         light_dir.z = -1.0f;
 

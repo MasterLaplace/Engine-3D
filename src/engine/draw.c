@@ -13,8 +13,8 @@ static sfVertexArray *create_triangle(sfVector2f pt1, sfVector2f pt2, sfVector2f
     sfVertexArray *vertex_array = sfVertexArray_create();
     sfVertex vertex1, vertex2, vertex3;
 
-    int color = (int)(dp * 255.f);
-    if (color <= 50)
+    int color = (int)(dp * 255);
+    if (color < 50)
         color = 50;
 
     vertex1 = (sfVertex){.position = pt1, .color = (sfColor){color, color, color, 255}};
