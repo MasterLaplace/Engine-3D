@@ -18,7 +18,7 @@ void add_in_FinalMesh(triangle_t *triangle)
 
 static void manage_triangle(mesh_t *mesh)
 {
-    triangle_t triTransformed, triViewed, triProjected;
+    triangle_t triTransformed, triViewed;
     link_t *actual = mesh->lTriangle;
     triangle_t *tetrimi = NULL;
     sfVector4f_t normal;
@@ -26,7 +26,7 @@ static void manage_triangle(mesh_t *mesh)
     // Set Lightening
     static sfVector4f_t light_dir = (sfVector4f_t) {0.0f, 1.0f, -1.0f, 1.0f};
     if (light_dir.z <= 0.999)
-        light_dir.z += 0.005f;
+        light_dir.z += 0.05f;
     else
         light_dir.z = -1.0f;
 
@@ -35,7 +35,7 @@ static void manage_triangle(mesh_t *mesh)
     do {
         tetrimi = (triangle_t *) actual->obj;
 
-        // Model to World (M2W)
+        //* Model to World (M2W) */
         triTransformed.sommet[0] = Matrix_MultiplyVector(triTransformed.sommet[0], engine.ModeltoWorld, tetrimi->sommet[0]);
         triTransformed.sommet[1] = Matrix_MultiplyVector(triTransformed.sommet[1], engine.ModeltoWorld, tetrimi->sommet[1]);
         triTransformed.sommet[2] = Matrix_MultiplyVector(triTransformed.sommet[2], engine.ModeltoWorld, tetrimi->sommet[2]);
@@ -49,22 +49,16 @@ static void manage_triangle(mesh_t *mesh)
 
         if (Vector_DotProduct(normal, CameraRay) < 0.0f) {
             // Get Lightening
-            triProjected.dp = Vector_DotProduct(normal, Vector_Normalise(light_dir));
+            light_dir = Vector_Normalise(light_dir);
+            triViewed.dp = Vector_DotProduct(normal, light_dir);
 
-            // World to View (W2V)
+            //* World to View (W2V) */
             triViewed.sommet[0] = Matrix_MultiplyVector(triViewed.sommet[0], engine.WorldtoView, triTransformed.sommet[0]);
             triViewed.sommet[1] = Matrix_MultiplyVector(triViewed.sommet[1], engine.WorldtoView, triTransformed.sommet[1]);
             triViewed.sommet[2] = Matrix_MultiplyVector(triViewed.sommet[2], engine.WorldtoView, triTransformed.sommet[2]);
 
-            // View to Projection (V2P)
-            triProjected.sommet[0] = Matrix_MultiplyVector(triProjected.sommet[0], engine.ViewtoProjection, triViewed.sommet[0]);
-            triProjected.sommet[1] = Matrix_MultiplyVector(triProjected.sommet[1], engine.ViewtoProjection, triViewed.sommet[1]);
-            triProjected.sommet[2] = Matrix_MultiplyVector(triProjected.sommet[2], engine.ViewtoProjection, triViewed.sommet[2]);
-
-            // Scale to Screen (S2S)
-            Scale_in_Screen(&triProjected);
-
-            add_in_FinalMesh(&triProjected);
+            //* Cut to Screen (C2S) */
+            clipping(triViewed);
         }
         actual = actual->next;
     } while (mesh->lTriangle && actual != mesh->lTriangle);

@@ -20,6 +20,7 @@ SRC		=   $(SRC_DIR)init.c			\
 			$(SRC_DIR)loop.c 			\
 			$(SRC_DIR)event.c			\
 			$(SRC_DIR)rasterization.c	\
+			$(SRC_DIR)clipping.c		\
 			$(SRC_DIR)utils.c			\
 			$(SRC_DIR)merge_sort.c		\
 			$(SRC_DIR)draw.c			\

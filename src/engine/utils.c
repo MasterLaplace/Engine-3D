@@ -37,6 +37,11 @@ float Vector_Length(sfVector4f_t v)
     return sqrtf(Vector_DotProduct(v, v));
 }
 
+float calcul_dist(sfVector4f_t p, sfVector4f_t plane_p, sfVector4f_t plane_n)
+{
+	return (plane_n.x * p.x + plane_n.y * p.y + plane_n.z * p.z - Vector_DotProduct(plane_n, plane_p));
+}
+
 sfVector4f_t Vector_Normalise(sfVector4f_t v)
 {
     float l = Vector_Length(v);
@@ -60,6 +65,15 @@ sfVector4f_t Matrix_MultiplyVector(sfVector4f_t v, float (*m)[4], sfVector4f_t w
     v.z = w.x * m[0][2] + w.y * m[1][2] + w.z * m[2][2] + w.w * m[3][2];
     v.w = w.x * m[0][3] + w.y * m[1][3] + w.z * m[2][3] + w.w * m[3][3];
     return v;
+}
+
+sfVector4f_t Vector_intersectPlane(sfVector4f_t plane_p, sfVector4f_t plane_n, sfVector4f_t lineStart, sfVector4f_t lineEnd)
+{
+    plane_n = Vector_Normalise(plane_n);
+    float plane_d = -Vector_DotProduct(plane_n, plane_p);
+    float ad = Vector_DotProduct(lineStart, plane_n);
+    float t = (-plane_d - ad) / (Vector_DotProduct(lineEnd, plane_n) - ad);
+    return Vector_Add(lineStart, Vector_Mul(Vector_Sub(lineEnd, lineStart), t));
 }
 
 void Matrix_Multiply(float (*m)[4], float (*m1)[4], float (*m2)[4])

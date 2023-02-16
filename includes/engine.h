@@ -74,6 +74,7 @@ mesh_t *create_obj(char **buf);
 
 /* LOOP */
 void loop_engine();
+void add_in_FinalMesh(triangle_t *triangle);
 
 /* EVENT */
 void analyse_events(sfEvent event);
@@ -86,16 +87,21 @@ sfVector4f_t get_surface_normal(triangle_t triangle);
 void Scale_in_Screen(triangle_t *triangle);
 void merge_sorting_list(link_t **list);
 
+/* CLIPPING */
+void clipping(triangle_t triangle);
+
 /* UTILS */
 sfVector4f_t Vector_Add(sfVector4f_t v, sfVector4f_t w);
 sfVector4f_t Vector_Sub(sfVector4f_t v, sfVector4f_t w);
 sfVector4f_t Vector_Mul(sfVector4f_t v, float w);
 sfVector4f_t Vector_Div(sfVector4f_t v, float w);
-float Vector_DotProduct(sfVector4f_t v, sfVector4f_t w);
-float Vector_Length(sfVector4f_t v);
 sfVector4f_t Vector_Normalise(sfVector4f_t v);
 sfVector4f_t Vector_CrossProduct(sfVector4f_t a, sfVector4f_t b);
 sfVector4f_t Matrix_MultiplyVector(sfVector4f_t v, float (*m)[4], sfVector4f_t w);
+sfVector4f_t Vector_intersectPlane(sfVector4f_t p, sfVector4f_t n, sfVector4f_t Start, sfVector4f_t End);
+float Vector_DotProduct(sfVector4f_t v, sfVector4f_t w);
+float Vector_Length(sfVector4f_t v);
+float calcul_dist(sfVector4f_t p, sfVector4f_t pp, sfVector4f_t n);
 void Matrix_Multiply(float (*m)[4], float (*m1)[4], float (*m2)[4]);
 void Matrix_QuickInverse(float (*m)[4]);
 
