@@ -16,24 +16,8 @@ void init(void)
 {
     if (!open_folder( "./assets/obj_examples/" ))
         exit(EXIT_FAILURE);
-    /*graphic*/
-    display_init();
-    engine.clock = sfClock_create();
-    engine.textures = init_textures();
-    engine.images = init_images();
-    /*camera*/
-    engine.Pos = (sfVector4f_t){ 0.f, 0.f, 0.f, 1.f};
-    engine.Dir = (sfVector4f_t){ 0.f, 0.f, 0.f, 1.f};
-    engine.fawZ = 0.f;
-    engine.fawY = 0.f;
-    engine.fawX = 0.f;
-    engine.state = IDLE;
-    /*matrix*/
-    memset(engine.ModeltoWorld, 0.f, sizeof(engine.ModeltoWorld));
-    memset(engine.WorldtoView, 0.f, sizeof(engine.WorldtoView));
-    // View to Projection (V2P)
-    memset(engine.ViewtoProjection, 0.f, sizeof(engine.ViewtoProjection));
-    Matrix_MakeProjection(90.0f, (float) WIN_Y / (float) WIN_X, 0.1f, 1000.0f);
+    if (!init_engine())
+        exit(EXIT_FAILURE);
 }
 
 void clean(void)

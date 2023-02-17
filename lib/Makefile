@@ -21,7 +21,6 @@ SRC =	$(LINK)append_link.c 	\
 		$(LINK)swap_link.c 		\
 		$(MY)char_in_list.c 	\
 		$(MY)count_char.c 		\
-		$(MY)find_str.c 		\
 		$(MY)openfile.c 		\
 		$(MY)strcat.c 			\
 		$(MY)stwa.c				\

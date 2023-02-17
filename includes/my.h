@@ -24,9 +24,6 @@ int char_in_list(char c, char *list);
 //* It's counting the number of char c in the string str.
 size_t count_char(char const *str, char c);
 
-//* It's checking if the string src is in the string str.
-bool find_str(char *str, const char *src);
-
 //* It's opening a file.
 int open_file(char const *filepath, int oflag);
 

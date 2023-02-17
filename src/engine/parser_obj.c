@@ -30,7 +30,7 @@ static char *search_in_mtl_file(const char *filepathname, const char *texture_na
     char **info = stwa(buf, "\n");
 
     for (register sizint i = 0; info[i]; i++) {
-        if (!found && find_str(info[i], texture_name)) {
+        if (!found && strstr(info[i], texture_name)) {
             found = true;
         } else if (found && strncmp(info[i], "map_Kd", 6) == 0) {
             char **Kd = stwa(info[i], " ");
@@ -52,7 +52,7 @@ static sizint search_in_file(const char *texture_name, char *filename)
 
     // find the good mtl file
     for (sizint i = 0; i < NB_MTL; i++) {
-        if (find_str((char *)MTL_PATHS[i], filename)) {
+        if (strstr((char *)MTL_PATHS[i], filename)) {
             // find the good texture_name with newmtl
             // get texture_file from map_Kd variable
             texture_file = search_in_mtl_file(MTL_PATHS[i], texture_name);
@@ -63,7 +63,7 @@ static sizint search_in_file(const char *texture_name, char *filename)
         return 0;
     // find the good png file
     for (sizint i = 0; i < NB_TEXTURES; i++) {
-        if (find_str((char *)TEXTURE_PATHS[i], texture_file)) {
+        if (strstr((char *)TEXTURE_PATHS[i], texture_file)) {
             free(texture_file);
             printf("Texture_path: %s\n", TEXTURE_PATHS[i]);
             return i;

@@ -81,6 +81,7 @@ extern engine_t engine;
 
 /* INIT */
 bool open_folder(char *path);
+bool init_engine();
 void display_init();
 sfRenderStates **init_textures();
 sfImage **init_images();

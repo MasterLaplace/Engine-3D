@@ -37,7 +37,7 @@ bool open_folder(char *path)
     if (!(dp = opendir(path)))
         return false;
     while ((dirp = readdir(dp))) {
-        if (dirp->d_name[0] == '.' || !(find_str(dirp->d_name, ".obj")))
+        if (dirp->d_name[0] == '.' || !(strstr(dirp->d_name, ".obj")))
             continue;
         if (!load_file(dirp->d_name, path)) {
             closedir(dp);
@@ -55,4 +55,29 @@ void display_init()
     engine.window = sfRenderWindow_create(mode, "Engine-3D",
     sfResize | sfClose, NULL); // sfResize/sfFullscreen
     sfRenderWindow_setFramerateLimit(engine.window, FRAMERATE);
+}
+
+bool init_engine()
+{
+    /*graphic*/
+    display_init();
+    engine.clock = sfClock_create();
+    engine.textures = init_textures();
+    engine.images = init_images();
+    /*camera*/
+    engine.Pos = (sfVector4f_t){ 0.f, 0.f, 0.f, 1.f};
+    engine.Dir = (sfVector4f_t){ 0.f, 0.f, 0.f, 1.f};
+    engine.fawZ = 0.f;
+    engine.fawY = 0.f;
+    engine.fawX = 0.f;
+    engine.state = IDLE;
+    /*matrix*/
+    memset(engine.ModeltoWorld, 0.f, sizeof(engine.ModeltoWorld));
+    memset(engine.WorldtoView, 0.f, sizeof(engine.WorldtoView));
+    // View to Projection (V2P)
+    memset(engine.ViewtoProjection, 0.f, sizeof(engine.ViewtoProjection));
+    Matrix_MakeProjection(90.0f, (float) WIN_Y / (float) WIN_X, 0.1f, 1000.0f);
+    if (WINDOW && engine.textures && engine.images)
+        return true;
+    return false;
 }
