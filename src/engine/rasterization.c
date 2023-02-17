@@ -157,23 +157,10 @@ void Scale_in_Screen(triangle_t *triangle)
 
 void vectors_3d_to_2d()
 {
-    // Model to World (M2W)
+    // World to View (W2V)
     float Rotate[4][4];
     float RotateY[4][4];
     float RotateX[4][4];
-    float Translate[4][4];
-    float Scale[4][4];
-
-    // Rotation matrices : around the z-axis - around the y-axis - around the x-axis
-    Matrix_MakeRotateZYX(Rotate, 0, 0, 0);
-    // Translation matrix
-    Matrix_MakeTranslate(Translate, 0.f, 0.f, 0.f);
-    Matrix_Multiply(engine.ModeltoWorld, Rotate, Translate);
-    // Scaling matrix
-    Matrix_MakeScale(Scale, 1.f, 1.f, 1.f);
-    Matrix_Multiply(engine.ModeltoWorld, engine.ModeltoWorld, Scale);
-
-    // World to View (W2V)
     sfVector4f_t Dir = {0, 0, 1, 1};
     sfVector4f_t Up = {0, 1, 0, 1};
     
@@ -184,4 +171,23 @@ void vectors_3d_to_2d()
     engine.Dir = Matrix_MultiplyVector(engine.Dir, Rotate, Dir);
     Dir = Vector_Add(engine.Pos, engine.Dir);
     Matrix_View(engine.Pos, Dir, Up);
+}
+
+//* Mesh transformation */
+
+void Mesh_Transform(sfVector3f pos)
+{
+    // Model to World (M2W)
+    float Rotate[4][4];
+    float Translate[4][4];
+    float Scale[4][4];
+
+    // Rotation matrices : around the z-axis - around the y-axis - around the x-axis
+    Matrix_MakeRotateZYX(Rotate, 0, 0, 0);
+    // Translation matrix
+    Matrix_MakeTranslate(Translate, pos.z, pos.y, pos.x);
+    Matrix_Multiply(engine.ModeltoWorld, Rotate, Translate);
+    // Scaling matrix
+    Matrix_MakeScale(Scale, 1.f, 1.f, 1.f);
+    Matrix_Multiply(engine.ModeltoWorld, engine.ModeltoWorld, Scale);
 }

@@ -20,7 +20,7 @@ void jump()
         engine.Pos.y += vy * TIME_STEP + 1 * -GRAVITY * TIME_STEP * TIME_STEP;
         vy += -GRAVITY * TIME_STEP;
     } else {
-        engine.state = NONE;
+        engine.state = IDLE;
         engine.Pos.y = 0.0;
         vy = 11.0;
     }

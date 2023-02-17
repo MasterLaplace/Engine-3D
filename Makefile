@@ -15,6 +15,8 @@ TEST_DIR 	= 	test/engine/
 BIN 		=	bin/
 
 SRC		=   $(SRC_DIR)init.c			\
+			$(SRC_DIR)init_textures.c	\
+			$(SRC_DIR)preset_textures.c	\
 			$(SRC_DIR)clean.c			\
 			$(SRC_DIR)parser_obj.c 		\
 			$(SRC_DIR)loop.c 			\

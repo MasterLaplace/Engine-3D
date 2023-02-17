@@ -30,10 +30,10 @@ temps réel.<br>
 
 Il faut : ✅
 
-    0.1 dans un premier temps parser un fichier (.obj).
-    0.2 dans un second temps implémenter une Projection matricielle.
-    0.3 dans un troisième temps implémenter le Clipping de Cohen-Sutherland.
-    0.4 dans un quatrième temps ajout des déplacements de la caméra.
+    0.1 dans un premier temps parser un fichier (.obj). ✅
+    0.2 dans un second temps implémenter une Projection matricielle. ✅
+    0.3 dans un troisième temps implémenter le Clipping de Cohen-Sutherland. ✅
+    0.4 dans un quatrième temps ajout des déplacements de la caméra. ✅
     0.5 dans un cinquième temps implémenter le Texture mapping.
     0.6 dans un sixième temps implémenter un Z-buffer/Deph-buffer.
 
@@ -55,7 +55,6 @@ $ ./src/server/server.out
 $ make client
 $ ./src/client/client.out [vocal mode: -v]
 ```
-
 
 <div id='documentation'/>
 

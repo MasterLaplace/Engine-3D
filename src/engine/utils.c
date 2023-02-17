@@ -67,13 +67,13 @@ sfVector4f_t Matrix_MultiplyVector(sfVector4f_t v, float (*m)[4], sfVector4f_t w
     return v;
 }
 
-sfVector4f_t Vector_intersectPlane(sfVector4f_t plane_p, sfVector4f_t plane_n, sfVector4f_t lineStart, sfVector4f_t lineEnd)
+sfVector4f_t Vector_intersectPlane(sfVector4f_t plane_p, sfVector4f_t plane_n, sfVector4f_t lineStart, sfVector4f_t lineEnd, float *t)
 {
     plane_n = Vector_Normalise(plane_n);
-    float plane_d = -Vector_DotProduct(plane_n, plane_p);
+    *t = -Vector_DotProduct(plane_n, plane_p);
     float ad = Vector_DotProduct(lineStart, plane_n);
-    float t = (-plane_d - ad) / (Vector_DotProduct(lineEnd, plane_n) - ad);
-    return Vector_Add(lineStart, Vector_Mul(Vector_Sub(lineEnd, lineStart), t));
+    *t = (-(*t) - ad) / (Vector_DotProduct(lineEnd, plane_n) - ad);
+    return Vector_Add(lineStart, Vector_Mul(Vector_Sub(lineEnd, lineStart), *t));
 }
 
 void Matrix_Multiply(float (*m)[4], float (*m1)[4], float (*m2)[4])

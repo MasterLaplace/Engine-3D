@@ -19,13 +19,15 @@ void init(void)
     /*graphic*/
     display_init();
     engine.clock = sfClock_create();
+    engine.textures = init_textures();
+    engine.images = init_images();
     /*camera*/
     engine.Pos = (sfVector4f_t){ 0.f, 0.f, 0.f, 1.f};
     engine.Dir = (sfVector4f_t){ 0.f, 0.f, 0.f, 1.f};
     engine.fawZ = 0.f;
     engine.fawY = 0.f;
     engine.fawX = 0.f;
-    engine.state = NONE;
+    engine.state = IDLE;
     /*matrix*/
     memset(engine.ModeltoWorld, 0.f, sizeof(engine.ModeltoWorld));
     memset(engine.WorldtoView, 0.f, sizeof(engine.WorldtoView));

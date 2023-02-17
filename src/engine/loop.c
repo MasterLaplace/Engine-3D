@@ -56,6 +56,10 @@ static void manage_triangle(mesh_t *mesh)
             triViewed.sommet[0] = Matrix_MultiplyVector(triViewed.sommet[0], engine.WorldtoView, triTransformed.sommet[0]);
             triViewed.sommet[1] = Matrix_MultiplyVector(triViewed.sommet[1], engine.WorldtoView, triTransformed.sommet[1]);
             triViewed.sommet[2] = Matrix_MultiplyVector(triViewed.sommet[2], engine.WorldtoView, triTransformed.sommet[2]);
+            triViewed.texture[0] = tetrimi->texture[0];
+            triViewed.texture[1] = tetrimi->texture[1];
+            triViewed.texture[2] = tetrimi->texture[2];
+            triViewed.usemtl = tetrimi->usemtl;
 
             //* Cut to Screen (C2S) */
             clipping(triViewed);
@@ -67,14 +71,15 @@ static void manage_triangle(mesh_t *mesh)
 static void draw_mesh()
 {
     link_t *actual = engine.list_objs;
-    mesh_t *tetrimi = NULL;
+    mesh_t *mesh = NULL;
     engine.FinalMesh = NULL;
 
     if (!actual)
         return;
     do {
-        tetrimi = (mesh_t *) actual->obj;
-        manage_triangle(tetrimi);
+        mesh = (mesh_t *) actual->obj;
+        Mesh_Transform((sfVector3f){0, 0, 0});
+        manage_triangle(mesh);
         actual = actual->next;
     } while (engine.list_objs && actual != engine.list_objs);
 
@@ -93,7 +98,7 @@ static void clock_framerate()
 
     while (diff >= (float) 1 / FRAMERATE) {
         diff -= (float) 1 / FRAMERATE;
-        sfRenderWindow_clear(WINDOW, sfBlack);
+        sfRenderWindow_clear(WINDOW, sfCyan);
 
         manage_move();
         draw_mesh();

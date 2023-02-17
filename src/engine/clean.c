@@ -7,6 +7,8 @@
 
 #include "engine.h"
 
+extern const sizint NB_TEXTURES;
+
 void clean_triangles(link_t *mesh)
 {
     if (!mesh)
@@ -28,9 +30,28 @@ void clean_mesh()
     }
 }
 
+void destroy_textures()
+{
+    for (sizint i = 0; i < NB_TEXTURES; i++) {
+        sfTexture_destroy((sfTexture* )engine.textures[i]->texture);
+        free(engine.textures[i]);
+    }
+    free(engine.textures);
+}
+
+void destroy_images()
+{
+    for (sizint i = 0; i < NB_TEXTURES; i++)
+        sfImage_destroy(engine.images[i]);
+    free(engine.images);
+}
+
+
 void destroying()
 {
     sfClock_destroy(engine.clock);
     sfRenderWindow_destroy(WINDOW);
     clean_mesh();
+    destroy_textures();
+    destroy_images();
 }
