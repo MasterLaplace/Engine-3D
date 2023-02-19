@@ -64,6 +64,7 @@ bool init_engine()
     engine.clock = sfClock_create();
     engine.textures = init_textures();
     engine.images = init_images();
+    init_wave();
     /*camera*/
     engine.Pos = (sfVector4f_t){ 0.f, 0.f, 0.f, 1.f};
     engine.Dir = (sfVector4f_t){ 0.f, 0.f, 0.f, 1.f};

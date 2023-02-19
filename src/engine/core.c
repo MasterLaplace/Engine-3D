@@ -25,8 +25,10 @@ void clean(void)
     destroying();
 }
 
-int main()
+int main(int ac, char const *av[])
 {
+    if (print_help(ac, av))
+        return EXIT_SUCCESS;
     loop_engine();
     return EXIT_SUCCESS;
 }

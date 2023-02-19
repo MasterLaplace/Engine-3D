@@ -107,7 +107,7 @@ mesh_t *create_obj(char **buf)
     }
 
     // create triangles
-    mesh->lTriangle = NULL; mesh->nb_triangles = 0;
+    mesh->lTriangle = NULL; mesh->nb_triangles = 0; mesh->type = MESH;
     char *mtllib = NULL;
     sizint tex = 0;
 

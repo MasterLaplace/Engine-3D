@@ -26,6 +26,7 @@ SRC =	$(LINK)append_link.c 	\
 		$(MY)stwa.c				\
 		$(MY)two_free.c 		\
 		$(MY)two_len.c 			\
+		$(MY)two_put.c 			\
 
 CFLAGS	=	 -I ../includes
 

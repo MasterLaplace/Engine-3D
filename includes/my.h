@@ -39,4 +39,7 @@ void two_free(char **tab);
 //* It's counting the number of string in the array of string tab.
 size_t two_len(char **tab);
 
+//* It's printing the array of string str on the standard output.
+void two_put(char **tab);
+
 #endif /* !MY_H_ */

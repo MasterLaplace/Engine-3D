@@ -99,7 +99,7 @@ void Matrix_View(sfVector4f_t pos, sfVector4f_t dir, sfVector4f_t up)
         { newRight.x, newRight.y, newRight.z, 0 },
         { newUp.x, newUp.y, newUp.z, 0 },
         { newForward.x, newForward.y, newForward.z, 0 },
-        {  pos.x,  pos.y,  pos.z, 1 }
+        { pos.x, pos.y, pos.z, 1 }
     };
 
     matrix matrix = Matrix_QuickInverse(view_matrix);
@@ -181,6 +181,11 @@ void Mesh_Transform(sfVector3f pos)
     float Rotate[4][4];
     float Translate[4][4];
     float Scale[4][4];
+
+    engine.ModeltoWorld[0][0] = 1;
+    engine.ModeltoWorld[1][1] = 1;
+    engine.ModeltoWorld[2][2] = 1;
+    engine.ModeltoWorld[3][3] = 1;
 
     // Rotation matrices : around the z-axis - around the y-axis - around the x-axis
     Matrix_MakeRotateZYX(Rotate, 0, 0, 0);

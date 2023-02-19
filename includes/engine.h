@@ -30,9 +30,15 @@ typedef enum {
 } player_state;
 
 typedef enum {
-    HIGH, LOW, NONE
+    HIGH, LOW, WATER, BUBBLE, NONE
 } texture;
 
+typedef enum {
+    WAVE, MESH
+} mesh_type;
+
+
+/// @brief x, y, z, w
 typedef struct sfVector4f_s {
     float x, y, z, w;
 } sfVector4f_t;
@@ -48,9 +54,20 @@ typedef struct triangle_s {
     float dp;
 } triangle_t;
 
+typedef struct wave_s {
+    float dp;
+    float A;
+    float wavelength;
+    float wave_speed;
+    float wave_direction;
+    float k;
+    float omega;
+} wave_t;
+
 typedef struct mesh_s {
     link_t *lTriangle;
     sizint nb_triangles;
+    mesh_type type;
 } mesh_t;
 
 
@@ -75,6 +92,9 @@ struct engine_s {
     /*link*/
     link_t *list_objs;
     link_t *FinalMesh;
+    /*water*/
+    link_t *wave_list;
+    float t;  // Temps
 };
 
 extern engine_t engine;
@@ -92,6 +112,9 @@ void destroying();
 
 /* PARSER OBJ */
 mesh_t *create_obj(char **buf);
+
+/* HELP */
+bool print_help(int ac, char const *av[]);
 
 /* LOOP */
 void loop_engine();
@@ -129,5 +152,10 @@ matrix Matrix_QuickInverse(float (*m)[4]);
 
 /* DRAW */
 void display_triangles(link_t *mesh);
+
+/* WATER */
+void init_wave();
+void superpose_waves(link_t *list);
+void clean_wave();
 
 #endif /* !ENGINE_H_ */

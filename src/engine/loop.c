@@ -16,10 +16,10 @@ void add_in_FinalMesh(triangle_t *triangle)
     list_append(&(engine.FinalMesh), link);
 }
 
-static void manage_triangle(mesh_t *mesh)
+static void manage_triangle(link_t *mesh)
 {
     triangle_t triTransformed, triViewed;
-    link_t *actual = mesh->lTriangle;
+    link_t *actual = mesh;
     triangle_t *tetrimi = NULL;
     sfVector4f_t normal;
 
@@ -65,7 +65,7 @@ static void manage_triangle(mesh_t *mesh)
             clipping(triViewed);
         }
         actual = actual->next;
-    } while (mesh->lTriangle && actual != mesh->lTriangle);
+    } while (mesh && actual != mesh);
 }
 
 static void draw_mesh()
@@ -78,8 +78,10 @@ static void draw_mesh()
         return;
     do {
         mesh = (mesh_t *) actual->obj;
+        if (mesh->type == WAVE)
+            superpose_waves(mesh->lTriangle);
         Mesh_Transform((sfVector3f){0, 0, 0});
-        manage_triangle(mesh);
+        manage_triangle(mesh->lTriangle);
         actual = actual->next;
     } while (engine.list_objs && actual != engine.list_objs);
 
@@ -93,6 +95,7 @@ static void clock_framerate()
     static float clock = 0.0f;
     float now = sfTime_asSeconds(sfClock_getElapsedTime(engine.clock));
     float diff = now - clock;
+    engine.t = now;
 
     vectors_3d_to_2d();
 

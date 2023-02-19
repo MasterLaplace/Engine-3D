@@ -46,6 +46,15 @@ void destroy_images()
     free(engine.images);
 }
 
+void clean_wave()
+{
+    if (!engine.wave_list)
+        return;
+    while (engine.wave_list) {
+        free((wave_t *) engine.wave_list->obj);
+        list_remove(&(engine.wave_list), engine.wave_list);
+    }
+}
 
 void destroying()
 {
@@ -54,4 +63,5 @@ void destroying()
     clean_mesh();
     destroy_textures();
     destroy_images();
+    clean_wave();
 }

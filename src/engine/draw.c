@@ -17,7 +17,11 @@ static sfVertexArray *create_triangle(triangle_t *node)
     if (color < 50)
         color = 50;
 
-    if (node->usemtl != NONE) {
+    if (node->usemtl == WATER || node->usemtl == BUBBLE) {
+        vertex1 = (sfVertex){.position = (sfVector2f){node->sommet[0].x, node->sommet[0].y}, .color = (sfColor){color, color, color, 255/2}, .texCoords = (sfVector2f){node->texture[0].x, node->texture[0].y}};
+        vertex2 = (sfVertex){.position = (sfVector2f){node->sommet[1].x, node->sommet[1].y}, .color = (sfColor){color, color, color, 255/2}, .texCoords = (sfVector2f){node->texture[1].x, node->texture[1].y}};
+        vertex3 = (sfVertex){.position = (sfVector2f){node->sommet[2].x, node->sommet[2].y}, .color = (sfColor){color, color, color, 255/2}, .texCoords = (sfVector2f){node->texture[2].x, node->texture[2].y}};
+    } else if (node->usemtl != NONE) {
         sfVector2u texSize = sfTexture_getSize(engine.textures[node->usemtl]->texture);
         vertex1 = (sfVertex){.position = (sfVector2f){node->sommet[0].x, node->sommet[0].y}, .color = (sfColor){color, color, color, 255}, .texCoords = (sfVector2f){node->texture[0].x *texSize.x, node->texture[0].y *texSize.y}};
         vertex2 = (sfVertex){.position = (sfVector2f){node->sommet[1].x, node->sommet[1].y}, .color = (sfColor){color, color, color, 255}, .texCoords = (sfVector2f){node->texture[1].x *texSize.x, node->texture[1].y *texSize.y}};

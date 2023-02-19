@@ -9,7 +9,7 @@
     #define CONSTANTS_H_
     #define UNUSED __attribute__((unused))
     #define CLEAR "\033[H\033[J"
-    #define FRAMERATE 24.0
+    #define FRAMERATE 60.0
     #define PI 3.14159f
     #define WINDOW_SIZE 1920, 1080
     #define WIN_Y 1080
@@ -23,6 +23,8 @@
     #define SWAP(a, b) { typeof(a) tmp = a; a = b; b = tmp; }
     #define KEY_PRESSED sfKeyboard_isKeyPressed
     #define EXIT_84 84
+    #define MAP_X 100
+    #define MAP_Y 120
 
 typedef unsigned int sizint;
 
