@@ -139,7 +139,9 @@ mesh_t *create_obj(char **buf)
         } else if (strcmp(info[0], "usemtl") == 0)
             tex = search_in_file(info[1], mtllib);
         else if (strcmp(info[0], "mtllib") == 0)
-            mtllib = strdup(info[1]);
+            mtllib = strdup(info[1]); // TODO: manage file name with spaceIn
+        else if (!strcmp(info[1], "cube"))
+            mesh->type = PLAYER;
         two_free(info);
     }
     free(mtllib);

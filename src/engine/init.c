@@ -78,7 +78,7 @@ static void init_collision()
         return;
     do {
         mesh = (mesh_t *) actual->obj;
-        if (actual != engine.list_objs && mesh->type != WAVE)
+        if (mesh->type == MESH)
             set_bvh(mesh->lTriangle);
 
         actual = actual->next;

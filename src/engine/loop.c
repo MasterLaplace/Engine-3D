@@ -80,7 +80,7 @@ static void draw_mesh()
         mesh = (mesh_t *) actual->obj;
         if (mesh->type == WAVE)
             superpose_waves(mesh->lTriangle);
-        if (actual == engine.list_objs) {
+        if (mesh->type == PLAYER) {
             sfVector4f_t Forward = Vector_Mul(engine.Dir, 2);
             Mesh_Transform(
                 Vector_Add(engine.Pos, (sfVector4f_t){Forward.x, -0.5, Forward.z, 1}),
