@@ -8,25 +8,28 @@
 #include "engine.h"
 
 #define GRAVITY 9.81 // Acceleration due to gravity (m/s^2)
-#define TIME_STEP (1 / FRAMERATE * 2) // Time step for simulation (s)
+#define TIME_STEP (1 / FRAMERATE * (FRAMERATE/10)) // Time step for simulation (s)
 
-void jump()
+static void jump()
 {
     // Velocity (m/s)
     static double vy = 11.0;
     engine.state = JUMP;
 
-    if (engine.Pos.y >= 0.0) {
+    if (engine.Pos.y >= 0) {
         engine.Pos.y += vy * TIME_STEP + 1 * -GRAVITY * TIME_STEP * TIME_STEP;
         vy += -GRAVITY * TIME_STEP;
+        if (engine.Pos.y < 0)
+            goto set;
     } else {
+    set:
         engine.state = IDLE;
-        engine.Pos.y = 0.0;
+        engine.Pos.y = 0;
         vy = 11.0;
     }
 }
 
-void manage_mouse()
+static void manage_mouse()
 {
     static int save_mouseY = 0; static int save_mouseX = 0;
     sfVector2i pos = sfMouse_getPositionRenderWindow(WINDOW);
@@ -48,6 +51,15 @@ void manage_mouse()
     }
 }
 
+static void check_collision()
+{
+    engine.Pos.x = fmax(engine.Pos.x, engine.s_g[0].x);
+    engine.Pos.z = fmax(engine.Pos.z, engine.s_g[0].z);
+    engine.Pos.x = fmin(engine.Pos.x, engine.s_g[1].x);
+    engine.Pos.y = fmin(engine.Pos.y, engine.s_g[1].y);
+    engine.Pos.z = fmin(engine.Pos.z, engine.s_g[1].z);
+}
+
 void manage_move()
 {
     static const float speed_min = 0.5f;
@@ -58,6 +70,7 @@ void manage_move()
     speed += (KEY_PRESSED(sfKeyLControl))?(speed >= speed_max)?0:friction:(speed <= speed_min)?0:-friction;
 
     sfVector4f_t Forward = Vector_Mul(engine.Dir, speed);
+    Forward.y = 0;
 
     if (KEY_PRESSED(sfKeyUp))
         engine.Pos.y += 0.5f;
@@ -77,7 +90,8 @@ void manage_move()
         engine.fawX += 0.1f;
     if (KEY_PRESSED(sfKeyF))
         engine.fawX -= 0.1f;
-    // manage_mouse();
+    manage_mouse();
+    check_collision();
 }
 
 void analyse_events(sfEvent event)

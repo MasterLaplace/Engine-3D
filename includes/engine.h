@@ -92,6 +92,9 @@ struct engine_s {
     /*link*/
     link_t *list_objs;
     link_t *FinalMesh;
+    /*collide*/
+    link_t *root;
+    sfVector3f s_g[2];
     /*water*/
     link_t *wave_list;
     float t;  // Temps
@@ -102,7 +105,6 @@ extern engine_t engine;
 /* INIT */
 bool open_folder(char *path);
 bool init_engine();
-void display_init();
 sfRenderStates **init_textures();
 sfImage **init_images();
 
@@ -126,7 +128,7 @@ void manage_move();
 
 /* RASTERIZEING */
 void vectors_3d_to_2d();
-void Mesh_Transform(sfVector3f pos);
+void Mesh_Transform(sfVector4f_t pos, sfVector3f angle, sfVector3f scale);
 void Matrix_MakeProjection(float fFovDegrees, float fAspectRatio, float fNear, float fFar);
 sfVector4f_t get_surface_normal(triangle_t triangle);
 void Scale_in_Screen(triangle_t *triangle);
@@ -153,8 +155,12 @@ matrix Matrix_QuickInverse(float (*m)[4]);
 /* DRAW */
 void display_triangles(link_t *mesh);
 
+/* BVH */
+void set_bvh(link_t *mesh);
+
 /* WATER */
 void init_wave();
+void create_water(sizint Xmax, sizint Ymax);
 void superpose_waves(link_t *list);
 void clean_wave();
 

@@ -17,7 +17,8 @@
  *
  * @return float: Altitude of the wave in (x, y) at time t.
  */
-float gerstner_wave(float x, float y, float t, wave_t *wave) {
+static float gerstner_wave(float x, float y, float t, wave_t *wave)
+{
     return wave->A * cos(wave->k * (x * cos(wave->wave_direction) + y * sin(wave->wave_direction)) - wave->omega * t);
 }
 
@@ -45,7 +46,7 @@ void superpose_waves(link_t *list)
     } while (engine.wave_list && actual_wave != engine.wave_list);
 }
 
-wave_t *create_wave(float A, float wavelength, float wave_speed, float wave_dir)
+static wave_t *create_wave(float A, float wavelength, float wave_speed, float wave_dir)
 {
     wave_t *wave = malloc(sizeof(wave_t));
     wave->A = A;
@@ -57,7 +58,7 @@ wave_t *create_wave(float A, float wavelength, float wave_speed, float wave_dir)
     return wave;
 }
 
-static const sizint NB_WAVE = 4;
+static const sizint NB_WAVE = 2;
 static const wave_t INFO[] = {
     {.A = 0.05, .wavelength = 20.0, .wave_speed = 5.0, .wave_direction = PI / 2},
     {.A = 0.05, .wavelength = 15.0, .wave_speed = 4.0, .wave_direction = PI / 6},
@@ -70,8 +71,6 @@ static const wave_t INFO[] = {
 
 void init_wave()
 {
-    mesh_t *mesh = malloc(sizeof(mesh_t));
-    triangle_t *tri, *tri2 = NULL;
     engine.wave_list = NULL;
     engine.t = 0.0;
 
@@ -80,11 +79,16 @@ void init_wave()
 
         list_append(&(engine.wave_list), create_link(wave));
     }
+}
 
+void create_water(sizint Xmax, sizint Ymax)
+{
+    mesh_t *mesh = malloc(sizeof(mesh_t));
+    triangle_t *tri, *tri2 = NULL;
     mesh->lTriangle = NULL; mesh->nb_triangles = 0; mesh->type = WAVE;
 
-    for (int i = 0; i < MAP_Y; i++) {
-        for (int j = 0; j < MAP_X; j++) {
+    for (sizint i = 0; i < Ymax; i++) {
+        for (sizint j = 0; j < Xmax; j++) {
             tri = malloc(sizeof(triangle_t));
             tri->sommet[0] = (sfVector4f_t){j + 1, 0, i + 1, 1};
             tri->sommet[1] = (sfVector4f_t){j + 1, 0, i, 1};

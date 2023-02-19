@@ -80,7 +80,23 @@ static void draw_mesh()
         mesh = (mesh_t *) actual->obj;
         if (mesh->type == WAVE)
             superpose_waves(mesh->lTriangle);
-        Mesh_Transform((sfVector3f){0, 0, 0});
+        if (actual == engine.list_objs) {
+            sfVector4f_t Forward = Vector_Mul(engine.Dir, 2);
+            Mesh_Transform(
+                Vector_Add(engine.Pos, (sfVector4f_t){Forward.x, -0.5, Forward.z, 1}),
+                (sfVector3f){0, engine.fawY, engine.fawZ},
+                (sfVector3f){1, 1, 1});
+        } else if (mesh->type == WAVE) {
+            Mesh_Transform(
+                (sfVector4f_t){20, -13.5, 80, 1},
+                (sfVector3f){0, 0, 0},
+                (sfVector3f){1, 1, 1});
+        } else {
+            Mesh_Transform(
+                (sfVector4f_t){0, 0, 0, 1},
+                (sfVector3f){0, 0, 0},
+                (sfVector3f){1, 1, 1});
+        }
         manage_triangle(mesh->lTriangle);
         actual = actual->next;
     } while (engine.list_objs && actual != engine.list_objs);
@@ -93,9 +109,8 @@ static void draw_mesh()
 static void clock_framerate()
 {
     static float clock = 0.0f;
-    float now = sfTime_asSeconds(sfClock_getElapsedTime(engine.clock));
-    float diff = now - clock;
-    engine.t = now;
+    engine.t = sfTime_asSeconds(sfClock_getElapsedTime(engine.clock));
+    float diff = engine.t - clock;
 
     vectors_3d_to_2d();
 

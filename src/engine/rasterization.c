@@ -10,26 +10,7 @@
 
 //* Model to World (M2W) */
 
-void Matrix_MakeRotateZYX(float (*matrix)[4], float angleZ, float angleY, float angleX) {
-    float cz = cosf(RADIAN(angleZ));
-    float sz = sinf(RADIAN(angleZ));
-    float cy = cosf(RADIAN(angleY));
-    float sy = sinf(RADIAN(angleY));
-    float cx = cosf(RADIAN(angleX));
-    float sx = sinf(RADIAN(angleX));
-    
-
-    float rot_matrix[4][4] = {
-        { cz * cy, -sz, sy, 0 },
-        { sz, cz * cx, -sx, 0 },
-        { -sy, sx, cy * cx, 0 },
-        { 0, 0, 0, 1 }
-    };
-
-    memcpy(*matrix, rot_matrix, sizeof(rot_matrix));
-}
-
-void Matrix_MakeRotateX(float (*matrix)[4], float angle)
+static void Matrix_MakeRotateX(float (*matrix)[4], float angle)
 {
     float rot_matrix[4][4] = {
         { 1, 0, 0, 0 },
@@ -41,7 +22,7 @@ void Matrix_MakeRotateX(float (*matrix)[4], float angle)
     memcpy(*matrix, rot_matrix, sizeof(rot_matrix));
 }
 
-void Matrix_MakeRotateY(float (*matrix)[4], float angle)
+static void Matrix_MakeRotateY(float (*matrix)[4], float angle)
 {
     float rot_matrix[4][4] = {
         { cosf(angle), 0, sinf(angle), 0 },
@@ -53,18 +34,32 @@ void Matrix_MakeRotateY(float (*matrix)[4], float angle)
     memcpy(*matrix, rot_matrix, sizeof(rot_matrix));
 }
 
-void Matrix_MakeTranslate(float (*matrix)[4], float z, float y, float x) {
-    float tran_matrix[4][4] = {
-        { 1, 0, 0, x },
-        { 0, 1, 0, y },
-        { 0, 0, 1, z },
+static void Matrix_MakeRotateZ(float (*matrix)[4], float angle)
+{
+    float rot_matrix[4][4] = {
+        { cosf(angle), -sinf(angle), 0, 0 },
+        { sinf(angle), cosf(angle), 0, 0 },
+        { 0, 0, 1, 0 },
         { 0, 0, 0, 1 }
+    };
+
+    memcpy(*matrix, rot_matrix, sizeof(rot_matrix));
+}
+
+static void Matrix_MakeTranslate(float (*matrix)[4], float x, float y, float z)
+{
+    float tran_matrix[4][4] = {
+        { 1, 0, 0, 0 },
+        { 0, 1, 0, 0 },
+        { 0, 0, 1, 0 },
+        { x, y, z, 1 }
     };
 
     memcpy(*matrix, tran_matrix, sizeof(tran_matrix));
 }
 
-void Matrix_MakeScale(float (*matrix)[4], float z, float y, float x) {
+static void Matrix_MakeScale(float (*matrix)[4], float x, float y, float z)
+{
     float sca_matrix[4][4] = {
         { x, 0, 0, 0 },
         { 0, y, 0, 0 },
@@ -117,7 +112,7 @@ void Matrix_MakeProjection(float fFovDegrees, float fAspectRatio, float fNear, f
         { fAspectRatio * fFovRad, 0, 0, 0 },
         { 0, fFovRad, 0, 0 },
         { 0, 0, fFar / (fFar - fNear), 1 },
-        { 0, 0, (-fFar * fNear) / (fFar - fNear), 1 }
+        { 0, 0, (-fFar * fNear) / (fFar - fNear), 0 }
     };
 
     memcpy(engine.ViewtoProjection, proj_matrix, sizeof(proj_matrix));
@@ -164,7 +159,6 @@ void vectors_3d_to_2d()
     sfVector4f_t Dir = {0, 0, 1, 1};
     sfVector4f_t Up = {0, 1, 0, 1};
     
-    memset(Rotate, 0, sizeof(Rotate));
     Matrix_MakeRotateX(RotateX, engine.fawX);
     Matrix_MakeRotateY(RotateY, engine.fawY);
     Matrix_Multiply(Rotate, RotateX, RotateY);
@@ -175,24 +169,26 @@ void vectors_3d_to_2d()
 
 //* Mesh transformation */
 
-void Mesh_Transform(sfVector3f pos)
+void Mesh_Transform(sfVector4f_t pos, sfVector3f angle, sfVector3f scale)
 {
     // Model to World (M2W)
     float Rotate[4][4];
+    float RotateY[4][4];
+    float RotateX[4][4];
+    float RotateZ[4][4];
     float Translate[4][4];
     float Scale[4][4];
 
-    engine.ModeltoWorld[0][0] = 1;
-    engine.ModeltoWorld[1][1] = 1;
-    engine.ModeltoWorld[2][2] = 1;
-    engine.ModeltoWorld[3][3] = 1;
-
     // Rotation matrices : around the z-axis - around the y-axis - around the x-axis
-    Matrix_MakeRotateZYX(Rotate, 0, 0, 0);
+    Matrix_MakeRotateX(RotateX, angle.x);
+    Matrix_MakeRotateY(RotateY, angle.y);
+    Matrix_MakeRotateZ(RotateZ, angle.z);
+    Matrix_Multiply(Rotate, RotateX, RotateY);
+    Matrix_Multiply(Rotate, Rotate, RotateZ);
     // Translation matrix
-    Matrix_MakeTranslate(Translate, pos.z, pos.y, pos.x);
+    Matrix_MakeTranslate(Translate, pos.x, pos.y, pos.z);
     Matrix_Multiply(engine.ModeltoWorld, Rotate, Translate);
     // Scaling matrix
-    Matrix_MakeScale(Scale, 1.f, 1.f, 1.f);
+    Matrix_MakeScale(Scale, scale.x, scale.y, scale.z);
     Matrix_Multiply(engine.ModeltoWorld, engine.ModeltoWorld, Scale);
 }

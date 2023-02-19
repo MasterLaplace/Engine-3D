@@ -28,6 +28,7 @@ SRC		=   $(SRC_DIR)init.c			\
 			$(SRC_DIR)merge_sort.c		\
 			$(SRC_DIR)draw.c			\
 			$(SRC_DIR)wave.c 			\
+			$(SRC_DIR)bvh.c	\
 
 TEST	=	$(TEST_DIR)test.c
 

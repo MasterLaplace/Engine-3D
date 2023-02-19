@@ -24,7 +24,7 @@
     #define KEY_PRESSED sfKeyboard_isKeyPressed
     #define EXIT_84 84
     #define MAP_X 100
-    #define MAP_Y 120
+    #define MAP_Y 80
 
 typedef unsigned int sizint;
 
