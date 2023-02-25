@@ -65,7 +65,6 @@ static void init_camera()
     engine.fawY = 0.f;
     engine.fawX = 0.f;
     engine.state = IDLE;
-    engine.size = 4;
 }
 
 static void init_collision()

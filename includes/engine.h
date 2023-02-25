@@ -34,7 +34,7 @@ typedef enum {
 } texture;
 
 typedef enum {
-    WAVE, MESH
+    WAVE, MESH, PLAYER
 } mesh_type;
 
 

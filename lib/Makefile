@@ -47,11 +47,11 @@ $(NAME):	$(OBJ)
 
 clean:
 	@$(RM) $(OBJ)
-	@($(ECHO) $(BOLD) $(GREEN)✓$(LIGHT_BLUE)" CLEAN LIBMY "$(DEFAULT))
+	@($(ECHO) $(BOLD) $(GREEN)✓$(LIGHT_BLUE)" CLEAN LIB "$(DEFAULT))
 
 fclean: clean
 	@$(RM) $(NAME)
-	@($(ECHO) $(BOLD) $(GREEN)✓$(LIGHT_BLUE)" FCLEAN LIBMY "$(DEFAULT))
+	@($(ECHO) $(BOLD) $(GREEN)✓$(LIGHT_BLUE)" FCLEAN LIB "$(DEFAULT))
 
 re: fclean all
 
