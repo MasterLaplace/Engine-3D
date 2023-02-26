@@ -1,0 +1,24 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: make
+      run: make server client
+
+    - name: SonarCloud Scan for C and C++
+      uses: SonarSource/sonarcloud-github-c-cpp@v1.3
+
+    - name: Run Parasoft C/C++test
+      uses: parasoft/run-cpptest-action@2.0.0
