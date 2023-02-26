@@ -10,7 +10,7 @@
 
 //* Model to World (M2W) */
 
-static void Matrix_MakeRotateX(float (*matrix)[4], float angle)
+inline static void Matrix_MakeRotateX(float (*matrix)[4], float angle)
 {
     float rot_matrix[4][4] = {
         { 1, 0, 0, 0 },
@@ -22,7 +22,7 @@ static void Matrix_MakeRotateX(float (*matrix)[4], float angle)
     memcpy(*matrix, rot_matrix, sizeof(rot_matrix));
 }
 
-static void Matrix_MakeRotateY(float (*matrix)[4], float angle)
+inline static void Matrix_MakeRotateY(float (*matrix)[4], float angle)
 {
     float rot_matrix[4][4] = {
         { cosf(angle), 0, sinf(angle), 0 },
@@ -34,7 +34,7 @@ static void Matrix_MakeRotateY(float (*matrix)[4], float angle)
     memcpy(*matrix, rot_matrix, sizeof(rot_matrix));
 }
 
-static void Matrix_MakeRotateZ(float (*matrix)[4], float angle)
+inline static void Matrix_MakeRotateZ(float (*matrix)[4], float angle)
 {
     float rot_matrix[4][4] = {
         { cosf(angle), -sinf(angle), 0, 0 },
@@ -46,7 +46,7 @@ static void Matrix_MakeRotateZ(float (*matrix)[4], float angle)
     memcpy(*matrix, rot_matrix, sizeof(rot_matrix));
 }
 
-static void Matrix_MakeTranslate(float (*matrix)[4], float x, float y, float z)
+inline static void Matrix_MakeTranslate(float (*matrix)[4], float x, float y, float z)
 {
     float tran_matrix[4][4] = {
         { 1, 0, 0, 0 },
@@ -58,7 +58,7 @@ static void Matrix_MakeTranslate(float (*matrix)[4], float x, float y, float z)
     memcpy(*matrix, tran_matrix, sizeof(tran_matrix));
 }
 
-static void Matrix_MakeScale(float (*matrix)[4], float x, float y, float z)
+inline static void Matrix_MakeScale(float (*matrix)[4], float x, float y, float z)
 {
     float sca_matrix[4][4] = {
         { x, 0, 0, 0 },
@@ -104,7 +104,7 @@ void Matrix_View(sfVector4f_t pos, sfVector4f_t dir, sfVector4f_t up)
 
 //* View to Projection (V2P) */
 
-void Matrix_MakeProjection(float fFovDegrees, float fAspectRatio, float fNear, float fFar)
+inline void Matrix_MakeProjection(float fFovDegrees, float fAspectRatio, float fNear, float fFar)
 {
     float fFovRad = 1.0f / tanf(fFovDegrees * 0.5f / 180.0f * PI);
 

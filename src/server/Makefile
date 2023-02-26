@@ -18,7 +18,7 @@ NAME :=	server.exe
 endif
 
 $(NAME): builder
-	@$(CC) -Os -o $(NAME) server.c -lpthread \
+	@$(CC) -Os -o $(NAME) server.c -I ./includes -lpthread \
 	&& $(ECHO) $(BOLD) $(GREEN)"\n► BUILD SERVER SUCCESS !"$(DEFAULT) \
 	|| ($(ECHO) $(BOLD) $(RED)"\n► BUILD SERVER FAILED"$(DEFAULT) && exit 1)
 

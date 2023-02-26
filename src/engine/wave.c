@@ -17,7 +17,7 @@
  *
  * @return float: Altitude of the wave in (x, y) at time t.
  */
-static float gerstner_wave(float x, float y, float t, wave_t *wave)
+inline static float gerstner_wave(float x, float y, float t, wave_t *wave)
 {
     return wave->A * cos(wave->k * (x * cos(wave->wave_direction) + y * sin(wave->wave_direction)) - wave->omega * t);
 }

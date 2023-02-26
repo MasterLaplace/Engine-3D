@@ -33,7 +33,7 @@ static char *search_in_mtl_file(const char *filepathname, const char *texture_na
         if (!found && strstr(info[i], texture_name)) {
             found = true;
         } else if (found && strncmp(info[i], "map_Kd", 6) == 0) {
-            char **Kd = stwa(info[i], " ");
+            char **Kd = stwa(info[i], " \t");
             map_Kd = strdup(Kd[1]);
             two_free(Kd);
             break;
@@ -95,7 +95,7 @@ mesh_t *create_obj(char **buf)
     sfVector3f list_vt[nb_vt];
 
     for (register sizint i = 0, v = 0, t = 0; buf[i]; i++) {
-        if (!(info = stwa(buf[i], " ")));
+        if (!(info = stwa(buf[i], " \t")));
         else if (info[0][0] == 'v' && info[0][1] == '\0') {
             list_v[v] = (sfVector4f_t){atof(info[1]), atof(info[2]), atof(info[3]), 1.f};
             v++;
@@ -112,7 +112,7 @@ mesh_t *create_obj(char **buf)
     sizint tex = 0;
 
     for (register sizint i = 0; buf[i]; i++) {
-        if (!(info = stwa(buf[i], " /")));
+        if (!(info = stwa(buf[i], " \t/")));
         else if (**info == 'f' && (nb_chr = count_char(buf[i], '/')) != 0) {
             tri = malloc(sizeof(triangle_t));
             tri->sommet[0] = list_v[atoi(info[1]) - 1];

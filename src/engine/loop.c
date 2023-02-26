@@ -88,7 +88,7 @@ static void draw_mesh()
                 (sfVector3f){1, 1, 1});
         } else if (mesh->type == WAVE) {
             Mesh_Transform(
-                (sfVector4f_t){20, -13.5, 80, 1},
+                (sfVector4f_t){20, -12, 80, 1},
                 (sfVector3f){0, 0, 0},
                 (sfVector3f){1, 1, 1});
         } else {

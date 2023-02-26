@@ -7,42 +7,42 @@
 
 #include "engine.h"
 
-sfVector4f_t Vector_Add(sfVector4f_t v, sfVector4f_t w)
+inline sfVector4f_t Vector_Add(sfVector4f_t v, sfVector4f_t w)
 {
     return (sfVector4f_t){v.x + w.x, v.y + w.y, v.z + w.z, 1.f};
 }
 
-sfVector4f_t Vector_Sub(sfVector4f_t v, sfVector4f_t w)
+inline sfVector4f_t Vector_Sub(sfVector4f_t v, sfVector4f_t w)
 {
     return (sfVector4f_t){v.x - w.x, v.y - w.y, v.z - w.z, 1.f};
 }
 
-sfVector4f_t Vector_Mul(sfVector4f_t v, float w)
+inline sfVector4f_t Vector_Mul(sfVector4f_t v, float w)
 {
     return (sfVector4f_t){v.x * w, v.y * w, v.z * w, w};
 }
 
-sfVector4f_t Vector_Div(sfVector4f_t v, float w)
+inline sfVector4f_t Vector_Div(sfVector4f_t v, float w)
 {
     return (sfVector4f_t){v.x / w, v.y / w, v.z / w, w};
 }
 
-float Vector_DotProduct(sfVector4f_t v, sfVector4f_t w)
+inline float Vector_DotProduct(sfVector4f_t v, sfVector4f_t w)
 {
     return v.x * w.x + v.y * w.y + v.z * w.z;
 }
 
-float Vector_Length(sfVector4f_t v)
+inline float Vector_Length(sfVector4f_t v)
 {
     return sqrtf(Vector_DotProduct(v, v));
 }
 
-float calcul_dist(sfVector4f_t p, sfVector4f_t plane_p, sfVector4f_t plane_n)
+inline float calcul_dist(sfVector4f_t p, sfVector4f_t plane_p, sfVector4f_t plane_n)
 {
 	return (plane_n.x * p.x + plane_n.y * p.y + plane_n.z * p.z - Vector_DotProduct(plane_n, plane_p));
 }
 
-sfVector4f_t Vector_Normalise(sfVector4f_t v)
+inline sfVector4f_t Vector_Normalise(sfVector4f_t v)
 {
     float l = Vector_Length(v);
     return (sfVector4f_t){v.x / l, v.y / l, v.z / l, 1.f};

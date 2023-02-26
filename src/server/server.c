@@ -1,104 +1,153 @@
-#include <stdio.h>
-#include <string.h>
-#include <pthread.h>
-#include <arpa/inet.h>
-#include <sys/socket.h>
-#include <sys/time.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <errno.h>
+/*
+** EPITECH PROJECT, 2023
+** B-NWP-400-REN-4-1-myftp-guillaume.papineau
+** File description:
+** server
+*/
 
-void *connection_handler(void *);
+#include "server.h"
 
-int nbr_connection = 0;
+bool set_server(server_t *svr, int port)
+{
+	if( (svr->server_socket = socket(AF_INET , SOCK_STREAM , 0)) == 0) {
+		perror(strerror(errno));
+		return false;
+	}
+	ADDR.sin_family = AF_INET;
+	ADDR.sin_addr.s_addr = INADDR_ANY;
+	ADDR.sin_port = htons(port);
 
-int main() {
-    int server_socket, client_socket;
-    struct sockaddr_in server_address, client_address;
-    int address_length = sizeof(client_address);
-    pthread_t sniffer_thread;
-
-    fd_set set_timeout;
-    struct timeval timeout;
-    timeout.tv_sec = 15;
-    timeout.tv_usec = 0;
-
-    // Creation of server socket
-    server_socket = socket(AF_INET, SOCK_STREAM, 0);
-    if (server_socket == -1) {
-        perror("Impossible de créer le socket serveur");
-        return EXIT_FAILURE;
-    }
-    printf("Log: Socket serveur créé\n");
-
-    // Configuration of server address
-    server_address.sin_family = AF_INET;
-    server_address.sin_addr.s_addr = INADDR_ANY;
-    server_address.sin_port = htons(49154);
-
-    // Binding socket server to address
-    if (bind(server_socket, (struct sockaddr *) &server_address, sizeof(server_address)) < 0) {
-        perror("Liaison du socket serveur à une adresse échouée");
-        return EXIT_FAILURE;
-    }
-    printf("Log: Socket serveur lié à une adresse\n");
-
-    // Listening for incoming connections
-    listen(server_socket, 3);
-    printf("Log: En attente de connexions entrantes...\n");
-
-    while (1) {
-        // restart timeout and add file descriptor to the set_timeout
-        FD_ZERO(&set_timeout);
-        FD_SET(server_socket, &set_timeout);
-
-        if (!select(server_socket + 1, &set_timeout, NULL, NULL, &timeout) && nbr_connection == 0) {
-            printf("Log: Timeout dépassé\n");
-            break;
-        }
-
-        // Accepting an incoming connection
-        if ((client_socket = accept(server_socket, (struct sockaddr *) &client_address, &address_length)) < 0) {
-            perror("Acceptation d'une connexion entrante échouée");
-            return EXIT_FAILURE;
-        }
-        printf("Log: Connexion entrante acceptée\n");
-
-        // Creation of a new thread to manage the incoming connection
-        if (pthread_create(&sniffer_thread, NULL, connection_handler, &client_socket) < 0) {
-            perror("Création du thread pour gérer la connexion entrante échouée");
-            return EXIT_FAILURE;
-        }
-        printf("Log: Thread pour gérer la connexion entrante créé\n");
-    }
-
-    return EXIT_SUCCESS;
+	if (bind(svr->server_socket, (addr *)&(ADDR), sizeof(ADDR)) < 0) {
+		perror(strerror(errno));
+		return false;
+	}
+	if (listen(svr->server_socket, SOMAXCONN) < 0) {
+		perror(strerror(errno));
+		return false;
+	}
+    memset(svr->client_socket, 0, sizeof(svr->client_socket));
+	svr->addrlen = sizeof(ADDR);
+    return true;
 }
 
-void *connection_handler(void *socket_desc) {
-    int client_socket = *(int*)socket_desc;
-    char client_message[1000];
-    int read_size;
+static void set_select(server_t *svr)
+{
+    FD_ZERO(&svr->readfds);
+    FD_SET(svr->server_socket, &svr->readfds);
 
-    nbr_connection++;
+    for (sizint i = 0; i < SOMAXCONN; i++) {
+        svr->sd = svr->client_socket[i];
 
-    while (1) {
-        // Receiving message from client
-        while((read_size = recv(client_socket, client_message, 1000, 0)) > 0) {
-            // Sending message to client
-            write(client_socket, client_message, strlen(client_message));
+        if(svr->sd > 0)
+            FD_SET(svr->sd, &(svr->readfds));
 
-            if (!strncmp(client_message, "exit", 4))
-                goto exit;
-            memset(client_message, 0, 1000);
+        if(svr->sd > svr->server_socket)
+            svr->server_socket = svr->sd;
+    }
+}
+
+static bool check_action(server_t *svr)
+{
+	char *message = "Laplace v1.0\r\n";
+    int new_socket = 0;
+
+    if (!FD_ISSET(svr->server_socket, &(svr->readfds)))
+        return false;
+    if ((new_socket = accept(svr->server_socket, (addr *)&(ADDR),
+        (socklen_t*)&(svr->addrlen))) < 0) {
+        perror(strerror(errno));
+        return false;
+    }
+    write(new_socket, message, strlen(message));
+    for (sizint i = 0; i < SOMAXCONN; i++) {
+        if(svr->client_socket[i] == 0) {
+            svr->client_socket[i] = new_socket;
+            break;
         }
     }
+    return true;
+}
 
-exit:
-    // Closing connection with client
-    printf("Log: Connexion client terminée\n");
-    close(client_socket);
-    nbr_connection--;
-    return 0;
+static void send_recv(server_t *svr)
+{
+    char buffer[1025];
+    int valread = 0;
+
+    for (sizint i = 0; i < SOMAXCONN; i++) {
+        svr->sd = svr->client_socket[i];
+            
+        if (!FD_ISSET(svr->sd, &(svr->readfds)))
+            continue;
+        if ((valread = read(svr->sd, buffer, 1024)) == 0) {
+            close(svr->sd);
+            svr->client_socket[i] = 0;
+        } else {
+            buffer[valread] = '\0';
+            write(svr->sd, buffer, strlen(buffer));
+        }
+    }
+}
+
+bool loop(server_t *svr)
+{
+    int activity = 0;
+
+    while(true) {
+        set_select(svr);
+
+		activity = select(svr->server_socket + 1, &(svr->readfds), NULL, NULL, NULL);
+
+		if ((activity < 0) && (errno != EINTR))
+			perror(strerror(errno));
+		if (!check_action(svr))
+            return false;
+		send_recv(svr);
+	}
+    close(svr->server_socket);
+    return true;
+}
+
+/* HELP */
+
+static const char *help[] = {
+    "USAGE: ./myftp port path",
+    "\tport is the port number on which the server socket listens",
+    NULL
+};
+
+static void two_put(char **tab)
+{
+    for (; tab && *tab; tab++)
+        printf("%s\n", *tab);
+}
+
+
+bool print_help(char const *av[])
+{
+    if (strcmp(av[1], "-h") && strcmp(av[1], "-help"))
+        return false;
+    two_put((char **) help);
+    return true;
+}
+
+int main(int ac , const char *av[])
+{
+    server_t svr;
+    int port = 0;
+
+    if (ac < 2)
+        return 84;
+
+    if (print_help(av))
+        return 0;
+
+    if ((port = atoi(av[1])) > Max_Port || port < Min_Port)
+        return 84;
+
+	if (!set_server(&svr, port))
+        return 84;
+
+    if (!loop(&svr))
+        return 84;
+	return 0;
 }
