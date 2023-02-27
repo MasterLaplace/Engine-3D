@@ -24,6 +24,7 @@
 *.a
 *.la
 *.lo
+CSFML/
 
 # Shared objects (inc. Windows DLLs)
 *.dll

@@ -1,0 +1,24 @@
+name: Engine testing
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  testing:
+    runs-on: ubuntu-latest
+  
+    steps:
+    - name: Install CMake
+      run: sudo apt-get install cmake
+
+    - name: Checkout
+      uses: actions/checkout@v3
+    
+    - name: Install CSFML
+      run: sudo -A /build/install_csfml.sh < ./build/mysudopass.sh
+
+    - name: Testing
+      run: ./run_test.sh -e

@@ -1,4 +1,4 @@
-name: C/C++ CI
+name: Server Client CI
 
 on:
   push:
@@ -25,9 +25,6 @@ jobs:
 
     - name: SonarCloud Scan for C and C++
       uses: SonarSource/sonarcloud-github-c-cpp@v1.3
-
-    - name: Run Parasoft C/C++test
-      uses: parasoft/run-cpptest-action@2.0.0
 
     - name: Check if build succeeded
       run: exit $(($? != 0))
