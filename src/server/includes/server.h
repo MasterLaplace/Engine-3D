@@ -18,14 +18,49 @@
     #include <netinet/in.h>
     #include <sys/time.h>
     #include <stdbool.h>
+    #include <SFML/System/Vector3.h>
 
-    #define Max_Port 0x0000FFFF
-    #define Min_Port 0x0
+    #define Max_Port 0xFFFF
+    #define Min_Port 0x0001
     #define ADDR svr->address
+    #define SVR_SKT svr->server_socket
+    #define FD_READ svr->readfds
+    #define CLT_SKT(i) client[i].client_socket
+    #define CLT_SOCK client->client_socket
+    #define ADDR_LEN svr->addrlen
+    #define UNUSED __attribute__((unused))
+    #define auto __auto_type
+    #define CODES_TYPE(i) codes[i].appId
+    #define CODES_MSG(i) codes[i].msg
+    #define MSG_SIZE(i) codes[i].size
+    #define CODES(i) CODES_MSG(i), CODES_TYPE(i)
 
 typedef struct sockaddr_in addr_in;
 typedef struct sockaddr addr;
 typedef unsigned int sizint;
+
+typedef struct client_s {
+    char *pseudo;
+    bool connected;
+    int client_socket;
+    sfVector3f position;
+} client_t;
+
+typedef struct server_s {
+    int server_socket;
+    int addrlen;
+    client_t client[SOMAXCONN];
+    addr_in address;
+    fd_set readfds;
+    char *path;
+    int port;
+    size_t nbr_client;
+} server_t;
+
+typedef struct command_s {
+    char *flag;
+    void (*redirect)(client_t *client, char *buffer, server_t *svr);
+} command_t;
 
 typedef enum {
     Server_GetStatus,
@@ -41,22 +76,9 @@ typedef enum {
     Game_UpdatePlayer
 } command;
 
-typedef struct client_s {
-    char *pseudo;
-    char *password;
-} client_t;
-
-typedef struct server_s {
-	int server_socket;
-    int addrlen;
-    int client_socket[SOMAXCONN];
-    int sd;
-	addr_in address;
-	fd_set readfds;
-} server_t;
-
 bool print_help(char const *av[]);
-bool set_server(server_t *svr, int port);
+bool set_server(server_t *svr);
 bool loop(server_t *svr);
+void manage(char *buffer, client_t *client, server_t *svr);
 
 #endif /* !SERVER_H_ */

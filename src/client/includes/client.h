@@ -19,6 +19,7 @@
     #include <sys/time.h>
     #include <stdbool.h>
     #include <threads.h>
+    #include <python3.9/Python.h>
 
     #define Max_Port 0x0000FFFF
     #define Min_Port 0x0
@@ -52,7 +53,6 @@ typedef struct server_s {
 	addr_in address;
 } server_t;
 
-bool print_help(char const *av[]);
 bool set_server(server_t *svr);
 
 #endif /* !CLIENT_H_ */

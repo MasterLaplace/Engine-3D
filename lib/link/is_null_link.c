@@ -9,8 +9,5 @@
 
 bool is_null_link(link_t **link)
 {
-    if (!link || !*link)
-        return true;
-    else
-        return false;
+    return !*link;
 }

@@ -28,7 +28,7 @@ SRC		=   $(SRC_DIR)init.c			\
 			$(SRC_DIR)merge_sort.c		\
 			$(SRC_DIR)draw.c			\
 			$(SRC_DIR)wave.c 			\
-			$(SRC_DIR)bvh.c	\
+			$(SRC_DIR)bvh.c				\
 
 TEST	=	$(TEST_DIR)test.c
 
@@ -47,7 +47,7 @@ OBJ			=	$(SRC:.c=.o) $(MAIN:.c=.o)
 
 TEST_OBJ	=	$(SRC:.c=.o) $(TEST:.c=.o)
 
-SHARE_NAME = 	$(BIN)engine.so
+SHARE_NAME = 	$(BIN)libengine.so
 
 TEST_NAME 	=	$(BIN)test_engine.out
 
@@ -70,7 +70,7 @@ NB 	= 0
 
 $(NAME): builder $(OBJ)
 	@make -C $(LIB_FOLDER) $(NO_PRINT)
-	@$(CC) -Os $(FLAGS) -o $(NAME) $(OBJ) $(LDFLAGS) $(CSFML_F) \
+	@$(CC) -O3 -march=native $(CFLAGS) -o $(NAME) $(OBJ) $(LDFLAGS) $(CSFML_F) \
 	&& $(ECHO) $(BOLD) $(GREEN)"\n► BUILD SUCCESS !"$(DEFAULT) \
 	|| ($(ECHO) $(BOLD) $(RED)"\n► BUILD FAILED"$(DEFAULT) && exit 1)
 
@@ -97,16 +97,21 @@ fclean:	clean
 
 re: fclean all
 
-debug:	CFLAGS += -g
+debug:	CFLAGS += -g3
 debug:	fclean $(OBJ)
 	@make debug -C $(LIB_FOLDER) $(NO_PRINT)
 	@$(CC) -Og $(OBJ) -o $(NAME) $(LDFLAGS) $(CSFML_F)
 
-share:
+share: builder $(OBJ)
 	@make -C $(LIB_FOLDER) $(NO_PRINT)
-	@$(CC) -Os -shared -o $(SHARE_NAME) -fPIC $(SRC) $(LDFLAGS) $(CSFML_F) \
+	@$(CC) -Os -shared $(CFLAGS) -o $(SHARE_NAME) -fPIC $(SRC) $(CSFML_F) \
 	&& $(ECHO) $(BOLD) $(GREEN)"\n► BUILD SHARE SUCCESS !"$(DEFAULT) \
 	|| ($(ECHO) $(BOLD) $(RED)"\n► BUILD SHARE FAILED"$(DEFAULT) && exit 1)
+
+install: share
+	@cp $(SHARE_NAME) /usr/lib/ \
+	&& $(ECHO) $(BOLD) $(GREEN)"\n► INSTALL SHARE SUCCESS !"$(DEFAULT) \
+	|| ($(ECHO) $(BOLD) $(RED)"\n► INSTALL SHARE FAILED"$(DEFAULT) && exit 1)
 
 test: fclean builder $(TEST_OBJ)
 	@make -C $(LIB_FOLDER) $(NO_PRINT)
@@ -124,6 +129,12 @@ server:
 
 client:
 	@make all -C ./src/client $(NO_PRINT)
+
+manager:
+	@make all -C ./src/manager $(NO_PRINT)
+
+author:
+	@echo $(USER)
 
 .PHONY: all re clean fclean debug test %.o
 .SILENT: all re clean fclean debug test %.o

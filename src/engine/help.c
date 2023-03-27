@@ -7,6 +7,7 @@
 
 #include "engine.h"
 
+#ifdef COMPILED_AS_SHARED_LIBRARY
 static const char *help[] = {
     "UTILISATION\n\t./bin/engine.out [-h | --help]\n\nDESCRIPTION\n",
     "\t-h\tafficher ce guide.\n",
@@ -38,3 +39,4 @@ bool print_help(int ac, char const *av[])
     two_put((char **) help);
     return true;
 }
+#endif

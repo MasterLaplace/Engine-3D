@@ -53,32 +53,40 @@ static void display_init()
     sfVideoMode mode = {WIN_X, WIN_Y, 32};
 
     engine.window = sfRenderWindow_create(mode, "Engine-3D",
-    sfResize | sfClose, NULL); // sfResize/sfFullscreen
+    sfFullscreen | sfClose, NULL); // sfResize/sfFullscreen
     sfRenderWindow_setFramerateLimit(engine.window, FRAMERATE);
+    sfRenderWindow_setVerticalSyncEnabled(engine.window, sfTrue);
+    sfRenderWindow_setMouseCursorVisible(engine.window, sfFalse);
 }
 
 static void init_camera()
 {
-    engine.Pos = (sfVector4f_t){ 0.f, 0.f, 0.f, 1.f};
-    engine.Dir = (sfVector4f_t){ 0.f, 0.f, 0.f, 1.f};
+    engine.Pos = (sfVector4f){ 0.f, 0.f, 0.f, 1.f};
+    engine.Dir = (sfVector4f){ 0.f, 0.f, 0.f, 1.f};
     engine.fawZ = 0.f;
     engine.fawY = 0.f;
     engine.fawX = 0.f;
     engine.state = IDLE;
+    engine.drunkerMode = false;
+    engine.size = 2.f;
 }
 
 static void init_collision()
 {
     link_t *actual = engine.list_objs;
     mesh_t *mesh = NULL;
-    engine.root = NULL;
+    link_t *new_mesh = NULL;
+    engine.root = malloc(sizeof(Tree_t));
 
-    if (!actual)
+    if (!actual && !engine.root)
         return;
     do {
         mesh = (mesh_t *) actual->obj;
-        if (mesh->type == MESH)
-            set_bvh(mesh->lTriangle);
+        if (mesh->type == MESH) {
+            new_mesh = dup_list(mesh->lTriangle, sizeof(triangle_t));
+            merge_sorting_list(&new_mesh, &cmp_av_two_triangles);
+            set_bvh(engine.root, new_mesh);
+        }
 
         actual = actual->next;
     } while (engine.list_objs && actual != engine.list_objs);
@@ -86,6 +94,7 @@ static void init_collision()
 
 bool init_engine()
 {
+    srand(time(NULL));
     /*graphic*/
     display_init();
     engine.clock = sfClock_create();

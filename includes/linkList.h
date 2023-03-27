@@ -26,6 +26,9 @@ void list_append(link_t **list, link_t *link);
 //* It adds a link to the beginning of the list.
 void appstart_link(link_t **list, link_t *link);
 
+//* It duplicates the list.
+link_t *dup_list(link_t *list, size_t __size);
+
 //* It checks if the link is null.
 bool is_null_link(link_t **link);
 

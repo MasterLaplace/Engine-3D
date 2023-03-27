@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** Hub
 ** File description:
-** core
+** Gemini 0.1
 */
 
 #include "engine.h"
@@ -25,6 +25,7 @@ void clean(void)
     destroying();
 }
 
+#ifdef COMPILED_AS_SHARED_LIBRARY
 int main(int ac, char const *av[])
 {
     if (print_help(ac, av))
@@ -32,3 +33,4 @@ int main(int ac, char const *av[])
     loop_engine();
     return EXIT_SUCCESS;
 }
+#endif

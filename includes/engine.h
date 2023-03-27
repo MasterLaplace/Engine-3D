@@ -22,6 +22,12 @@
     #include "constants.h"
     #include "my.h"
 
+    #ifdef __PIC__
+    #define COMPILED_AS_SHARED_LIBRARY 1
+    #else
+    #define COMPILED_AS_SHARED_LIBRARY 0
+    #endif
+
 typedef struct engine_s engine_t;
 
 typedef enum {
@@ -34,21 +40,21 @@ typedef enum {
 } texture;
 
 typedef enum {
-    WAVE, MESH, PLAYER
+    MAP, WAVE, MESH, PLAYER
 } mesh_type;
 
 
 /// @brief x, y, z, w
-typedef struct sfVector4f_s {
+typedef struct {
     float x, y, z, w;
-} sfVector4f_t;
+} sfVector4f;
 
-typedef struct matrix {
+typedef struct {
 	float m[4][4];
 } matrix;
 
 typedef struct triangle_s {
-    sfVector4f_t sommet[3];
+    sfVector4f sommet[3];
     sfVector3f texture[3];
     texture usemtl;
     float dp;
@@ -70,6 +76,12 @@ typedef struct mesh_s {
     mesh_type type;
 } mesh_t;
 
+typedef struct Tree_s {
+    struct Tree_s *left; // left node
+    struct Tree_s *right; // right node
+    sfVector3f s_g[2]; // smaller/greater vectors
+    triangle_t *triangle; // triangle at front node
+} Tree_t;
 
 struct engine_s {
     /*graphic*/
@@ -78,13 +90,15 @@ struct engine_s {
     sfRenderStates **textures;
     sfImage **images;
     /*camera*/
-    sfVector4f_t Pos;
-    sfVector4f_t Dir;
+    sfVector4f Pos;
+    sfVector4f Dir;
     float fawZ;
     float fawY;
     float fawX;
+    bool drunkerMode;
     /*player*/
     player_state state;
+    sizint size;
     /*matrix*/
     float ModeltoWorld[4][4];
     float WorldtoView[4][4];
@@ -93,7 +107,7 @@ struct engine_s {
     link_t *list_objs;
     link_t *FinalMesh;
     /*collide*/
-    link_t *root;
+    Tree_t *root;
     sfVector3f s_g[2];
     /*water*/
     link_t *wave_list;
@@ -115,8 +129,11 @@ void destroying();
 /* PARSER OBJ */
 mesh_t *create_obj(char **buf);
 
+#ifdef COMPILED_AS_SHARED_LIBRARY
+    #define EXPORT __attribute__((visibility("default")))
 /* HELP */
 bool print_help(int ac, char const *av[]);
+#endif
 
 /* LOOP */
 void loop_engine();
@@ -127,36 +144,41 @@ void analyse_events(sfEvent event);
 void manage_move();
 
 /* RASTERIZEING */
-void vectors_3d_to_2d();
-void Mesh_Transform(sfVector4f_t pos, sfVector3f angle, sfVector3f scale);
+void vectors_3d_to_2d(bool drunkerMode);
+void Mesh_Transform(sfVector4f pos, sfVector3f angle, sfVector3f scale);
 void Matrix_MakeProjection(float fFovDegrees, float fAspectRatio, float fNear, float fFar);
-sfVector4f_t get_surface_normal(triangle_t triangle);
+sfVector4f get_surface_normal(triangle_t triangle);
 void Scale_in_Screen(triangle_t *triangle);
-void merge_sorting_list(link_t **list);
+void merge_sorting_list(link_t **list, bool (*cmp)(triangle_t *, triangle_t *));
+bool cmp_two_triangles(triangle_t *t1, triangle_t *t2);
+bool cmp_av_two_triangles(triangle_t *t1, triangle_t *t2);
 
 /* CLIPPING */
 void clipping(triangle_t triangle);
 
 /* UTILS */
-sfVector4f_t Vector_Add(sfVector4f_t v, sfVector4f_t w);
-sfVector4f_t Vector_Sub(sfVector4f_t v, sfVector4f_t w);
-sfVector4f_t Vector_Mul(sfVector4f_t v, float w);
-sfVector4f_t Vector_Div(sfVector4f_t v, float w);
-sfVector4f_t Vector_Normalise(sfVector4f_t v);
-sfVector4f_t Vector_CrossProduct(sfVector4f_t a, sfVector4f_t b);
-sfVector4f_t Matrix_MultiplyVector(sfVector4f_t v, float (*m)[4], sfVector4f_t w);
-sfVector4f_t Vector_intersectPlane(sfVector4f_t p, sfVector4f_t n, sfVector4f_t Start, sfVector4f_t End, float *t);
-float Vector_DotProduct(sfVector4f_t v, sfVector4f_t w);
-float Vector_Length(sfVector4f_t v);
-float calcul_dist(sfVector4f_t p, sfVector4f_t pp, sfVector4f_t n);
+sfVector4f Vector_Add(sfVector4f v, sfVector4f w);
+sfVector4f Vector_Sub(sfVector4f v, sfVector4f w);
+sfVector4f Vector_Mul(sfVector4f v, float w);
+sfVector4f Vector_Div(sfVector4f v, float w);
+sfVector4f Vector_Normalise(sfVector4f v);
+sfVector4f Vector_CrossProduct(sfVector4f a, sfVector4f b);
+sfVector4f Matrix_MultiplyVector(sfVector4f v, float (*m)[4], sfVector4f w);
+sfVector4f Vector_intersectPlane(sfVector4f p, sfVector4f n, sfVector4f Start, sfVector4f End, float *t);
+float Vector_DotProduct(sfVector4f v, sfVector4f w);
+float Vector_Length(sfVector4f v);
+float calcul_dist(sfVector4f p, sfVector4f pp, sfVector4f n);
 void Matrix_Multiply(float (*m)[4], float (*m1)[4], float (*m2)[4]);
 matrix Matrix_QuickInverse(float (*m)[4]);
+sfVector3f average_triangle(triangle_t *t);
 
 /* DRAW */
 void display_triangles(link_t *mesh);
 
 /* BVH */
-void set_bvh(link_t *mesh);
+void set_bvh(Tree_t *tree, link_t *mesh);
+sfVector3f get_bvh(Tree_t *tree, sfVector4f point);
+void print_bvh(Tree_t *tree);
 
 /* WATER */
 void init_wave();

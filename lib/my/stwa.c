@@ -35,7 +35,7 @@ char **stwa(char *str, const char *delim)
     }
     str_dup = strdup(str);
     words[0] = strdup(strtok(str_dup, delim));
-    for (size_t i = 1; i < len; i++)
+    for (size_t i = 1; i < len; ++i)
         words[i] = strdup(strtok(NULL, delim));
     words[len] = NULL;
     free(str_dup);

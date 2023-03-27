@@ -91,13 +91,13 @@ mesh_t *create_obj(char **buf)
     }
 
     // add vectors in list
-    sfVector4f_t list_v[nb_v];
+    sfVector4f list_v[nb_v];
     sfVector3f list_vt[nb_vt];
 
     for (register sizint i = 0, v = 0, t = 0; buf[i]; i++) {
         if (!(info = stwa(buf[i], " \t")));
         else if (info[0][0] == 'v' && info[0][1] == '\0') {
-            list_v[v] = (sfVector4f_t){atof(info[1]), atof(info[2]), atof(info[3]), 1.f};
+            list_v[v] = (sfVector4f){atof(info[1]), atof(info[2]), atof(info[3]), 1.f};
             v++;
         } else if (info[0][0] == 'v' && info[0][1] == 't') {
             list_vt[t] = (sfVector3f){atof(info[1]), atof(info[2]), 1.f};

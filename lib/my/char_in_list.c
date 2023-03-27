@@ -9,7 +9,7 @@
 
 int char_in_list(char c, char *list)
 {
-    for (int i = 0; list[i]; i++) {
+    for (int i = 0; list[i]; ++i) {
         if (c == list[i])
             return i;
     }

@@ -6,7 +6,7 @@
     #include <time.h>
     #include <stdio.h>
     #include <stdlib.h>
-    #ifdef __cplusplus
+    #ifndef __cplusplus
     # include <cstring>
     # include <cstdlib>
     # include <cwchar>
@@ -23,6 +23,10 @@
     #define RED "\e[1m\e[31m"
     #define GREEN "\e[1m\e[32m"
     #define BLUE "\e[1m\e[94m"
+    #define ASSERT8(_e, ...) {                          \
+            if (!(_e)) { fprintf(stderr, __VA_ARGS__);  \
+                exit(1);}                               \
+        }                                               \
 
     #define START_TEST \
         pid_t pid = 0; \

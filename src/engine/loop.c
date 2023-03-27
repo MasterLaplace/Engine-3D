@@ -21,10 +21,10 @@ static void manage_triangle(link_t *mesh)
     triangle_t triTransformed, triViewed;
     link_t *actual = mesh;
     triangle_t *tetrimi = NULL;
-    sfVector4f_t normal;
+    sfVector4f normal;
 
     // Set Lightening
-    static sfVector4f_t light_dir = (sfVector4f_t) {0.0f, 1.0f, -1.0f, 1.0f};
+    static sfVector4f light_dir = (sfVector4f) {0.0f, 1.0f, -1.0f, 1.0f};
     if (light_dir.z <= 0.999)
         light_dir.z += 0.005f;
     else
@@ -45,7 +45,7 @@ static void manage_triangle(link_t *mesh)
         normal = get_surface_normal(triTransformed);
 
         // get surface from View
-        sfVector4f_t CameraRay = Vector_Sub(triTransformed.sommet[0], engine.Pos);
+        sfVector4f CameraRay = Vector_Sub(triTransformed.sommet[0], engine.Pos);
 
         if (Vector_DotProduct(normal, CameraRay) < 0.0f) {
             // Get Lightening
@@ -81,19 +81,19 @@ static void draw_mesh()
         if (mesh->type == WAVE)
             superpose_waves(mesh->lTriangle);
         if (mesh->type == PLAYER) {
-            sfVector4f_t Forward = Vector_Mul(engine.Dir, 2);
+            sfVector4f Forward = Vector_Mul(engine.Dir, 2);
             Mesh_Transform(
-                Vector_Add(engine.Pos, (sfVector4f_t){Forward.x, -0.5, Forward.z, 1}),
+                Vector_Add(engine.Pos, (sfVector4f){Forward.x, -0.5, Forward.z, 1}),
                 (sfVector3f){0, engine.fawY, engine.fawZ},
                 (sfVector3f){1, 1, 1});
         } else if (mesh->type == WAVE) {
             Mesh_Transform(
-                (sfVector4f_t){20, -12, 80, 1},
+                (sfVector4f){20, -12, 80, 1},
                 (sfVector3f){0, 0, 0},
                 (sfVector3f){1, 1, 1});
         } else {
             Mesh_Transform(
-                (sfVector4f_t){0, 0, 0, 1},
+                (sfVector4f){0, 0, 0, 1},
                 (sfVector3f){0, 0, 0},
                 (sfVector3f){1, 1, 1});
         }
@@ -101,7 +101,7 @@ static void draw_mesh()
         actual = actual->next;
     } while (engine.list_objs && actual != engine.list_objs);
 
-    merge_sorting_list(&engine.FinalMesh);
+    merge_sorting_list(&engine.FinalMesh, &cmp_two_triangles);
     display_triangles(engine.FinalMesh);
     clean_triangles(engine.FinalMesh);
 }
@@ -112,7 +112,7 @@ static void clock_framerate()
     engine.t = sfTime_asSeconds(sfClock_getElapsedTime(engine.clock));
     float diff = engine.t - clock;
 
-    vectors_3d_to_2d();
+    vectors_3d_to_2d(engine.drunkerMode);
 
     while (diff >= (float) 1 / FRAMERATE) {
         diff -= (float) 1 / FRAMERATE;

@@ -14,6 +14,6 @@ size_t two_len(char **tab)
     if (!tab)
         return i;
 
-    for (; tab[i]; i++);
+    for (; tab[i]; ++i);
     return i;
 }

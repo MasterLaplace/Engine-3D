@@ -44,7 +44,7 @@ Il faut : ✅
 
 ```shell
 # Engine
-$ make fclean all
+$ make re
 $ ./bin/engine.out
 
 # Server

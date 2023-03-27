@@ -9,6 +9,6 @@
 
 void two_put(char **tab)
 {
-    for (; tab && *tab; tab++)
+    for (; tab && *tab; ++tab)
         printf("%s\n", *tab);
 }

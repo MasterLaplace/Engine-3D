@@ -15,6 +15,7 @@ MY		= my/
 SRC =	$(LINK)append_link.c 	\
 		$(LINK)appstart_link.c 	\
 		$(LINK)create_link.c 	\
+		$(LINK)dup_list.c 		\
 		$(LINK)is_null_link.c 	\
 		$(LINK)len_link.c 		\
 		$(LINK)remove_link.c 	\
@@ -55,7 +56,7 @@ fclean: clean
 
 re: fclean all
 
-debug:	CFLAGS += -g
+debug:	CFLAGS += -g3
 debug:	re
 
 %.o: %.c

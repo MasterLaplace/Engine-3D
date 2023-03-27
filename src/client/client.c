@@ -2,16 +2,24 @@
 ** EPITECH PROJECT, 2023
 ** Engine-3D
 ** File description:
-** client
+** Steinhauer 0.1
 */
 
 #include "client.h"
+#include "engine.h"
+
+engine_t engine;
 
 int command_handler(void *);
 char message[1000], server_response[1000];
 
 static int send_recv(int client_socket)
 {
+    printf("LOG: %s\n", message);
+    if (!strncmp(message, "avance", 6)) {
+        engine.Pos.x += 50;
+        printf("LOG: %f\n", engine.Pos.x);
+    }
     if (send(client_socket, message, strlen(message), 0) < 0) {
         perror(strerror(errno));
         exit(EXIT_FAILURE);
@@ -29,7 +37,6 @@ static int send_recv(int client_socket)
     return 0;
 }
 
-
 bool set_server(server_t *svr)
 {
     if ((svr->client_socket = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
@@ -38,9 +45,8 @@ bool set_server(server_t *svr)
     }
 
     ADDR.sin_family = AF_INET;
-    ADDR.sin_port = htons(49154);
+    ADDR.sin_port = htons(4242);
     ADDR.sin_addr.s_addr = inet_addr("127.0.0.1");
-
     if (connect(svr->client_socket, (addr *) &ADDR, sizeof(ADDR)) < 0) {
         perror(strerror(errno));
         return false;
@@ -85,26 +91,55 @@ void loop(server_t *svr)
     }
 }
 
+void init(void) __attribute__((constructor));
+void clean(void) __attribute__((destructor));
+
+void init(void)
+{
+    if (!open_folder( "./assets/obj_examples/" ))
+        exit(EXIT_FAILURE);
+    if (!init_engine())
+        exit(EXIT_FAILURE);
+}
+
+void clean(void)
+{
+    destroying();
+}
+
+void loop_client(void)
+{
+    server_t svr;
+    bool vocal = false;
+    int client_socket;
+
+    if (!set_server(&svr))
+        return EXIT_FAILURE;
+    if (vocal)
+        set_vocal(&svr);
+    else
+        loop(&svr);
+    close(client_socket);
+}
+
 int main(int ac, char *av[])
 {
+    thrd_t thread;
     bool vocal = false;
-    server_t svr;
-    int client_socket;
 
     if (ac >= 2) {
         if (!strcmp(av[1], "-v"))
             vocal = true;
     }
 
-    if (!set_server(&svr))
-        return EXIT_FAILURE;
 
-    if (vocal)
-        set_vocal(&svr);
-    else
-        loop(&svr);
+    if ( thrd_create( &thread, loop_client, NULL )) {
+        perror(strerror(errno));
+        return;
+    }
 
-    close(client_socket);
+    loop_engine();
+
     return EXIT_SUCCESS;
 }
 

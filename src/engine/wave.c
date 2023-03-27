@@ -90,9 +90,9 @@ void create_water(sizint Xmax, sizint Ymax)
     for (sizint i = 0; i < Ymax; i++) {
         for (sizint j = 0; j < Xmax; j++) {
             tri = malloc(sizeof(triangle_t));
-            tri->sommet[0] = (sfVector4f_t){j + 1, 0, i + 1, 1};
-            tri->sommet[1] = (sfVector4f_t){j + 1, 0, i, 1};
-            tri->sommet[2] = (sfVector4f_t){j, 0, i, 1};
+            tri->sommet[0] = (sfVector4f){j + 1, 0, i + 1, 1};
+            tri->sommet[1] = (sfVector4f){j + 1, 0, i, 1};
+            tri->sommet[2] = (sfVector4f){j, 0, i, 1};
             tri->texture[0] = (sfVector3f){35, 35, 1};
             tri->texture[1] = (sfVector3f){35, 0, 1};
             tri->texture[2] = (sfVector3f){0, 0, 1};
@@ -101,9 +101,9 @@ void create_water(sizint Xmax, sizint Ymax)
             mesh->nb_triangles++;
 
             tri2 = malloc(sizeof(triangle_t));
-            tri2->sommet[0] = (sfVector4f_t){j, 0, i, 1};
-            tri2->sommet[1] = (sfVector4f_t){j, 0, i + 1, 1};
-            tri2->sommet[2] = (sfVector4f_t){j + 1, 0, i + 1, 1};
+            tri2->sommet[0] = (sfVector4f){j, 0, i, 1};
+            tri2->sommet[1] = (sfVector4f){j, 0, i + 1, 1};
+            tri2->sommet[2] = (sfVector4f){j + 1, 0, i + 1, 1};
             tri2->texture[0] = (sfVector3f){0, 0, 1};
             tri2->texture[1] = (sfVector3f){0, 35, 1};
             tri2->texture[2] = (sfVector3f){35, 35, 1};

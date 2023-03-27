@@ -18,8 +18,7 @@ void swap_link(link_t **start, link_t *left, link_t *right)
     right->prev = prev_left;
     left->prev = right;
     left->next = next_right;
-    if (left->next == left)
-        left->next = right;
+
     if (*start == left)
         *start = right;
     else if (*start == right)

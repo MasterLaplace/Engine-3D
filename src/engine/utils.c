@@ -7,50 +7,50 @@
 
 #include "engine.h"
 
-inline sfVector4f_t Vector_Add(sfVector4f_t v, sfVector4f_t w)
+inline sfVector4f Vector_Add(sfVector4f v, sfVector4f w)
 {
-    return (sfVector4f_t){v.x + w.x, v.y + w.y, v.z + w.z, 1.f};
+    return (sfVector4f){v.x + w.x, v.y + w.y, v.z + w.z, 1.f};
 }
 
-inline sfVector4f_t Vector_Sub(sfVector4f_t v, sfVector4f_t w)
+inline sfVector4f Vector_Sub(sfVector4f v, sfVector4f w)
 {
-    return (sfVector4f_t){v.x - w.x, v.y - w.y, v.z - w.z, 1.f};
+    return (sfVector4f){v.x - w.x, v.y - w.y, v.z - w.z, 1.f};
 }
 
-inline sfVector4f_t Vector_Mul(sfVector4f_t v, float w)
+inline sfVector4f Vector_Mul(sfVector4f v, float w)
 {
-    return (sfVector4f_t){v.x * w, v.y * w, v.z * w, w};
+    return (sfVector4f){v.x * w, v.y * w, v.z * w, w};
 }
 
-inline sfVector4f_t Vector_Div(sfVector4f_t v, float w)
+inline sfVector4f Vector_Div(sfVector4f v, float w)
 {
-    return (sfVector4f_t){v.x / w, v.y / w, v.z / w, w};
+    return (sfVector4f){v.x / w, v.y / w, v.z / w, w};
 }
 
-inline float Vector_DotProduct(sfVector4f_t v, sfVector4f_t w)
+inline float Vector_DotProduct(sfVector4f v, sfVector4f w)
 {
     return v.x * w.x + v.y * w.y + v.z * w.z;
 }
 
-inline float Vector_Length(sfVector4f_t v)
+inline float Vector_Length(sfVector4f v)
 {
     return sqrtf(Vector_DotProduct(v, v));
 }
 
-inline float calcul_dist(sfVector4f_t p, sfVector4f_t plane_p, sfVector4f_t plane_n)
+inline float calcul_dist(sfVector4f p, sfVector4f plane_p, sfVector4f plane_n)
 {
 	return (plane_n.x * p.x + plane_n.y * p.y + plane_n.z * p.z - Vector_DotProduct(plane_n, plane_p));
 }
 
-inline sfVector4f_t Vector_Normalise(sfVector4f_t v)
+inline sfVector4f Vector_Normalise(sfVector4f v)
 {
     float l = Vector_Length(v);
-    return (sfVector4f_t){v.x / l, v.y / l, v.z / l, 1.f};
+    return (sfVector4f){v.x / l, v.y / l, v.z / l, 1.f};
 }
 
-sfVector4f_t Vector_CrossProduct(sfVector4f_t a, sfVector4f_t b)
+sfVector4f Vector_CrossProduct(sfVector4f a, sfVector4f b)
 {
-    sfVector4f_t l;
+    sfVector4f l;
 
     l.x = a.y * b.z - a.z * b.y;
     l.y = a.z * b.x - a.x * b.z;
@@ -58,7 +58,7 @@ sfVector4f_t Vector_CrossProduct(sfVector4f_t a, sfVector4f_t b)
     return l;
 }
 
-sfVector4f_t Matrix_MultiplyVector(sfVector4f_t v, float (*m)[4], sfVector4f_t w)
+sfVector4f Matrix_MultiplyVector(sfVector4f v, float (*m)[4], sfVector4f w)
 {
     v.x = w.x * m[0][0] + w.y * m[1][0] + w.z * m[2][0] + w.w * m[3][0];
     v.y = w.x * m[0][1] + w.y * m[1][1] + w.z * m[2][1] + w.w * m[3][1];
@@ -67,7 +67,7 @@ sfVector4f_t Matrix_MultiplyVector(sfVector4f_t v, float (*m)[4], sfVector4f_t w
     return v;
 }
 
-sfVector4f_t Vector_intersectPlane(sfVector4f_t plane_p, sfVector4f_t plane_n, sfVector4f_t lineStart, sfVector4f_t lineEnd, float *t)
+sfVector4f Vector_intersectPlane(sfVector4f plane_p, sfVector4f plane_n, sfVector4f lineStart, sfVector4f lineEnd, float *t)
 {
     plane_n = Vector_Normalise(plane_n);
     *t = -Vector_DotProduct(plane_n, plane_p);
@@ -90,13 +90,28 @@ void Matrix_Multiply(float (*m)[4], float (*m1)[4], float (*m2)[4])
 
 matrix Matrix_QuickInverse(float (*m)[4])
 {
-    matrix matrix;
-    matrix.m[0][0] = m[0][0]; matrix.m[0][1] = m[1][0]; matrix.m[0][2] = m[2][0]; matrix.m[0][3] = 0.0f;
-    matrix.m[1][0] = m[0][1]; matrix.m[1][1] = m[1][1]; matrix.m[1][2] = m[2][1]; matrix.m[1][3] = 0.0f;
-    matrix.m[2][0] = m[0][2]; matrix.m[2][1] = m[1][2]; matrix.m[2][2] = m[2][2]; matrix.m[2][3] = 0.0f;
-    matrix.m[3][0] = -(m[3][0] * matrix.m[0][0] + m[3][1] * matrix.m[1][0] + m[3][2] * matrix.m[2][0]);
-    matrix.m[3][1] = -(m[3][0] * matrix.m[0][1] + m[3][1] * matrix.m[1][1] + m[3][2] * matrix.m[2][1]);
-    matrix.m[3][2] = -(m[3][0] * matrix.m[0][2] + m[3][1] * matrix.m[1][2] + m[3][2] * matrix.m[2][2]);
-    matrix.m[3][3] = 1.0f;
-    return matrix;
+    matrix inv;
+
+    for(sizint i = 0; i < 3; i++) {
+        for(sizint j = 0; j < 3; j++) {
+            inv.m[i][j] = m[j][i];
+        }
+    }
+
+    inv.m[3][0] = -(m[3][0] * inv.m[0][0] + m[3][1] * inv.m[1][0] + m[3][2] * inv.m[2][0]);
+    inv.m[3][1] = -(m[3][0] * inv.m[0][1] + m[3][1] * inv.m[1][1] + m[3][2] * inv.m[2][1]);
+    inv.m[3][2] = -(m[3][0] * inv.m[0][2] + m[3][1] * inv.m[1][2] + m[3][2] * inv.m[2][2]);
+
+    inv.m[0][3] = inv.m[1][3] = inv.m[2][3] = 0.0;
+    inv.m[3][3] = 1.0;
+
+    return inv;
+}
+
+sfVector3f average_triangle(triangle_t *t)
+{
+    float x = (t->sommet[0].x + t->sommet[1].x + t->sommet[2].x) / 3.0f;
+    float y = (t->sommet[0].y + t->sommet[1].y + t->sommet[2].y) / 3.0f;
+    float z = (t->sommet[0].z + t->sommet[1].z + t->sommet[2].z) / 3.0f;
+    return (sfVector3f){x, y, z};
 }

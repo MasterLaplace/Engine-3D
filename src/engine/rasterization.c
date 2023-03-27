@@ -73,9 +73,9 @@ inline static void Matrix_MakeScale(float (*matrix)[4], float x, float y, float 
 
 //* World to View (W2V) */
 
-sfVector4f_t get_surface_normal(triangle_t triangle)
+sfVector4f get_surface_normal(triangle_t triangle)
 {
-    sfVector4f_t vector1, vector2;
+    sfVector4f vector1, vector2;
 
     vector1 = Vector_Sub(triangle.sommet[1], triangle.sommet[0]);
     vector2 = Vector_Sub(triangle.sommet[2], triangle.sommet[0]);
@@ -83,12 +83,12 @@ sfVector4f_t get_surface_normal(triangle_t triangle)
     return Vector_Normalise(Vector_CrossProduct(vector1, vector2));
 }
 
-void Matrix_View(sfVector4f_t pos, sfVector4f_t dir, sfVector4f_t up)
+void Matrix_View(sfVector4f pos, sfVector4f dir, sfVector4f up)
 {
-    sfVector4f_t newForward = Vector_Normalise(Vector_Sub(dir, pos));
-    sfVector4f_t a = Vector_Mul(newForward, Vector_DotProduct(up, newForward));
-    sfVector4f_t newUp = Vector_Normalise(Vector_Sub(up, a));
-    sfVector4f_t newRight = Vector_CrossProduct(newUp, newForward);
+    sfVector4f newForward = Vector_Normalise(Vector_Sub(dir, pos));
+    sfVector4f a = Vector_Mul(newForward, Vector_DotProduct(up, newForward));
+    sfVector4f newUp = Vector_Normalise(Vector_Sub(up, a));
+    sfVector4f newRight = Vector_CrossProduct(newUp, newForward);
 
     float view_matrix[4][4] = {
         { newRight.x, newRight.y, newRight.z, 0 },
@@ -136,9 +136,9 @@ void Scale_in_Screen(triangle_t *triangle)
     triangle->sommet[2].y *= -1.0f;
 
     // Scale
-    triangle->sommet[0] = Vector_Add(triangle->sommet[0], (sfVector4f_t){1.f, 1.f, 0.f, 1.f});
-    triangle->sommet[1] = Vector_Add(triangle->sommet[1], (sfVector4f_t){1.f, 1.f, 0.f, 1.f});
-    triangle->sommet[2] = Vector_Add(triangle->sommet[2], (sfVector4f_t){1.f, 1.f, 0.f, 1.f});
+    triangle->sommet[0] = Vector_Add(triangle->sommet[0], (sfVector4f){1.f, 1.f, 0.f, 1.f});
+    triangle->sommet[1] = Vector_Add(triangle->sommet[1], (sfVector4f){1.f, 1.f, 0.f, 1.f});
+    triangle->sommet[2] = Vector_Add(triangle->sommet[2], (sfVector4f){1.f, 1.f, 0.f, 1.f});
 
     triangle->sommet[0].x *= 0.5f * (float) WIN_X;
     triangle->sommet[0].y *= 0.5f * (float) WIN_Y;
@@ -150,18 +150,24 @@ void Scale_in_Screen(triangle_t *triangle)
 
 //* Calculation of 2D coordinates */
 
-void vectors_3d_to_2d()
+void vectors_3d_to_2d(bool drunkerMode)
 {
     // World to View (W2V)
     float Rotate[4][4];
     float RotateY[4][4];
     float RotateX[4][4];
-    sfVector4f_t Dir = {0, 0, 1, 1};
-    sfVector4f_t Up = {0, 1, 0, 1};
-    
-    Matrix_MakeRotateX(RotateX, engine.fawX);
-    Matrix_MakeRotateY(RotateY, engine.fawY);
-    Matrix_Multiply(Rotate, RotateX, RotateY);
+    sfVector4f Dir = {0, 0, 1, 1};
+    sfVector4f Up = {0, 1, 0, 1};
+
+    if (drunkerMode) {
+        Matrix_MakeRotateX(RotateX, engine.t);
+        Matrix_MakeRotateY(RotateY, engine.t);
+        Matrix_Multiply(Rotate, RotateY, RotateX);
+    } else {
+        Matrix_MakeRotateX(RotateX, engine.fawX);
+        Matrix_MakeRotateY(RotateY, engine.fawY);
+        Matrix_Multiply(Rotate, RotateX, RotateY);
+    }
     engine.Dir = Matrix_MultiplyVector(engine.Dir, Rotate, Dir);
     Dir = Vector_Add(engine.Pos, engine.Dir);
     Matrix_View(engine.Pos, Dir, Up);
@@ -169,7 +175,7 @@ void vectors_3d_to_2d()
 
 //* Mesh transformation */
 
-void Mesh_Transform(sfVector4f_t pos, sfVector3f angle, sfVector3f scale)
+void Mesh_Transform(sfVector4f pos, sfVector3f angle, sfVector3f scale)
 {
     // Model to World (M2W)
     float Rotate[4][4];

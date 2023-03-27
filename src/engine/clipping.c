@@ -7,7 +7,7 @@
 
 #include "engine.h"
 
-static int Triangle_ClipAgainstPlane(sfVector4f_t front, sfVector4f_t back, triangle_t *intri, triangle_t (*outtri)[2])
+static int Triangle_ClipAgainstPlane(sfVector4f front, sfVector4f back, triangle_t *intri, triangle_t (*outtri)[2])
 {
     back = Vector_Normalise(back);
 
@@ -15,8 +15,8 @@ static int Triangle_ClipAgainstPlane(sfVector4f_t front, sfVector4f_t back, tria
     float d1 = calcul_dist(intri->sommet[1], front, back);
     float d2 = calcul_dist(intri->sommet[2], front, back);
 
-    sfVector4f_t inside_point[3]; int nInsidePointCount = 0;
-    sfVector4f_t outside_point[3]; int nOutsidePointCount = 0;
+    sfVector4f inside_point[3]; int nInsidePointCount = 0;
+    sfVector4f outside_point[3]; int nOutsidePointCount = 0;
     sfVector3f inside_texture[3]; int nInsideTextureCount = 0;
     sfVector3f outside_texture[3]; int nOutsideTextureCount = 0;
 
@@ -95,8 +95,8 @@ void clipping(triangle_t triangle)
     triangle_t Clipped[2];
 
     if ((nClippedTriangle = Triangle_ClipAgainstPlane(
-            (sfVector4f_t){0.0f, 0.0f, 0.1f, 1.f},
-            (sfVector4f_t){0.0f, 0.0f, 1.0f, 1.f},
+            (sfVector4f){0.0f, 0.0f, 0.1f, 1.f},
+            (sfVector4f){0.0f, 0.0f, 1.0f, 1.f},
             &triangle, &Clipped
         )) == -1) return;
 

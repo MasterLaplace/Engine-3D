@@ -12,7 +12,7 @@ void two_free(char **tab)
     if (!tab || !*tab)
         return;
 
-    for (size_t i = 0; i < two_len(tab); i++)
+    for (size_t i = 0; i < two_len(tab); ++i)
         free(tab[i]);
     free(tab);
 }

@@ -13,23 +13,26 @@ static sfVertexArray *create_triangle(triangle_t *node)
     sfVertexArray *vertex_array = sfVertexArray_create();
     sfVertex vertex1, vertex2, vertex3;
 
-    int color = (int)(node->dp * 255);
+    int lighting = (int)(node->dp * 255);
     if (color < 50)
         color = 50;
 
     if (node->usemtl == WATER || node->usemtl == BUBBLE) {
-        vertex1 = (sfVertex){.position = (sfVector2f){node->sommet[0].x, node->sommet[0].y}, .color = (sfColor){color, color, color, 255/1.5}, .texCoords = (sfVector2f){node->texture[0].x, node->texture[0].y}};
-        vertex2 = (sfVertex){.position = (sfVector2f){node->sommet[1].x, node->sommet[1].y}, .color = (sfColor){color, color, color, 255/1.5}, .texCoords = (sfVector2f){node->texture[1].x, node->texture[1].y}};
-        vertex3 = (sfVertex){.position = (sfVector2f){node->sommet[2].x, node->sommet[2].y}, .color = (sfColor){color, color, color, 255/1.5}, .texCoords = (sfVector2f){node->texture[2].x, node->texture[2].y}};
+        sfColor color = (sfColor){lighting, lighting, lighting, 255/1.5};
+        vertex1 = (sfVertex){*(sfVector2f*)&(node->sommet[0]), color, *(sfVector2f*)&(node->texture[0])};
+        vertex2 = (sfVertex){*(sfVector2f*)&(node->sommet[1]), color, *(sfVector2f*)&(node->texture[1])};
+        vertex3 = (sfVertex){*(sfVector2f*)&(node->sommet[2]), color, *(sfVector2f*)&(node->texture[2])};
     } else if (node->usemtl != NONE) {
+        sfColor color = (sfColor){lighting, lighting, lighting, 255};
         sfVector2u texSize = sfTexture_getSize(engine.textures[node->usemtl]->texture);
-        vertex1 = (sfVertex){.position = (sfVector2f){node->sommet[0].x, node->sommet[0].y}, .color = (sfColor){color, color, color, 255}, .texCoords = (sfVector2f){node->texture[0].x *texSize.x, node->texture[0].y *texSize.y}};
-        vertex2 = (sfVertex){.position = (sfVector2f){node->sommet[1].x, node->sommet[1].y}, .color = (sfColor){color, color, color, 255}, .texCoords = (sfVector2f){node->texture[1].x *texSize.x, node->texture[1].y *texSize.y}};
-        vertex3 = (sfVertex){.position = (sfVector2f){node->sommet[2].x, node->sommet[2].y}, .color = (sfColor){color, color, color, 255}, .texCoords = (sfVector2f){node->texture[2].x *texSize.x, node->texture[2].y *texSize.y}};
+        vertex1 = (sfVertex){*(sfVector2f*)&(node->sommet[0]), color, (sfVector2f){node->texture[0].x * texSize.x, node->texture[0].y * texSize.y}};
+        vertex2 = (sfVertex){*(sfVector2f*)&(node->sommet[1]), color, (sfVector2f){node->texture[1].x * texSize.x, node->texture[1].y * texSize.y}};
+        vertex3 = (sfVertex){*(sfVector2f*)&(node->sommet[2]), color, (sfVector2f){node->texture[2].x * texSize.x, node->texture[2].y * texSize.y}};
     } else {
-        vertex1 = (sfVertex){.position = (sfVector2f){node->sommet[0].x, node->sommet[0].y}, .color = (sfColor){color, color, color, 255}};
-        vertex2 = (sfVertex){.position = (sfVector2f){node->sommet[1].x, node->sommet[1].y}, .color = (sfColor){color, color, color, 255}};
-        vertex3 = (sfVertex){.position = (sfVector2f){node->sommet[2].x, node->sommet[2].y}, .color = (sfColor){color, color, color, 255}};
+        sfColor color = (sfColor){lighting, lighting, lighting, 255};
+        vertex1 = (sfVertex){*(sfVector2f*)&(node->sommet[0]), .color = color};
+        vertex2 = (sfVertex){*(sfVector2f*)&(node->sommet[1]), .color = color};
+        vertex3 = (sfVertex){*(sfVector2f*)&(node->sommet[2]), .color = color};
     }
 
     sfVertexArray_append(vertex_array, vertex1);

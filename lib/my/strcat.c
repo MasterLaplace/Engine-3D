@@ -16,9 +16,9 @@ char *my_strcat(char const *dest, char const *src)
     if (!dest || !src || !tmp)
         return (NULL);
 
-    for (; src[i]; i++)
+    for (; src[i]; ++i)
         tmp[i] = src[i];
-    for (; dest[e]; i++, e++)
+    for (; dest[e]; ++i, ++e)
         tmp[i] = dest[e];
     tmp[i] = '\0';
     return tmp;

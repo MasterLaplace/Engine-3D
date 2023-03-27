@@ -7,7 +7,7 @@
 
 #include "engine.h"
 
-static bool cmp_two_triangles(triangle_t *t1, triangle_t *t2)
+bool cmp_two_triangles(triangle_t *t1, triangle_t *t2)
 {
     float z1 = (t1->sommet[0].z + t1->sommet[1].z + t1->sommet[2].z) / 3.0f;
     float z2 = (t2->sommet[0].z + t2->sommet[1].z + t2->sommet[2].z) / 3.0f;
@@ -40,7 +40,7 @@ static void splitList(link_t *head, link_t **left, link_t **right)
     (*left) = head;
 }
 
-static link_t *merge(link_t *left, link_t *right) {
+static link_t *merge(link_t *left, link_t *right, bool (*cmp)(triangle_t *, triangle_t *)) {
     link_t *result = NULL;
 
     if (left == NULL)
@@ -48,17 +48,17 @@ static link_t *merge(link_t *left, link_t *right) {
     else if (right == NULL)
         return left;
 
-    if (cmp_two_triangles((triangle_t *)left->obj, (triangle_t *)right->obj)) {
+    if (cmp((triangle_t *)left->obj, (triangle_t *)right->obj)) {
         result = left;
-        result->next = merge(left->next, right);
+        result->next = merge(left->next, right, cmp);
     } else {
         result = right;
-        result->next = merge(left, right->next);
+        result->next = merge(left, right->next, cmp);
     }
     return result;
 }
 
-static void mergeSort(link_t **list)
+static void mergeSort(link_t **list, bool (*cmp)(triangle_t *, triangle_t *))
 {
     link_t *left = NULL;
     link_t *right = NULL;
@@ -68,19 +68,19 @@ static void mergeSort(link_t **list)
 
     splitList(*list, &left, &right);
 
-    mergeSort(&left);
-    mergeSort(&right);
+    mergeSort(&left, cmp);
+    mergeSort(&right, cmp);
 
-    *list = merge(left, right);
+    *list = merge(left, right, cmp);
 }
 
-void merge_sorting_list(link_t **list)
+void merge_sorting_list(link_t **list, bool (*cmp)(triangle_t *, triangle_t *))
 {
     if (*list == NULL || (*list)->next == NULL)
         return;
     (*list)->prev->next = NULL;
 
-    mergeSort(list);
+    mergeSort(list, cmp);
 
     link_t *actual = (*list);
     link_t *prev = NULL;

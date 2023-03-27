@@ -35,6 +35,15 @@ static void manage_mouse()
     sfVector2i pos = sfMouse_getPositionRenderWindow(WINDOW);
     static int sensibility = 5;
 
+    if (pos.x >= WIN_X - sensibility)
+        sfMouse_setPositionRenderWindow((sfVector2i) {sensibility, pos.y}, WINDOW);
+    if (pos.x <= sensibility)
+        sfMouse_setPositionRenderWindow((sfVector2i) {WIN_X - sensibility, pos.y}, WINDOW);
+    if (pos.y >= WIN_Y - sensibility)
+        sfMouse_setPositionRenderWindow((sfVector2i) {pos.x, sensibility}, WINDOW);
+    if (pos.y <= sensibility)
+        sfMouse_setPositionRenderWindow((sfVector2i) {pos.x, WIN_Y - sensibility}, WINDOW);
+
     if (pos.x > save_mouseX + sensibility || pos.x < save_mouseX - sensibility) {
         if (pos.x >= save_mouseX)
             engine.fawY += 0.1f;
@@ -53,11 +62,12 @@ static void manage_mouse()
 
 static void check_collision()
 {
-    engine.Pos.x = fmax(engine.Pos.x, engine.s_g[0].x);
-    engine.Pos.z = fmax(engine.Pos.z, engine.s_g[0].z);
-    engine.Pos.x = fmin(engine.Pos.x, engine.s_g[1].x);
-    engine.Pos.y = fmin(engine.Pos.y, engine.s_g[1].y);
-    engine.Pos.z = fmin(engine.Pos.z, engine.s_g[1].z);
+    engine.Pos.x = fmax(engine.Pos.x, engine.root->s_g[0].x);
+    engine.Pos.y = fmax(engine.Pos.y, engine.root->s_g[0].y);
+    engine.Pos.z = fmax(engine.Pos.z, engine.root->s_g[0].z);
+    engine.Pos.x = fmin(engine.Pos.x, engine.root->s_g[1].x);
+    engine.Pos.y = fmin(engine.Pos.y, engine.root->s_g[1].y);
+    engine.Pos.z = fmin(engine.Pos.z, engine.root->s_g[1].z);
 }
 
 void manage_move()
@@ -69,7 +79,7 @@ void manage_move()
 
     speed += (KEY_PRESSED(sfKeyLControl))?(speed >= speed_max)?0:friction:(speed <= speed_min)?0:-friction;
 
-    sfVector4f_t Forward = Vector_Mul(engine.Dir, speed);
+    sfVector4f Forward = Vector_Mul(engine.Dir, speed);
     Forward.y = 0;
 
     if (KEY_PRESSED(sfKeyUp))
@@ -101,5 +111,11 @@ void analyse_events(sfEvent event)
     if (event.type == sfEvtKeyPressed) {
         if (event.key.code == sfKeyEscape)
             sfRenderWindow_close(WINDOW);
+        if (event.key.code == sfKeyP) {
+            if (engine.drunkerMode)
+                engine.drunkerMode = false;
+            else
+                engine.drunkerMode = true;
+        }
     }
 }
