@@ -17,6 +17,7 @@
     #include <fcntl.h>
     #include <dirent.h>
     #include <sys/stat.h>
+    #include <time.h>
     #include <math.h>
     #include "linkList.h"
     #include "constants.h"

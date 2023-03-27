@@ -14,8 +14,6 @@ static sfVertexArray *create_triangle(triangle_t *node)
     sfVertex vertex1, vertex2, vertex3;
 
     int lighting = (int)(node->dp * 255);
-    if (color < 50)
-        color = 50;
 
     if (node->usemtl == WATER || node->usemtl == BUBBLE) {
         sfColor color = (sfColor){lighting, lighting, lighting, 255/1.5};
