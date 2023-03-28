@@ -28,7 +28,7 @@ static void get_pos(client_t *client, char *buffer UNUSED, server_t *svr UNUSED)
     dprintf(CLT_SOCK, "201 %s %f %f %f\r\n", client->pseudo, client->position.x, client->position.y, client->position.z);
 }
 
-static set_pos(client_t *client, char *buffer UNUSED, server_t *svr UNUSED)
+static void set_pos(client_t *client, char *buffer UNUSED, server_t *svr UNUSED)
 {
     auto pos = strtok(NULL, " \r");
 
@@ -59,7 +59,7 @@ static void set_pseudo(client_t *client, char *buffer UNUSED, server_t *svr UNUS
     write(CLT_SOCK, "200 OK\r\n", 9);
 }
 
-static get_nbr(client_t *client, char *buffer UNUSED, server_t *svr)
+static void get_nbr(client_t *client, char *buffer UNUSED, server_t *svr)
 {
     auto nbr = strtok(NULL, " \r");
 
@@ -211,7 +211,7 @@ static bool is_number(const char *str)
 }
 
 static const char *help_msg[] = {
-    "USAGE: ./myftp port path",
+    "USAGE: ./myftp port",
     "\tport is the port number on which the server socket listens",
     NULL
 };

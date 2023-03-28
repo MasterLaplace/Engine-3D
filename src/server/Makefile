@@ -17,8 +17,10 @@ CC := x86_64-w64-mingw32-gcc
 NAME :=	server.exe
 endif
 
+LDFLAGS		=	-L ../../lib -l my
+
 $(NAME): builder
-	@$(CC) -Os -o $(NAME) server.c -I ./includes -lpthread \
+	@$(CC) -Os -o $(NAME) server.c $(LDFLAGS) -I ../../includes -I ./includes -lpthread \
 	&& $(ECHO) $(BOLD) $(GREEN)"\n► BUILD SERVER SUCCESS !"$(DEFAULT) \
 	|| ($(ECHO) $(BOLD) $(RED)"\n► BUILD SERVER FAILED"$(DEFAULT) && exit 1)
 

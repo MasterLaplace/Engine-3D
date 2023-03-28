@@ -1,5 +1,26 @@
 # ME : <p align="center">Rastérisation</p>
 
+<p align="center">
+  <a href="https://github.com/MasterLaplace/Engine-3D/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-brightgreen.svg?style=for-the-badge" alt="License: MIT">
+  </a>
+  <a>
+    <img src="https://img.shields.io/badge/CSFML-2.5-blue?style=for-the-badge" alt="CSFML: 2.5">
+  </a>
+  <a>
+    <img src="https://img.shields.io/badge/vosk--api-0.3.30-blue?style=for-the-badge" alt="vosk-api: 0.3.30">
+  </a>
+  <a>
+    <img src="https://img.shields.io/badge/C-11-blue?style=for-the-badge" alt="C: 11">
+  </a>
+  <a>
+    <img src="https://img.shields.io/badge/OS-Linux-blue?style=for-the-badge" alt="OS: Linux">
+  </a>
+  <a href="https://github.com/MasterLaplace/Engine-3D/actions/workflows/test.yml">
+    <img src="https://github.com/MasterLaplace/Engine-3D/actions/workflows/test.yml/badge.svg" alt="Build Status">
+  </a>
+</p>
+
 Rastérisation in C with CSFML lib
 
 Status: in progress

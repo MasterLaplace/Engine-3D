@@ -12,6 +12,9 @@ extern const char *TEXTURE_PATHS[];
 extern const sizint NB_MTL;
 extern const char *MTL_PATHS[];
 
+clock_t start, end;
+double elapsed;
+
 static char *search_in_mtl_file(const char *filepathname, const char *texture_name)
 {
     static bool found = false;
@@ -76,6 +79,8 @@ static sizint search_in_file(const char *texture_name, char *filename)
 
 mesh_t *create_obj(char **buf)
 {
+    start = clock();
+
     mesh_t *mesh = malloc(sizeof(mesh_t));
     triangle_t *tri, *tri2 = NULL;
     char **info = NULL;
@@ -145,5 +150,8 @@ mesh_t *create_obj(char **buf)
         two_free(info);
     }
     free(mtllib);
+    end = clock();
+    elapsed = (double)(end - start) / CLOCKS_PER_SEC;
+    printf("Parsing execution time: %f seconds.\n", elapsed);
     return mesh;
 }

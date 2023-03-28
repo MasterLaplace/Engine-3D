@@ -57,8 +57,6 @@ bool set_server(server_t *svr)
 void set_vocal(server_t *svr)
 {
     thrd_t thread;
-    size_t size = 0;
-    char *buf = NULL;
     char str[10];
     int fd[2];
 
@@ -107,19 +105,18 @@ void clean(void)
     destroying();
 }
 
-void loop_client(void)
+int loop_client(void *data)
 {
     server_t svr;
-    bool vocal = false;
-    int client_socket;
 
     if (!set_server(&svr))
-        return EXIT_FAILURE;
-    if (vocal)
+        return 1;
+    if ((bool) data)
         set_vocal(&svr);
     else
         loop(&svr);
-    close(client_socket);
+    close(svr.client_socket);
+    return 0;
 }
 
 int main(int ac, char *av[])
@@ -132,10 +129,9 @@ int main(int ac, char *av[])
             vocal = true;
     }
 
-
-    if ( thrd_create( &thread, loop_client, NULL )) {
+    if ( thrd_create( &thread, &loop_client, (void *) vocal )) {
         perror(strerror(errno));
-        return;
+        return EXIT_FAILURE;
     }
 
     loop_engine();

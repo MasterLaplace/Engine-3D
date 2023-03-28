@@ -19,6 +19,7 @@
     #include <sys/time.h>
     #include <stdbool.h>
     #include <SFML/System/Vector3.h>
+    #include "my.h"
 
     #define Max_Port 0xFFFF
     #define Min_Port 0x0001
