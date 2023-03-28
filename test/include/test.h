@@ -6,16 +6,10 @@
     #include <time.h>
     #include <stdio.h>
     #include <stdlib.h>
-    #ifndef __cplusplus
-    # include <cstring>
-    # include <cstdlib>
-    # include <cwchar>
-    #else
-    # include <string.h>
-    # include <stdlib.h>
-    # include <stdbool.h>
-    # include <wchar.h>
-    #endif
+    #include <string.h>
+    #include <stdlib.h>
+    #include <stdbool.h>
+    #include <wchar.h>
 
     /* DEFINED TEST */
     #define NB_TEST nb_test

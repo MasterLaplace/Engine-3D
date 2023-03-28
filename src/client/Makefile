@@ -17,7 +17,14 @@ CC := x86_64-w64-mingw32-gcc
 NAME :=	client.exe
 endif
 
-NO_CFLAGS = -Wall -Wextra -Werror -Wno-unused-parameter -Wno-unused-variable -Wno-unused-but-set-variable -Wno-unused-function -Wno-unused-result -Wno-missing-field-initializers -Wno-missing-braces
+NO_CFLAGS = -Wall -Wextra -Werror \
+			-Wno-unused-parameter \
+			-Wno-unused-variable \
+			-Wno-unused-but-set-variable \
+			-Wno-unused-function \
+			-Wno-unused-result \
+			-Wno-missing-field-initializers \
+			-Wno-missing-braces \
 
 CFLAGS = $(FLAGS) -I ../../includes -I ./includes -I /usr/include/python3.9 -g3 -ggdb -fPIC
 

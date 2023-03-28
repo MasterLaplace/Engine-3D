@@ -9,16 +9,18 @@ on:
 jobs:
   testing:
     runs-on: ubuntu-latest
-  
+
     steps:
     - name: Install CMake
-      run: sudo apt-get install cmake
+      run: |
+        sudo apt-get install cmake
+        sudo apt-get install build-essential
 
     - name: Checkout
       uses: actions/checkout@v3
-    
+
     - name: Install CSFML
-      run: sudo -A /build/install_csfml.sh < ./build/mysudopass.sh
+      run: ./build/install_csfml.sh
 
     - name: Testing
       run: ./run_test.sh -e

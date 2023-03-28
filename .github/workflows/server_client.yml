@@ -18,10 +18,24 @@ jobs:
       with:
         python-version: '3.9'
 
-    - uses: actions/checkout@v3
+    - name: Install Python dev packages
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y python3-dev
 
-    - name: make server client
-      run: make server client
+    - name: Install CMake
+      run: |
+        sudo apt-get install -y cmake
+        sudo apt-get install -y build-essential
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Install CSFML
+      run: ./build/install_csfml.sh
+
+    - name: make share server client
+      run: make share server client
 
     - name: SonarCloud Scan for C and C++
       uses: SonarSource/sonarcloud-github-c-cpp@v1.3

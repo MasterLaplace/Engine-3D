@@ -1,26 +1,29 @@
 #!/usr/bin/env bash
+
 URL="https://github.com/SFML/CSFML.git"
 DIR="CSFML"
-# SUDO=/usr/bin/sudo
+INSTALL_DIR=~/csfml
 
-# if [ $UID -eq "0" ]; then
-#     SUDO=""
-#     echo "[no sudo for root]"
-# fi
+# install SFML dependencies
+sudo apt-get update
+sudo apt-get install -y libsfml-dev libcsfml-dev
 
+# clone CSFML repository
 cd build
 rm -rf $DIR
 git clone $URL
 if [ $? != 0 ]; then
-    echo "failled, exiting"
-    exit;
+    echo "failed to clone CSFML repository, exiting"
+    exit 1
 fi
 
-echo
+# build CSFML
 cd $DIR
-echo "build $DIR"
-cmake . && make install
+echo "building $DIR"
+cmake -DCMAKE_INSTALL_PREFIX=$INSTALL_DIR . && make install
 if [ $? != 0 ]; then
-    echo "failled, exiting"
-    exit;
+    echo "failed to build CSFML, exiting"
+    exit 1
 fi
+
+echo "CSFML successfully installed to $INSTALL_DIR"
