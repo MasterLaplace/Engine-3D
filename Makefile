@@ -8,9 +8,9 @@
 -include .env
 export
 
-SRC_DIR 	= 	src/engine/
+SRC_DIR		=	src/engine/
 
-TEST_DIR 	= 	test/engine/
+TEST_DIR	=	test/engine/
 
 BIN 		=	bin/
 
@@ -18,15 +18,15 @@ SRC		=   $(SRC_DIR)init.c			\
 			$(SRC_DIR)init_textures.c	\
 			$(SRC_DIR)preset_textures.c	\
 			$(SRC_DIR)clean.c			\
-			$(SRC_DIR)parser_obj.c 		\
+			$(SRC_DIR)parser_obj.c		\
 			$(SRC_DIR)help.c			\
-			$(SRC_DIR)loop.c 			\
+			$(SRC_DIR)loop.c			\
 			$(SRC_DIR)event.c			\
 			$(SRC_DIR)rasterization.c	\
 			$(SRC_DIR)clipping.c		\
 			$(SRC_DIR)utils.c			\
 			$(SRC_DIR)draw.c			\
-			$(SRC_DIR)wave.c 			\
+			$(SRC_DIR)wave.c			\
 			$(SRC_DIR)bvh.c				\
 
 TEST	=	$(TEST_DIR)test.c
@@ -37,7 +37,7 @@ OBJ			=	$(SRC:.c=.o) $(MAIN:.c=.o)
 
 TEST_OBJ	=	$(SRC:.c=.o) $(TEST:.c=.o)
 
-INCLUDES 	=	-I ./includes -I ./libs/my/include -I ./libs/link/include
+INCLUDES	=	-I ./includes -I ./libs/my/include -I ./libs/link/include
 
 LIB_NAME	=	-L ./libs -lmy -llink
 
@@ -45,11 +45,11 @@ OPTI		=	-Ofast -march=native -flto -fuse-linker-plugin -pipe \
 				-fomit-frame-pointer -fopenmp -fprefetch-loop-arrays \
 				-fno-stack-protector -fno-ident -fno-asynchronous-unwind-tables
 
-IGNORE 		= 	-fno-strict-aliasing -Wno-strict-aliasing
+IGNORE		= 	-fno-strict-aliasing -Wno-strict-aliasing
 
 CSFML		=	-l csfml-graphics \
-				-l csfml-system \
-				-l csfml-window \
+				-l csfml-system   \
+				-l csfml-window   \
 				-l csfml-audio
 
 LDFLAGS		=	$(INCLUDES) $(LIB_NAME) $(CSFML) -lm
@@ -57,19 +57,19 @@ LDFLAGS		=	$(INCLUDES) $(LIB_NAME) $(CSFML) -lm
 CFLAGS		=	$(FLAGS) $(LDFLAGS) $(OPTI) $(IGNORE)
 
 ifeq ($(OS), linux)
-CC 			:= gcc
-NAME 		:=	$(BIN)engine.out
-SHARE_NAME	:= 	$(BIN)libengine.so
+CC			:=	gcc
+NAME		:=	$(BIN)engine.out
+SHARE_NAME	:=	$(BIN)libengine.so
 TEST_NAME 	:=	$(BIN)test_engine.out
 else
-CC 			:= x86_64-w64-mingw32-gcc
-NAME 		:=	$(BIN)engine.exe
-SHARE_NAME	:= 	$(BIN)libengine.lib
-TEST_NAME 	:=	$(BIN)test_engine.exe
+CC			:=	x86_64-w64-mingw32-gcc
+NAME		:=	$(BIN)engine.exe
+SHARE_NAME	:=	$(BIN)libengine.lib
+TEST_NAME	:=	$(BIN)test_engine.exe
 endif
 
-SRC_COUNT 	:= 	$(words $(SRC))
-NB 	= 0
+SRC_COUNT	:=	$(words $(SRC))
+NB	= 0
 
 $(NAME): $(OBJ)
 	@$(CC) -o $(NAME) $(OBJ) $(CFLAGS) \
@@ -109,9 +109,9 @@ re: fclean all
 
 ## DEBUG MODE
 
-debug:	OPTI 	= -Og -pipe
-debug:	CFLAGS 	= $(OPTI) -g3 -ggdb
-debug:	fclean lib_debug $(NAME)
+debug: OPTI		= -Og -pipe
+debug: CFLAGS	= $(OPTI) -g3 -ggdb
+debug: fclean lib_debug $(NAME)
 	@-$(ECHO) $(BOLD) $(GREEN)"\n► DEBUG MODE 🔧 !"$(DEFAULT)
 
 lib_debug:
@@ -120,9 +120,9 @@ lib_debug:
 
 ## ANAYLIZE MODE
 
-gprof:	OPTI 	= -Og -pipe
-gprof:	CFLAGS 	= $(OPTI) -g3 -ggdb -pg
-gprof:	fclean lib_gprof $(NAME)
+gprof: OPTI		= -Og -pipe
+gprof: CFLAGS	= $(OPTI) -g3 -ggdb -pg
+gprof: fclean lib_gprof $(NAME)
 	@-$(ECHO) $(BOLD) $(GREEN)"\n► GPROF MODE 🤖 !"$(DEFAULT)
 
 lib_gprof:

@@ -79,8 +79,7 @@ typedef struct mesh_s {
 } mesh_t;
 
 typedef struct Tree_s {
-    struct Tree_s *left; // left node
-    struct Tree_s *right; // right node
+    struct Tree_s *node[4]; // node
     sfVector3f s_g[2]; // smaller/greater vectors
     triangle_t *triangle; // triangle at front node
 } Tree_t;
