@@ -139,9 +139,17 @@ share: lib $(OBJ)
 install: share
 	@-read -r -p "Do you want to install the shared engine library ? [Y/n] " response; \
 	if [ $$response = "Y" ] || [ $$response = "y" ] || [ $$response = "" ]; then \
-		sudo cp $(SHARE_NAME) /usr/lib/ \
+		sudo cp $(SHARE_NAME) /usr/local/lib/ && && sudo ldconfig \
 		&& $(ECHO) $(BOLD) $(GREEN)"\n► INSTALL SHARE SUCCESS 🧭!"$(DEFAULT) \
 		|| ($(ECHO) $(BOLD) $(RED)"\n► INSTALL SHARE FAILED 🧭"$(DEFAULT) && exit 1) \
+	fi
+
+uninstall:
+	@-read -r -p "Do you want to uninstall the shared engine library ? [Y/n] " response; \
+	if [ $$response = "Y" ] || [ $$response = "y" ] || [ $$response = "" ]; then \
+		sudo rm -f /usr/local/lib/libengine.so && sudo ldconfig \
+		&& $(ECHO) $(BOLD) $(GREEN)"\n► UNINSTALL SHARE SUCCESS 🧭!"$(DEFAULT) \
+		|| ($(ECHO) $(BOLD) $(RED)"\n► UNINSTALL SHARE FAILED 🧭"$(DEFAULT) && exit 1) \
 	fi
 
 ## TEST MODE

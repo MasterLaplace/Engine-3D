@@ -104,7 +104,7 @@ Copyright © 2023-2024 [Master_Laplace](https://github.com/MasterLaplace).
 
 This libs has been carried out by:
 
-* [![GitHub MasterLaplace](https://img.shields.io/github/followers/MasterLaplace?label=follow&style=social)](https://github.com/MasterLaplace)
+* [![GitHub MasterLaplace](https://img.shields.io/github/followers/MasterLaplace?label=MasterLaplace&style=social)](https://github.com/MasterLaplace)
 
 ---
 <p align="center">ME.inc</p>

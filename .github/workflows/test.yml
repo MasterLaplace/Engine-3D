@@ -22,5 +22,8 @@ jobs:
     - name: Install CSFML
       run: ./build/install_csfml.sh
 
+    - name: Install Criterion
+      run: ./build/install_criterion.sh
+
     - name: Testing
       run: ./run_test.sh -e
