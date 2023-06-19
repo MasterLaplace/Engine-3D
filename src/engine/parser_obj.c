@@ -28,7 +28,8 @@ static char *search_in_mtl_file(const char *filepathname, const char *texture_na
     stat(filepathname, &st);
     if (!(buf = malloc(sizeof(char) * (st.st_size + 1))))
         return map_Kd;
-    read(fd, buf, st.st_size);
+    if (read(fd, buf, st.st_size) == -1)
+        return map_Kd;
     buf[st.st_size] = '\0';
     char **info = stwa(buf, "\n");
 
@@ -143,9 +144,11 @@ mesh_t *create_obj(char **buf)
             }
         } else if (strcmp(info[0], "usemtl") == 0)
             tex = search_in_file(info[1], mtllib);
-        else if (strcmp(info[0], "mtllib") == 0)
-            mtllib = strdup(info[1]); // TODO: manage file name with spaceIn
-        else if (!strcmp(info[1], "cube"))
+        else if (strcmp(info[0], "mtllib") == 0) {
+            if (mtllib)
+                free(mtllib);
+            mtllib = strdup(buf[i] + 7); // 7 = strlen("mtllib ")
+        } else if (!strcmp(info[1], "cube"))
             mesh->type = PLAYER;
         two_free(info);
     }

@@ -118,23 +118,33 @@ static bool is_in_triangle(sfVector4f point, triangle_t *triangle)
 
 static bool is_in_cube(sfVector4f point, sfVector3f s_g[2])
 {
-    return (s_g[0].x < point.x && s_g[0].y < point.y && s_g[0].z < point.z) && (s_g[1].x > point.x && s_g[1].y > point.y && s_g[1].z > point.z);
+    return (s_g[0].x <= point.x && s_g[0].y <= point.y && s_g[0].z <= point.z) && (s_g[1].x >= point.x && s_g[1].y >= point.y && s_g[1].z >= point.z);
 }
 
 sfVector3f get_bvh(Tree_t *tree, sfVector4f point)
 {
     sfVector3f connect_point = {0, 0, 0};
     if (tree->triangle) {
-        printf("triangle : %p\n", tree->triangle);
+        print_triangle(tree->triangle);
+        print_vector(point);
         if (is_in_triangle(point, tree->triangle)) {
             connect_point = average_triangle(tree->triangle);
             printf("    connect_point : %f %f %f\n", connect_point.x, connect_point.y, connect_point.z);
         }
     } else {
-        if (is_in_cube(point, tree->left->s_g))
-            connect_point = get_bvh(tree->left, point);
-        else if (is_in_cube(point, tree->right->s_g))
-            connect_point = get_bvh(tree->right, point);
+        printf("    pos : \n");
+        print_vector(point);
+        printf("    left : \n");
+        print_cube(tree->node[0]->s_g);
+        printf("    right : \n");
+        print_cube(tree->node[2]->s_g);
+        if (is_in_cube(point, tree->node[0]->s_g)) {
+            printf("    left -> \n");
+            connect_point = get_bvh(tree->node[0], point);
+        } else if (is_in_cube(point, tree->node[2]->s_g)) {
+            printf("    right -> \n");
+            connect_point = get_bvh(tree->node[2], point);
+        }
     }
     return connect_point;
 }
@@ -144,11 +154,11 @@ void print_bvh(Tree_t *tree)
     if (tree->triangle) {
         printf("triangle: %f %f %f\n", tree->triangle->sommet[0].x, tree->triangle->sommet[0].y, tree->triangle->sommet[0].z);
     } else {
-        if (tree->left) {
-            print_bvh(tree->left);
+        if (tree->node[0]) {
+            print_bvh(tree->node[0]);
         }
-        if (tree->right) {
-            print_bvh(tree->right);
+        if (tree->node[2]) {
+            print_bvh(tree->node[2]);
         }
     }
 }

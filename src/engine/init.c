@@ -19,7 +19,8 @@ static bool load_file(char *filename, char *filepath)
     stat(file, &st);
     if (!(buf = malloc(sizeof(char) * (st.st_size + 1))))
         return false;
-    read(fd, buf, st.st_size);
+    if (read(fd, buf, st.st_size) == -1)
+        return false;
     buf[st.st_size] = '\0';
     list_append(&(LIST_OBJS), create_link(create_obj(stwa(buf, "\n"))));
     free(buf);

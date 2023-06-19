@@ -125,3 +125,41 @@ bool cmp_two_triangles(void *triangle1, void *triangle2)
     float z2 = (t2->sommet[0].z + t2->sommet[1].z + t2->sommet[2].z) / 3.0f;
     return z1 > z2;
 }
+
+void print_matrix(float (*m)[4])
+{
+    for(sizint i = 0; i < 4; i++) {
+        for(sizint j = 0; j < 4; j++) {
+            printf("%f ", m[j][i]);
+        }
+        printf("\r\n");
+    }
+}
+
+void print_vector(sfVector4f v)
+{
+    printf("Vector4f: %f %f %f %f\r\n", v.x, v.y, v.z, v.w);
+}
+
+void print_vector3(sfVector3f v)
+{
+    printf("%f %f %f\r\n", v.x, v.y, v.z);
+}
+
+void print_triangle(triangle_t *t)
+{
+    printf("Triangle:\r\n");
+    for(sizint i = 0; i < 3; i++) {
+        printf("Sommet %d: ", i);
+        print_vector(t->sommet[i]);
+    }
+}
+
+void print_cube(sfVector3f s_g[2])
+{
+    printf("Cube:\r\n");
+    printf("Sommet gauche: ");
+    print_vector3(s_g[0]);
+    printf("Sommet droit: ");
+    print_vector3(s_g[1]);
+}

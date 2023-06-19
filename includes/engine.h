@@ -84,6 +84,12 @@ typedef struct Tree_s {
     triangle_t *triangle; // triangle at front node
 } Tree_t;
 
+union vector
+{
+    sfVector3f vec3;
+    sfVector4f vec4;
+};
+
 struct engine_s {
     /*graphic*/
     sfRenderWindow *window;
@@ -171,6 +177,9 @@ float calcul_dist(sfVector4f p, sfVector4f pp, sfVector4f n);
 void Matrix_Multiply(float (*m)[4], float (*m1)[4], float (*m2)[4]);
 matrix Matrix_QuickInverse(float (*m)[4]);
 sfVector3f average_triangle(triangle_t *t);
+void print_vector(sfVector4f v);
+void print_triangle(triangle_t *t);
+void print_cube(sfVector3f s_g[2]);
 
 /* DRAW */
 void display_triangles(link_t *mesh);
