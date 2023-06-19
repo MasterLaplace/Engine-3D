@@ -12,8 +12,8 @@
   </a><a>
     <img src="https://img.shields.io/badge/OS-Linux-blue?style=for-the-badge" alt="OS: Linux">
   </a>
-  <a href="https://github.com/MasterLaplace/Engine-3D/actions/workflows/test.yml">
-    <img src="https://github.com/MasterLaplace/Engine-3D/actions/workflows/test.yml/badge.svg" alt="Build Status">
+  <a href="https://github.com/MasterLaplace/Engine-3D/actions/workflows/test_engine.yml">
+    <img src="https://github.com/MasterLaplace/Engine-3D/actions/workflows/test_engine.yml/badge.svg" alt="Build Status">
   </a>
 </p>
 
@@ -76,6 +76,10 @@ $ ./src/server/server.out
 # Client
 $ make client
 $ ./src/client/client.out [vocal mode: -v]
+
+# Manager
+$ make manager
+$ ./src/manager/manager.out [help|clean|create] [layer_name]
 ```
 
 

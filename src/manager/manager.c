@@ -12,14 +12,18 @@
 void create_layer(char *str)
 {
     // create a directory
-    char command[strlen(str) + 30];
+    char command[strlen(str) + 50];
 
     sprintf(command, "mkdir ./assets/layer_%s", str);
     system(command);
     // create a subdirectory
     sprintf(command, "mkdir ./assets/layer_%s/MAP", str);
     system(command);
+    sprintf(command, "touch ./assets/layer_%s/MAP/.gitkeep", str);
+    system(command);
     sprintf(command, "mkdir ./assets/layer_%s/MESH", str);
+    system(command);
+    sprintf(command, "touch ./assets/layer_%s/MESH/.gitkeep", str);
     system(command);
 }
 
