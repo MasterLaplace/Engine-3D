@@ -1,28 +1,30 @@
 #!/usr/bin/env bash
-URL="https://github.com/Snaipe/Criterion/releases/download/v2.3.2"
-TARBALL="criterion-v2.3.2-linux-x86_64.tar.bz2"
-DIR="criterion-v2.3.2"
-DST="~/"
-SUDO=sudo
 
-cd /tmp
-rm -f $TARBALL
-rm -fr $DIR
+URL="https://github.com/Snaipe/Criterion.git"
+DIR="Criterion"
+INSTALL_DIR=~/criterion
 
-wget $URL/$TARBALL
+# install Criterion dependencies
+sudo apt-get update
+sudo apt-get install -y libeigen3-dev libgsl-dev
+
+# clone Criterion repository
+cd build
+rm -rf $DIR
+git clone $URL
 if [ $? != 0 ]; then
-    echo "failled, exiting"
-    exit;
+    echo "failed to clone Criterion repository, exiting"
+    exit 1
 fi
 
-echo
-echo "untaring $TARBALL"
-tar xjf $TARBALL
+# build Criterion
+cd $DIR
+echo "building $DIR"
+cmake -DCMAKE_INSTALL_PREFIX=$INSTALL_DIR . && make install
 if [ $? != 0 ]; then
-    echo "failled, exiting"
-    exit;
+    echo "failed to build Criterion, exiting"
+    exit 1
 fi
 
-echo "creating custom ld.conf"
-$SUDO sh -c "echo "~/" > ~/criterion.conf"
-echo "all good."
+rm -rf ../$DIR
+echo "Criterion successfully installed to $INSTALL_DIR"
