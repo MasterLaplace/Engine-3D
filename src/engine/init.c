@@ -84,7 +84,7 @@ static void init_collision()
         mesh = (mesh_t *) actual->obj;
         if (mesh->type == MESH) {
             new_mesh = dup_list(mesh->lTriangle, sizeof(triangle_t));
-            merge_sorting_list(&new_mesh, &cmp_av_two_triangles);
+            merge_sort_list(&new_mesh, &cmp_av_two_triangles);
             set_bvh(engine.root, new_mesh);
         }
 

@@ -25,7 +25,6 @@ SRC		=   $(SRC_DIR)init.c			\
 			$(SRC_DIR)rasterization.c	\
 			$(SRC_DIR)clipping.c		\
 			$(SRC_DIR)utils.c			\
-			$(SRC_DIR)merge_sort.c		\
 			$(SRC_DIR)draw.c			\
 			$(SRC_DIR)wave.c 			\
 			$(SRC_DIR)bvh.c				\
@@ -81,7 +80,7 @@ all: lib $(NAME)
 
 lib:
 	@$(MAKE) all -C ./libs $(NO_PRINT)
-	@$(ECHO) $(BOLD) $(GREEN)"\n► LIB ⛽ !"$(DEFAULT)
+	@-$(ECHO) $(BOLD) $(GREEN)"\n► LIB ⛽ !"$(DEFAULT)
 
 ## CLEAN TARGETS
 
@@ -91,7 +90,7 @@ clean:
 	@$(MAKE) -C ./libs clean $(NO_PRINT)
 	@$(RM) *~
 	@$(RM) *#
-	@$(ECHO) $(BOLD) $(GREEN)✓$(LIGHT_BLUE)" CLEAN 💨"$(DEFAULT)
+	@-$(ECHO) $(BOLD) $(GREEN)✓$(LIGHT_BLUE)" CLEAN 💨"$(DEFAULT)
 
 fclean:	clean
 	@$(RM) $(NAME)
@@ -104,7 +103,7 @@ fclean:	clean
 	@$(RM) *.gcda
 	@$(RM) *.gcno
 	@$(RM) vgcore.*
-	@$(ECHO) $(BOLD) $(GREEN)✓$(LIGHT_BLUE)" FCLEAN 🧻"$(DEFAULT)
+	@-$(ECHO) $(BOLD) $(GREEN)✓$(LIGHT_BLUE)" FCLEAN 🧻"$(DEFAULT)
 
 re: fclean all
 
@@ -113,22 +112,22 @@ re: fclean all
 debug:	OPTI 	= -Og -pipe
 debug:	CFLAGS 	= $(OPTI) -g3 -ggdb
 debug:	fclean lib_debug $(NAME)
-	@$(ECHO) $(BOLD) $(GREEN)"\n► DEBUG MODE 🔧 !"$(DEFAULT)
+	@-$(ECHO) $(BOLD) $(GREEN)"\n► DEBUG MODE 🔧 !"$(DEFAULT)
 
 lib_debug:
 	@$(MAKE) debug -C ./libs $(NO_PRINT)
-	@$(ECHO) $(BOLD) $(GREEN)"\n► LIB DEBUG 🔧 !"$(DEFAULT)
+	@-$(ECHO) $(BOLD) $(GREEN)"\n► LIB DEBUG 🔧 !"$(DEFAULT)
 
 ## ANAYLIZE MODE
 
 gprof:	OPTI 	= -Og -pipe
 gprof:	CFLAGS 	= $(OPTI) -g3 -ggdb -pg
 gprof:	fclean lib_gprof $(NAME)
-	@$(ECHO) $(BOLD) $(GREEN)"\n► GPROF MODE 🤖 !"$(DEFAULT)
+	@-$(ECHO) $(BOLD) $(GREEN)"\n► GPROF MODE 🤖 !"$(DEFAULT)
 
 lib_gprof:
 	@$(MAKE) gprof -C ./libs $(NO_PRINT)
-	@$(ECHO) $(BOLD) $(GREEN)"\n► LIB GPROF 🤖 !"$(DEFAULT)
+	@-$(ECHO) $(BOLD) $(GREEN)"\n► LIB GPROF 🤖 !"$(DEFAULT)
 
 ## INSTALL MODE
 
@@ -167,7 +166,7 @@ lib_tests:
 
 %.o: %.c
 	@$(eval NB=$(shell echo $$(($(NB)+1))))
-	@$(CC) -c -o $@ $^ $(CFLAGS) \
+	@-$(CC) -c -o $@ $^ $(CFLAGS) \
 	&& python3 build/build.py $< $(NB) $(SRC_COUNT)
 
 server:

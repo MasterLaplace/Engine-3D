@@ -40,13 +40,13 @@ all:	$(NAME_MY) $(NAME_LINK)
 
 $(NAME_MY):		$(OBJ_MY)
 	@$(ECHO)
-	@($(ECHO) $(BOLD) $(GREEN)✓$(LIGHT_BLUE) \
+	@-($(ECHO) $(BOLD) $(GREEN)✓$(LIGHT_BLUE) \
 	"Lib MY sucessfully build ⛽."$(DEFAULT))
 	@ar rc $(NAME_MY) $(OBJ_MY)
 
 $(NAME_LINK):	$(OBJ_LINK)
 	@$(ECHO)
-	@($(ECHO) $(BOLD) $(GREEN)✓$(LIGHT_BLUE) \
+	@-($(ECHO) $(BOLD) $(GREEN)✓$(LIGHT_BLUE) \
 	"Lib LINK sucessfully build ⛽."$(DEFAULT))
 	@ar rc $(NAME_LINK) $(OBJ_LINK)
 
@@ -59,7 +59,7 @@ clean:
 	@$(RM) $(OBJ_TEST)
 	@find -type f -name "*.gcda" -delete
 	@find -type f -name "*.gcno" -delete
-	@($(ECHO) $(BOLD) $(GREEN)✓$(LIGHT_BLUE)" CLEAN LIB 💨"$(DEFAULT))
+	@-$(ECHO) $(BOLD) $(GREEN)✓$(LIGHT_BLUE)" CLEAN LIB 💨"$(DEFAULT)
 
 fclean:	clean
 	@$(RM) $(NAME_MY)
@@ -67,7 +67,7 @@ fclean:	clean
 	@$(RM) $(NAME_TEST)
 	@$(RM) *.gcda
 	@$(RM) *.gcno
-	@($(ECHO) $(BOLD) $(GREEN)✓$(LIGHT_BLUE)" FCLEAN LIB 🧻"$(DEFAULT))
+	@-$(ECHO) $(BOLD) $(GREEN)✓$(LIGHT_BLUE)" FCLEAN LIB 🧻"$(DEFAULT)
 
 re:	fclean all
 

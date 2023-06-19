@@ -101,7 +101,7 @@ static void draw_mesh()
         actual = actual->next;
     } while (engine.list_objs && actual != engine.list_objs);
 
-    merge_sorting_list(&engine.FinalMesh, &cmp_two_triangles);
+    merge_sort_list(&engine.FinalMesh, &cmp_two_triangles);
     display_triangles(engine.FinalMesh);
     clean_triangles(engine.FinalMesh);
 }

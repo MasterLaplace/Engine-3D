@@ -19,9 +19,10 @@
     #include <sys/stat.h>
     #include <time.h>
     #include <math.h>
-    #include "linkList.h"
+    #include <string.h>
     #include "constants.h"
-    #include "my.h"
+    #include "lib.h"
+    #include "link_list.h"
 
     #ifdef __PIC__
     #define COMPILED_AS_SHARED_LIBRARY 1
@@ -150,9 +151,8 @@ void Mesh_Transform(sfVector4f pos, sfVector3f angle, sfVector3f scale);
 void Matrix_MakeProjection(float fFovDegrees, float fAspectRatio, float fNear, float fFar);
 sfVector4f get_surface_normal(triangle_t triangle);
 void Scale_in_Screen(triangle_t *triangle);
-void merge_sorting_list(link_t **list, bool (*cmp)(triangle_t *, triangle_t *));
-bool cmp_two_triangles(triangle_t *t1, triangle_t *t2);
-bool cmp_av_two_triangles(triangle_t *t1, triangle_t *t2);
+bool cmp_two_triangles(void *triangle_1, void *triangle_2);
+bool cmp_av_two_triangles(void *triangle_1, void *triangle_2);
 
 /* CLIPPING */
 void clipping(triangle_t triangle);

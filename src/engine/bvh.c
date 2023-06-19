@@ -7,10 +7,10 @@
 
 #include "engine.h"
 
-bool cmp_av_two_triangles(triangle_t *t1, triangle_t *t2)
+bool cmp_av_two_triangles(void *t1, void *t2)
 {
-    sfVector3f s = average_triangle(t1);
-    sfVector3f g = average_triangle(t2);
+    sfVector3f s = average_triangle((triangle_t *)t1);
+    sfVector3f g = average_triangle((triangle_t *)t2);
     return ((s.x + s.y + s.z) / 3) > ((g.x + g.y + g.z) / 3);
 }
 
