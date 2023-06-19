@@ -41,7 +41,7 @@ void do_list(link_t *list, void (*func)(void *));
 link_t *dup_list(link_t *list, unsigned __size);
 
 //* It checks if the link is null.
-bool is_null_link(link_t **link);
+bool is_null_link(link_t *link);
 
 //* It returns the size of the link.
 unsigned len_link(link_t *link);
@@ -53,7 +53,7 @@ void print_list(link_t *list, void (*print)(void *));
 void list_remove(link_t **list, link_t *link, void (*free_data)(void *));
 
 //* It sorts the list following the function passed in parameter.
-void merge_sort_list(link_t **list, unsigned len_list, bool (*cmp)(void *, void *));
+void merge_sort_list(link_t **list, bool (*cmp)(void *, void *));
 
 //* It swaps the left and right link.
 void swap_link(link_t **start, link_t *left, link_t *right);

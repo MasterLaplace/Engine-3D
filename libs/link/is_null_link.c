@@ -7,7 +7,7 @@
 
 #include "link_list.h"
 
-bool is_null_link(link_t **link)
+bool is_null_link(link_t *link)
 {
-    return !*link;
+    return !link;
 }

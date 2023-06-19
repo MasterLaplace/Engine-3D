@@ -115,3 +115,13 @@ sfVector3f average_triangle(triangle_t *t)
     float z = (t->sommet[0].z + t->sommet[1].z + t->sommet[2].z) / 3.0f;
     return (sfVector3f){x, y, z};
 }
+
+bool cmp_two_triangles(void *triangle1, void *triangle2)
+{
+    triangle_t *t1 = (triangle_t *)triangle1;
+    triangle_t *t2 = (triangle_t *)triangle2;
+
+    float z1 = (t1->sommet[0].z + t1->sommet[1].z + t1->sommet[2].z) / 3.0f;
+    float z2 = (t2->sommet[0].z + t2->sommet[1].z + t2->sommet[2].z) / 3.0f;
+    return z1 > z2;
+}

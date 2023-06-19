@@ -7,12 +7,18 @@
 
 #include "link_list.h"
 
-static void split_list(link_t *head, unsigned len_list, link_t **left, link_t **right)
+static void split_list(link_t *head, link_t **left, link_t **right)
 {
     link_t *slow_ptr = head;
+    link_t *fast_ptr = head->next;
 
-    for (register unsigned i = 0; i < len_list/2 && slow_ptr; i++)
-        slow_ptr = slow_ptr->next;
+    while (fast_ptr != NULL) {
+        fast_ptr = fast_ptr->next;
+        if (fast_ptr != NULL) {
+            slow_ptr = slow_ptr->next;
+            fast_ptr = fast_ptr->next;
+        }
+    }
 
     *left = head;
     *right = slow_ptr->next;
@@ -38,7 +44,7 @@ static link_t *merge(link_t *left, link_t *right, bool (*cmp)(void *, void *))
     return result;
 }
 
-static void merge_sort(link_t **list, unsigned len_list, bool (*cmp)(void *, void *))
+static void merge_sort(link_t **list, bool (*cmp)(void *, void *))
 {
     link_t *left = NULL;
     link_t *right = NULL;
@@ -46,20 +52,20 @@ static void merge_sort(link_t **list, unsigned len_list, bool (*cmp)(void *, voi
     if (*list == NULL || (*list)->next == NULL)
         return;
 
-    split_list(*list, len_list, &left, &right);
+    split_list(*list, &left, &right);
 
-    merge_sort(&left, len_list/2, cmp);
-    merge_sort(&right, len_list/2, cmp);
+    merge_sort(&left, cmp);
+    merge_sort(&right, cmp);
 
     *list = merge(left, right, cmp);
 }
 
-void merge_sort_list(link_t **list, unsigned len_list, bool (*cmp)(void *, void *))
+void merge_sort_list(link_t **list, bool (*cmp)(void *, void *))
 {
     if (*list == NULL || (*list)->next == NULL)
         return;
     (*list)->prev->next = NULL;
-    merge_sort(list, len_list, cmp);
+    merge_sort(list, cmp);
 
     link_t *actual = (*list);
     link_t *prev = NULL;
