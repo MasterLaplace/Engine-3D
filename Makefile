@@ -146,19 +146,20 @@ install: share
 
 ## TEST MODE
 
-build_tests: CFLAGS += --coverage -lcriterion -Wno-deprecated-declarations
+build_tests: CFLAGS += -Wno-deprecated-declarations
 build_tests: CFLAGS += -I ./test/include
 build_tests: fclean lib_tests $(TEST_OBJ)
 	@$(CC) $(CFLAGS) -o $(TEST_NAME) $(TEST_OBJ) \
 	&& $(ECHO) $(BOLD) $(GREEN)"\n► BUILD TESTS SUCCESS 🧪 !"$(DEFAULT) \
 	|| ($(ECHO) $(BOLD) $(RED)"\n► BUILD TESTS FAILED 🧪"$(DEFAULT) && exit 1)
 
-tests_run: CFLAGS += --coverage -lcriterion -Wno-deprecated-declarations
+tests_run: CFLAGS += -Wno-deprecated-declarations
 tests_run: CFLAGS += -I ./test/include
 tests_run: fclean lib_tests $(TEST_OBJ)
 	@$(CC) $(CFLAGS) -o $(TEST_NAME) $(TEST_OBJ) \
 	&& $(ECHO) $(BOLD) $(GREEN)"\n► BUILD TESTS SUCCESS 🧪 !"$(DEFAULT) \
 	|| ($(ECHO) $(BOLD) $(RED)"\n► BUILD TESTS FAILED 🧪"$(DEFAULT) && exit 1)
+	./$(TEST_NAME) -e
 
 lib_tests:
 	@$(MAKE) tests_run -C ./libs $(NO_PRINT)

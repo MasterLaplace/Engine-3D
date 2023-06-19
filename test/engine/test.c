@@ -15,8 +15,9 @@ void test_swap(void) {
     ASSERT_TRUE((a==5) && (b==4) && (x==5.0f) && (y==4.0f))
 }
 
-int main(void)
+int main(int ac, const char *av[])
 {
+    MANAGE_AV(ac, av);
     START_TEST
 
     TEST(pid, test_swap)

@@ -82,8 +82,6 @@ tests_run:	CFLAGS += --coverage -lcriterion -Wno-deprecated-declarations
 tests_run:	re $(OBJ_TEST)
 	@$(CC) -o $(NAME_TEST) $(OBJ_TEST) $(CFLAGS) $(LDFLAGS) $(FASTFLAGS)
 	@./$(NAME_TEST)
-	@gcovr --exclude tests/
-	@gcovr --exclude tests/ --branches
 
 %.o: %.c
 	@$(eval NB=$(shell echo $$(($(NB)+1))))
