@@ -26,6 +26,6 @@ $(NAME): builder
 
 fclean:
 	@$(RM) $(NAME)
-	@($(ECHO) $(BOLD) $(GREEN)✓$(LIGHT_BLUE)" FCLEAN SERVER "$(DEFAULT))
+	@$(ECHO) $(BOLD) $(GREEN)✓$(LIGHT_BLUE)" FCLEAN SERVER "$(DEFAULT)
 
 all: fclean $(NAME)

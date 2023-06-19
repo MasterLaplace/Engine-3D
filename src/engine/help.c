@@ -36,7 +36,7 @@ bool print_help(int ac, char const *av[])
         return false;
     if (strcmp(av[1], "-h") && strcmp(av[1], "--help"))
         return false;
-    two_put((char **) help);
+    two_put(help);
     return true;
 }
 #endif

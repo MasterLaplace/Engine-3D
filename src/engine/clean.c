@@ -15,7 +15,7 @@ void clean_triangles(link_t *mesh)
         return;
     while (mesh) {
         free((triangle_t *) mesh->obj);
-        list_remove(&(mesh), mesh);
+        list_remove(&(mesh), mesh, NULL);
     }
 }
 
@@ -26,7 +26,7 @@ void clean_mesh()
     while (LIST_OBJS) {
         clean_triangles((link_t *)((mesh_t *) LIST_OBJS->obj)->lTriangle);
         free((mesh_t *) LIST_OBJS->obj);
-        list_remove(&(LIST_OBJS), LIST_OBJS);
+        list_remove(&(LIST_OBJS), LIST_OBJS, NULL);
     }
 }
 
@@ -52,7 +52,7 @@ void clean_wave()
         return;
     while (engine.wave_list) {
         free((wave_t *) engine.wave_list->obj);
-        list_remove(&(engine.wave_list), engine.wave_list);
+        list_remove(&(engine.wave_list), engine.wave_list, NULL);
     }
 }
 

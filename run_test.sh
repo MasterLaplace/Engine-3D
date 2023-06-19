@@ -1,4 +1,4 @@
-make fclean test
+make build_tests
 
 while getopts "hesc" opt; do
   case $opt in

@@ -26,4 +26,5 @@ if [ $? != 0 ]; then
     exit 1
 fi
 
+rm -rf ../$DIR
 echo "CSFML successfully installed to $INSTALL_DIR"

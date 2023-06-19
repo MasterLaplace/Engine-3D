@@ -64,4 +64,4 @@ vosk*
 *.gcda
 perso
 vgcore.*
-*.data
+*.datlayer_*

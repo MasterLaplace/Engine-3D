@@ -42,8 +42,8 @@ void set_bvh(Tree_t *tree, link_t *mesh)
 
     get_max_min_point(mesh, &tree->s_g[0], &tree->s_g[1]);
 
-    link_t *left = NULL;
-    link_t *right = NULL;
+    link_t *left_up = NULL;
+    link_t *right_up = NULL;
 
     size_t mid_len = len_link(mesh) / 2;
     size_t i = 0;
@@ -52,30 +52,30 @@ void set_bvh(Tree_t *tree, link_t *mesh)
         link_t *tmp = create_link((triangle_t *) mesh->obj);
 
         if (i < mid_len) {
-            list_append(&left, tmp);
+            list_append(&left_up, tmp);
         } else {
-            list_append(&right, tmp);
+            list_append(&right_up, tmp);
         }
-        list_remove(&(mesh), mesh);
+        list_remove(&(mesh), mesh, NULL);
         i++;
     }
 
-    if (left) {
-        if (left->next == left) {
-            tree->triangle = (triangle_t *) left->obj;
-            list_remove(&left, left);
+    if (left_up) {
+        if (left_up->next == left_up) {
+            tree->triangle = (triangle_t *) left_up->obj;
+            list_remove(&left_up, left_up, NULL);
          } else {
-            tree->left = malloc(sizeof(Tree_t));
-            set_bvh(tree->left, left);
+            tree->node[0] = malloc(sizeof(Tree_t));
+            set_bvh(tree->node[0], left_up);
         }
     }
-    if (right) {
-        if (right->next == right) {
-            tree->triangle = (triangle_t *) right->obj;
-            list_remove(&right, right);
+    if (right_up) {
+        if (right_up->next == right_up) {
+            tree->triangle = (triangle_t *) right_up->obj;
+            list_remove(&right_up, right_up, NULL);
          } else {
-            tree->right = malloc(sizeof(Tree_t));
-            set_bvh(tree->right, right);
+            tree->node[2] = malloc(sizeof(Tree_t));
+            set_bvh(tree->node[2], right_up);
         }
     }
 }

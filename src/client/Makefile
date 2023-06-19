@@ -45,6 +45,6 @@ $(NAME): builder
 
 fclean:
 	@$(RM) $(NAME)
-	@($(ECHO) $(BOLD) $(GREEN)✓$(LIGHT_BLUE)" FCLEAN CLIENT "$(DEFAULT))
+	@$(ECHO) $(BOLD) $(GREEN)✓$(LIGHT_BLUE)" FCLEAN CLIENT "$(DEFAULT)
 
 all: fclean $(NAME)

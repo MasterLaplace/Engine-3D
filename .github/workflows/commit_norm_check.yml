@@ -1,0 +1,32 @@
+name: Commit Name Checker
+
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  verify-commit-name:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v3
+
+      - name: Commit Name Checker
+        run: |
+          commit_msg=$(git log --format=%B -n 1 ${{ github.sha }})
+          keyword_regex="^\[[A-Z][@_A-Za-z, ]+\] : "
+
+          if [[ ! $commit_msg =~ $keyword_regex ]]; then
+            if [[ $commit_msg =~ ^Merge\ .* ]]; then
+              echo "Skipping merge commit"
+            else
+              echo $commit_msg
+              echo "Commit message does not match expected format. Please use the following format:\"[Keyword] : comment\""
+              exit 1
+            fi
+          fi

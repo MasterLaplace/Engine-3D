@@ -32,92 +32,138 @@ SRC		=   $(SRC_DIR)init.c			\
 
 TEST	=	$(TEST_DIR)test.c
 
-builder:
-ifeq ($(OS), linux)
-CC := gcc
-NAME :=	$(BIN)engine.out
-else
-CC := x86_64-w64-mingw32-gcc
-NAME :=	$(BIN)engine.exe
-endif
-
 MAIN		=	$(SRC_DIR)core.c
 
 OBJ			=	$(SRC:.c=.o) $(MAIN:.c=.o)
 
 TEST_OBJ	=	$(SRC:.c=.o) $(TEST:.c=.o)
 
-SHARE_NAME = 	$(BIN)libengine.so
+INCLUDES 	=	-I ./includes -I ./libs/my/include -I ./libs/link/include
 
-TEST_NAME 	=	$(BIN)test_engine.out
+LIB_NAME	=	-L ./libs -lmy -llink
 
-INCLUDE 	=	./includes
+OPTI		=	-Ofast -march=native -flto -fuse-linker-plugin -pipe \
+				-fomit-frame-pointer -fopenmp -fprefetch-loop-arrays \
+				-fno-stack-protector -fno-ident -fno-asynchronous-unwind-tables
 
-LIB_FOLDER	=	./lib
+IGNORE 		= 	-fno-strict-aliasing -Wno-strict-aliasing
 
-LIB_NAME	=	my
+CSFML		=	-l csfml-graphics \
+				-l csfml-system \
+				-l csfml-window \
+				-l csfml-audio
 
-LDFLAGS		=	-L $(LIB_FOLDER) -l $(LIB_NAME) -lm
+LDFLAGS		=	$(INCLUDES) $(LIB_NAME) $(CSFML) -lm
 
-CFLAGS		=	$(FLAGS) -I $(INCLUDE)
+CFLAGS		=	$(FLAGS) $(LDFLAGS) $(OPTI) $(IGNORE)
 
-TEST_FLAGS	=	-I ./test/include
-
-CSFML_F		=	-l csfml-graphics -l csfml-system -l csfml-window -l csfml-audio
+ifeq ($(OS), linux)
+CC 			:= gcc
+NAME 		:=	$(BIN)engine.out
+SHARE_NAME	:= 	$(BIN)libengine.so
+TEST_NAME 	:=	$(BIN)test_engine.out
+else
+CC 			:= x86_64-w64-mingw32-gcc
+NAME 		:=	$(BIN)engine.exe
+SHARE_NAME	:= 	$(BIN)libengine.lib
+TEST_NAME 	:=	$(BIN)test_engine.exe
+endif
 
 SRC_COUNT 	:= 	$(words $(SRC))
 NB 	= 0
 
-$(NAME): builder $(OBJ)
-	@make -C $(LIB_FOLDER) $(NO_PRINT)
-	@$(CC) -O3 -march=native $(CFLAGS) -o $(NAME) $(OBJ) $(LDFLAGS) $(CSFML_F) \
-	&& $(ECHO) $(BOLD) $(GREEN)"\n► BUILD SUCCESS !"$(DEFAULT) \
-	|| ($(ECHO) $(BOLD) $(RED)"\n► BUILD FAILED"$(DEFAULT) && exit 1)
+$(NAME): $(OBJ)
+	@$(CC) -o $(NAME) $(OBJ) $(CFLAGS) \
+	&& $(ECHO) $(BOLD) $(GREEN)"\n► BUILD SUCCESS ⛽ !"$(DEFAULT) \
+	|| ($(ECHO) $(BOLD) $(RED)"\n► BUILD FAILED ⛽"$(DEFAULT) && exit 1)
 
-all: $(NAME)
+all: lib $(NAME)
+
+lib:
+	@$(MAKE) all -C ./libs $(NO_PRINT)
+	@$(ECHO) $(BOLD) $(GREEN)"\n► LIB ⛽ !"$(DEFAULT)
+
+## CLEAN TARGETS
 
 clean:
 	@$(RM) $(OBJ)
 	@$(RM) $(TEST_OBJ)
-	@make -C $(LIB_FOLDER) clean $(NO_PRINT)
+	@$(MAKE) -C ./libs clean $(NO_PRINT)
 	@$(RM) *~
 	@$(RM) *#
-	@($(ECHO) $(BOLD) $(GREEN)✓$(LIGHT_BLUE)" CLEAN "$(DEFAULT))
+	@$(ECHO) $(BOLD) $(GREEN)✓$(LIGHT_BLUE)" CLEAN 💨"$(DEFAULT)
 
 fclean:	clean
 	@$(RM) $(NAME)
+	@$(RM) $(SHARE_NAME)
 	@$(RM) $(TEST_NAME)
-	@make -C $(LIB_FOLDER) fclean $(NO_PRINT)
-	@make -C ./src/server fclean $(NO_PRINT)
-	@make -C ./src/client fclean $(NO_PRINT)
+	@$(MAKE) -C ./libs fclean $(NO_PRINT)
+	@$(MAKE) -C ./src/server fclean $(NO_PRINT)
+	@$(MAKE) -C ./src/client fclean $(NO_PRINT)
+	@$(MAKE) -C ./src/manager fclean $(NO_PRINT)
 	@$(RM) *.gcda
 	@$(RM) *.gcno
 	@$(RM) vgcore.*
-	@($(ECHO) $(BOLD) $(GREEN)✓$(LIGHT_BLUE)" FCLEAN "$(DEFAULT))
+	@$(ECHO) $(BOLD) $(GREEN)✓$(LIGHT_BLUE)" FCLEAN 🧻"$(DEFAULT)
 
 re: fclean all
 
-debug:	CFLAGS += -g3
-debug:	fclean $(OBJ)
-	@make debug -C $(LIB_FOLDER) $(NO_PRINT)
-	@$(CC) -Og $(OBJ) -o $(NAME) $(LDFLAGS) $(CSFML_F)
+## DEBUG MODE
 
-share: builder $(OBJ)
-	@make -C $(LIB_FOLDER) $(NO_PRINT)
-	@$(CC) -Os -shared $(CFLAGS) -o $(SHARE_NAME) -fPIC $(SRC) $(CSFML_F) \
-	&& $(ECHO) $(BOLD) $(GREEN)"\n► BUILD SHARE SUCCESS !"$(DEFAULT) \
-	|| ($(ECHO) $(BOLD) $(RED)"\n► BUILD SHARE FAILED"$(DEFAULT) && exit 1)
+debug:	OPTI 	= -Og -pipe
+debug:	CFLAGS 	= $(OPTI) -g3 -ggdb
+debug:	fclean lib_debug $(NAME)
+	@$(ECHO) $(BOLD) $(GREEN)"\n► DEBUG MODE 🔧 !"$(DEFAULT)
+
+lib_debug:
+	@$(MAKE) debug -C ./libs $(NO_PRINT)
+	@$(ECHO) $(BOLD) $(GREEN)"\n► LIB DEBUG 🔧 !"$(DEFAULT)
+
+## ANAYLIZE MODE
+
+gprof:	OPTI 	= -Og -pipe
+gprof:	CFLAGS 	= $(OPTI) -g3 -ggdb -pg
+gprof:	fclean lib_gprof $(NAME)
+	@$(ECHO) $(BOLD) $(GREEN)"\n► GPROF MODE 🤖 !"$(DEFAULT)
+
+lib_gprof:
+	@$(MAKE) gprof -C ./libs $(NO_PRINT)
+	@$(ECHO) $(BOLD) $(GREEN)"\n► LIB GPROF 🤖 !"$(DEFAULT)
+
+## INSTALL MODE
+
+share: lib $(OBJ)
+	@$(CC) -Os -shared $(CFLAGS) -o $(SHARE_NAME) -fPIC $(SRC) \
+	&& $(ECHO) $(BOLD) $(GREEN)"\n► BUILD SHARE SUCCESS 🧲 !"$(DEFAULT) \
+	|| ($(ECHO) $(BOLD) $(RED)"\n► BUILD SHARE FAILED 🧲"$(DEFAULT) && exit 1)
 
 install: share
-	@cp $(SHARE_NAME) /usr/lib/ \
-	&& $(ECHO) $(BOLD) $(GREEN)"\n► INSTALL SHARE SUCCESS !"$(DEFAULT) \
-	|| ($(ECHO) $(BOLD) $(RED)"\n► INSTALL SHARE FAILED"$(DEFAULT) && exit 1)
+	@-read -r -p "Do you want to install the shared engine library ? [Y/n] " response; \
+	if [ $$response = "Y" ] || [ $$response = "y" ] || [ $$response = "" ]; then \
+		sudo cp $(SHARE_NAME) /usr/lib/ \
+		&& $(ECHO) $(BOLD) $(GREEN)"\n► INSTALL SHARE SUCCESS 🧭!"$(DEFAULT) \
+		|| ($(ECHO) $(BOLD) $(RED)"\n► INSTALL SHARE FAILED 🧭"$(DEFAULT) && exit 1) \
+	fi
 
-test: fclean builder $(TEST_OBJ)
-	@make -C $(LIB_FOLDER) $(NO_PRINT)
-	@$(CC) $(FLAGS) -o $(TEST_NAME) $(TEST_OBJ) $(TEST_FLAGS) $(LDFLAGS) $(CSFML_F) \
-	&& $(ECHO) $(BOLD) $(GREEN)"\n► BUILD TEST SUCCESS !"$(DEFAULT) \
-	|| ($(ECHO) $(BOLD) $(RED)"\n► BUILD TEST FAILED"$(DEFAULT) && exit 1)
+## TEST MODE
+
+build_tests: CFLAGS += --coverage -lcriterion -Wno-deprecated-declarations
+build_tests: CFLAGS += -I ./test/include
+build_tests: fclean lib_tests $(TEST_OBJ)
+	@$(CC) $(CFLAGS) -o $(TEST_NAME) $(TEST_OBJ) \
+	&& $(ECHO) $(BOLD) $(GREEN)"\n► BUILD TESTS SUCCESS 🧪 !"$(DEFAULT) \
+	|| ($(ECHO) $(BOLD) $(RED)"\n► BUILD TESTS FAILED 🧪"$(DEFAULT) && exit 1)
+
+tests_run: CFLAGS += --coverage -lcriterion -Wno-deprecated-declarations
+tests_run: CFLAGS += -I ./test/include
+tests_run: fclean lib_tests $(TEST_OBJ)
+	@$(CC) $(CFLAGS) -o $(TEST_NAME) $(TEST_OBJ) \
+	&& $(ECHO) $(BOLD) $(GREEN)"\n► BUILD TESTS SUCCESS 🧪 !"$(DEFAULT) \
+	|| ($(ECHO) $(BOLD) $(RED)"\n► BUILD TESTS FAILED 🧪"$(DEFAULT) && exit 1)
+
+lib_tests:
+	@$(MAKE) tests_run -C ./libs $(NO_PRINT)
+	@$(ECHO) $(BOLD) $(GREEN)"\n► LIB TESTS 🧪 !"$(DEFAULT)
 
 %.o: %.c
 	@$(eval NB=$(shell echo $$(($(NB)+1))))
@@ -125,16 +171,19 @@ test: fclean builder $(TEST_OBJ)
 	&& python3 build/build.py $< $(NB) $(SRC_COUNT)
 
 server:
-	@make all -C ./src/server $(NO_PRINT)
+	@$(MAKE) all -C ./src/server $(NO_PRINT)
 
 client:
-	@make all -C ./src/client $(NO_PRINT)
+	@$(MAKE) all -C ./src/client $(NO_PRINT)
 
 manager:
-	@make all -C ./src/manager $(NO_PRINT)
+	@$(MAKE) all -C ./src/manager $(NO_PRINT)
 
 author:
 	@echo $(USER)
+
+version:
+	@echo $(VERSION)
 
 .PHONY: all re clean fclean debug test %.o
 .SILENT: all re clean fclean debug test %.o

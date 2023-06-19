@@ -7,6 +7,7 @@
 
 #include "engine.h"
 
+#ifdef COMPILED_AS_SHARED_LIBRARY
 engine_t engine;
 
 void init(void) __attribute__((constructor));
@@ -25,7 +26,6 @@ void clean(void)
     destroying();
 }
 
-#ifdef COMPILED_AS_SHARED_LIBRARY
 int main(int ac, char const *av[])
 {
     if (print_help(ac, av))
