@@ -1,0 +1,25 @@
+# Blender MTL File: 'mon_986_V2_obj.blend'
+# Material Count: 2
+
+newmtl mon_986_001
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd mon_986_001.png
+
+newmtl shadow_new
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd shadow_new.png
+map_d shadow_new.png

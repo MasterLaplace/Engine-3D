@@ -86,6 +86,46 @@ $ ./src/manager/manager.out [help|clean|create] [layer_name]
 ```
 
 
+### INTERACTIONS
+
+| Key | Action |
+| --- | --- |
+| <kbd>`W`</kbd> | Move forward |
+| <kbd>`S`</kbd> | Move backward |
+| <kbd>`A`</kbd> | Move left |
+| <kbd>`D`</kbd> | Move right |
+| <kbd>`Q`</kbd> | Move up |
+| <kbd>`E`</kbd> | Move down |
+| <kbd>`↑`</kbd> | Rotate up |
+| <kbd>`↓`</kbd> | Rotate down |
+| <kbd>`←`</kbd> | Rotate left |
+| <kbd>`→`</kbd> | Rotate right |
+| <kbd>`R`</kbd> | Reset camera |
+| <kbd>`ESC`</kbd> | Quit |
+| <kbd>`SPACE`</kbd> | Pause |
+| <kbd>`ENTER`</kbd> | Next layer |
+| <kbd>`BACKSPACE`</kbd> | Previous layer |
+| <kbd>`TAB`</kbd> | Toggle layer |
+| <kbd>`F1`</kbd> | Toggle debug |
+| <kbd>`F2`</kbd> | Toggle wireframe |
+| <kbd>`F3`</kbd> | Toggle texture |
+| <kbd>`F4`</kbd> | Toggle normals |
+| <kbd>`F5`</kbd> | Toggle lights |
+| <kbd>`F6`</kbd> | Toggle shadows |
+| <kbd>`F7`</kbd> | Toggle ambient occlusion |
+| <kbd>`F8`</kbd> | Toggle bloom |
+| <kbd>`F9`</kbd> | Toggle motion blur |
+| <kbd>`F10`</kbd> | Toggle depth of field |
+| <kbd>`F11`</kbd> | Toggle anti-aliasing |
+| <kbd>`F12`</kbd> | Toggle vignette |
+| <kbd>`MOUSE WHEEL`</kbd> | Zoom |
+| <kbd>`MOUSE LEFT`</kbd> | Rotate |
+| <kbd>`MOUSE RIGHT`</kbd> | Translate |
+| <kbd>`MOUSE MIDDLE`</kbd> | Select |
+| <kbd>`MOUSE LEFT`</kbd> | Select |
+| <kbd>`MOUSE RIGHT`</kbd> | Select |
+
+
 <div id='documentation'/>
 
 ### :wrench: **DOCUMENTATION**
