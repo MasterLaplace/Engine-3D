@@ -15,6 +15,9 @@
   <a href="https://github.com/MasterLaplace/Engine-3D/actions/workflows/test_engine.yml">
     <img src="https://github.com/MasterLaplace/Engine-3D/actions/workflows/test_engine.yml/badge.svg" alt="Build Status">
   </a>
+  <a href="https://github.com/MasterLaplace/Engine-3D/releases/latest/">
+    <img src="https://img.shields.io/github/v/release/MasterLaplace/Engine-3D.svg?label=version" alt="Version">
+  <a>
 </p>
 
 Rastérisation in C with CSFML lib

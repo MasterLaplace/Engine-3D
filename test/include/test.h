@@ -55,13 +55,13 @@
 
     #define TIME_TEST(pid, func, timeout) {                 \
             int child_status;                               \
-            time_t start = time();                          \
+            time_t st = time(NULL);                         \
             if ((pid = fork()) == 0)                        \
                 func();                                     \
              else {                                         \
                 waitpid(pid, &child_status, 0);             \
                 if (WEXITSTATUS(child_status) == 0          \
-                    && difftime(start, time()) <= timeout)  \
+                    && difftime(time(NULL), st) <= timeout) \
                     NB_TEST_PASSED++;                       \
             }                                               \
         }

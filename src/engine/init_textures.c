@@ -16,7 +16,7 @@ sfRenderStates **init_textures()
     sfRenderStates **textures = malloc(sizeof(sfRenderStates *) * (NB_TEXTURES + 1));
 
     if (!textures)
-        return NULL;
+        return (NULL);
     for (sizint i = 0; i < NB_TEXTURES; i++) {
         textures[i] = malloc(sizeof(sfRenderStates));
         textures[i]->blendMode = sfBlendAlpha;
@@ -37,11 +37,11 @@ sfImage **init_images()
     sfImage **images = malloc(sizeof(sfImage *) * (NB_TEXTURES + 1));
 
     if (!images)
-        return NULL;
+        return (NULL);
     for (sizint i = 0; i < NB_TEXTURES; i++) {
         images[i] = sfImage_createFromFile(TEXTURE_PATHS[i]);
         if (!images[i])
-            return NULL;
+            return (NULL);
     }
     images[NB_TEXTURES] = NULL;
     return images;

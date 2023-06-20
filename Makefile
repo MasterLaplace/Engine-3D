@@ -110,7 +110,7 @@ re: fclean all
 ## DEBUG MODE
 
 debug: OPTI		= -Og -pipe
-debug: CFLAGS	= $(OPTI) -g3 -ggdb
+debug: CFLAGS	= $(FLAGS) $(LDFLAGS) $(OPTI) $(IGNORE) -g3 -ggdb -DDEBUG
 debug: fclean lib_debug $(NAME)
 	@-$(ECHO) $(BOLD) $(GREEN)"\n► DEBUG MODE 🔧 !"$(DEFAULT)
 
@@ -121,7 +121,7 @@ lib_debug:
 ## ANAYLIZE MODE
 
 gprof: OPTI		= -Og -pipe
-gprof: CFLAGS	= $(OPTI) -g3 -ggdb -pg
+gprof: CFLAGS	= $(FLAGS) $(LDFLAGS) $(OPTI) $(IGNORE) -g3 -ggdb -pg
 gprof: fclean lib_gprof $(NAME)
 	@-$(ECHO) $(BOLD) $(GREEN)"\n► GPROF MODE 🤖 !"$(DEFAULT)
 

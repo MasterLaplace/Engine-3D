@@ -12,9 +12,6 @@ extern const char *TEXTURE_PATHS[];
 extern const sizint NB_MTL;
 extern const char *MTL_PATHS[];
 
-clock_t start, end;
-double elapsed;
-
 static char *search_in_mtl_file(const char *filepathname, const char *texture_name)
 {
     static bool found = false;
@@ -80,8 +77,7 @@ static sizint search_in_file(const char *texture_name, char *filename)
 
 mesh_t *create_obj(char **buf)
 {
-    start = clock();
-
+    clock_t start = clock();
     mesh_t *mesh = malloc(sizeof(mesh_t));
     triangle_t *tri, *tri2 = NULL;
     char **info = NULL;
@@ -95,6 +91,8 @@ mesh_t *create_obj(char **buf)
         else if (buf[i][0] == 'v' && buf[i][1] == 't')
             nb_vt++;
     }
+
+    printf("nb_v: %d, nb_vt: %d\n", nb_v, nb_vt);
 
     // add vectors in list
     sfVector4f list_v[nb_v];
@@ -148,13 +146,12 @@ mesh_t *create_obj(char **buf)
             if (mtllib)
                 free(mtllib);
             mtllib = strdup(buf[i] + 7); // 7 = strlen("mtllib ")
-        } else if (!strcmp(info[1], "cube"))
+        } else if (info[1] && !strcmp(info[1], "cube"))
             mesh->type = PLAYER;
         two_free(info);
     }
     free(mtllib);
-    end = clock();
-    elapsed = (double)(end - start) / CLOCKS_PER_SEC;
-    printf("Parsing execution time: %f seconds.\n", elapsed);
+    printf("Parsing execution time: %f seconds.\n", (double)(clock() - start) / CLOCKS_PER_SEC);
+    two_free(buf);
     return mesh;
 }

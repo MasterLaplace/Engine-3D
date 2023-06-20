@@ -114,8 +114,10 @@ static void clock_framerate()
 
     vectors_3d_to_2d(engine.drunkerMode);
 
+    #ifndef DEBUG
     while (diff >= (float) 1 / FRAMERATE) {
         diff -= (float) 1 / FRAMERATE;
+        #endif
         sfRenderWindow_clear(WINDOW, sfCyan);
 
         manage_move();
@@ -123,7 +125,9 @@ static void clock_framerate()
 
         sfRenderWindow_display(WINDOW);
         clock = sfTime_asSeconds(sfClock_getElapsedTime(engine.clock));
+    #ifndef DEBUG
     }
+    #endif
 }
 
 void loop_engine()
@@ -134,5 +138,8 @@ void loop_engine()
         while (sfRenderWindow_pollEvent(WINDOW, &event))
             analyse_events(event);
         clock_framerate();
+        #ifdef DEBUG
+        return;
+        #endif
     }
 }

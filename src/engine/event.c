@@ -33,16 +33,16 @@ static void manage_mouse()
 {
     static int save_mouseY = 0; static int save_mouseX = 0;
     sfVector2i pos = sfMouse_getPositionRenderWindow(WINDOW);
-    static int sensibility = 5;
+    static int sensibility = 1;
 
     if (pos.x >= WIN_X - sensibility)
-        sfMouse_setPositionRenderWindow((sfVector2i) {sensibility, pos.y}, WINDOW);
+        sfMouse_setPositionRenderWindow((sfVector2i) {sensibility + 10, pos.y}, WINDOW);
     if (pos.x <= sensibility)
-        sfMouse_setPositionRenderWindow((sfVector2i) {WIN_X - sensibility, pos.y}, WINDOW);
+        sfMouse_setPositionRenderWindow((sfVector2i) {WIN_X - sensibility - 10, pos.y}, WINDOW);
     if (pos.y >= WIN_Y - sensibility)
-        sfMouse_setPositionRenderWindow((sfVector2i) {pos.x, sensibility}, WINDOW);
+        sfMouse_setPositionRenderWindow((sfVector2i) {pos.x, sensibility + 10}, WINDOW);
     if (pos.y <= sensibility)
-        sfMouse_setPositionRenderWindow((sfVector2i) {pos.x, WIN_Y - sensibility}, WINDOW);
+        sfMouse_setPositionRenderWindow((sfVector2i) {pos.x, WIN_Y - sensibility - 10}, WINDOW);
 
     if (pos.x > save_mouseX + sensibility || pos.x < save_mouseX - sensibility) {
         if (pos.x >= save_mouseX)
