@@ -19,6 +19,7 @@ SRC		=   $(SRC_DIR)init.c			\
 			$(SRC_DIR)preset_textures.c	\
 			$(SRC_DIR)clean.c			\
 			$(SRC_DIR)parser_obj.c		\
+			$(SRC_DIR)parser_mtl.c		\
 			$(SRC_DIR)help.c			\
 			$(SRC_DIR)loop.c			\
 			$(SRC_DIR)event.c			\
