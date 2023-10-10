@@ -14,7 +14,7 @@ extern const char *MTL_PATHS[];
 
 static char *search_in_mtl_file(const char *filepathname, const char *texture_name)
 {
-    static bool found = false;
+    bool found = false;
     struct stat st;
     char *buf = NULL;
     int fd = open_file(filepathname, O_RDONLY);
@@ -33,14 +33,13 @@ static char *search_in_mtl_file(const char *filepathname, const char *texture_na
     for (register sizint i = 0; info[i]; i++) {
         if (!found && strstr(info[i], texture_name)) {
             found = true;
-        } else if (found && strncmp(info[i], "map_Kd", 6) == 0) {
+        } else if (found && !strncmp(info[i], "map_Kd", 6)) {
             char **Kd = stwa(info[i], " \t");
             map_Kd = strdup(Kd[1]);
             two_free(Kd);
             break;
         }
     }
-    found = false;
     free(buf);
     two_free(info);
     close(fd);
@@ -61,7 +60,7 @@ static sizint search_in_file(const char *texture_name, char *filename)
         }
     }
     if (!texture_file)
-        return 0;
+        return (0);
     // find the good png file
     for (sizint i = 0; i < NB_TEXTURES; i++) {
         if (strstr((char *)TEXTURE_PATHS[i], texture_file)) {
@@ -71,7 +70,7 @@ static sizint search_in_file(const char *texture_name, char *filename)
         }
     }
     free(texture_file);
-    return 0;
+    return (0);
 }
 
 
@@ -84,7 +83,7 @@ mesh_t *create_obj(char **buf)
     size_t nb_chr = 0;
     sizint nb_v = 0, nb_vt = 0;
 
-     // count nbr of vectors
+    // count nbr of vectors
     for (register sizint i = 0; buf[i]; i++) {
         if (buf[i][0] == 'v' && buf[i][1] == ' ')
             nb_v++;
@@ -140,12 +139,12 @@ mesh_t *create_obj(char **buf)
                 list_append(&(mesh->lTriangle), create_link(tri2));
                 mesh->nb_triangles++;
             }
-        } else if (strcmp(info[0], "usemtl") == 0)
+        } else if (!strcmp(info[0], "usemtl"))
             tex = search_in_file(info[1], mtllib);
-        else if (strcmp(info[0], "mtllib") == 0) {
+        else if (!strcmp(info[0], "mtllib")) {
             if (mtllib)
                 free(mtllib);
-            mtllib = strdup(buf[i] + 7); // 7 = strlen("mtllib ")
+            mtllib = strdup(buf[i] + 7); // 7 = len("mtllib ")
         } else if (info[1] && !strcmp(info[1], "cube"))
             mesh->type = PLAYER;
         two_free(info);

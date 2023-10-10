@@ -6,6 +6,7 @@
 */
 
 #include "engine.h"
+#include "signal.h"
 
 static bool load_file(char *filename, char *filepath)
 {
@@ -62,8 +63,8 @@ static void display_init()
 
 static void init_camera()
 {
-    engine.Pos = (sfVector4f){ 0.f, 0.f, 0.f, 1.f};
-    engine.Dir = (sfVector4f){ 0.f, 0.f, 0.f, 1.f};
+    engine.Pos = (sfVector4f){ 0.f, 0.f, 0.f, 1.f };
+    engine.Dir = (sfVector4f){ 0.f, 0.f, 0.f, 1.f };
     engine.fawZ = 0.f;
     engine.fawY = 0.f;
     engine.fawX = 0.f;
@@ -93,9 +94,29 @@ static void init_collision()
     } while (engine.list_objs && actual != engine.list_objs);
 }
 
+void return_signal(UNUSED int sig)
+{
+    static const struct init_signal { int sig; char *msg; } signals[] = {
+        {SIGPIPE, "Broken pipe"},
+        {SIGINT, "Interrupt"},
+        {SIGFPE, "Floating point exception"},
+        {0, NULL}
+    };
+
+    for (unsigned i = 0; signals[i].msg; i++) {
+        if (sig == signals[i].sig)
+            printf("\r[return_signal] Signal received: %s\n", signals[i].msg);
+    }
+    if (sig == SIGINT)
+        printf("[return_signal] Can't exit with Ctrl+C, use ESCAPE\n");
+}
+
 bool init_engine()
 {
     srand(time(NULL));
+    signal(SIGPIPE, return_signal);
+    signal(SIGINT, return_signal);
+    signal(SIGFPE, return_signal);
     /*graphic*/
     display_init();
     engine.clock = sfClock_create();

@@ -14,9 +14,8 @@ void list_remove(link_t **list, link_t *link, void (*free_data)(void *))
     if (link->next == link) {
         if (free_data)
             free_data(link->obj);
-        *list = NULL;
         free(link);
-        link = NULL;
+        *list = NULL;
         return;
     }
     if (link == *list)

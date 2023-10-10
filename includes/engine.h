@@ -55,6 +55,14 @@ typedef struct {
 	float m[4][4];
 } matrix;
 
+/**
+ * @brief  Structure d'un triangle
+ *
+ * @param sommet Sommets du triangle (x, y, z, w)
+ * @param texture Coordonnées de texture du triangle (x, y, z)
+ * @param usemtl Texture utilisée
+ * @param dp Distance par rapport à la caméra
+ */
 typedef struct triangle_s {
     sfVector4f sommet[3];
     sfVector3f texture[3];
@@ -62,6 +70,17 @@ typedef struct triangle_s {
     float dp;
 } triangle_t;
 
+/**
+ * @brief  Structure d'une vague (gerstner)
+ *
+ * @param dp Distance par rapport à la caméra
+ * @param A Amplitude de la vague (entre 0 et 1)
+ * @param wavelength Longueur d'onde de la vague
+ * @param wave_speed Vitesse de la vague
+ * @param wave_direction Direction de la vague (en radian)
+ * @param k Constante de la vague (2 * PI / wavelength)
+ * @param omega Constante de la vague (k * wave_speed)
+ */
 typedef struct wave_s {
     float dp;
     float A;

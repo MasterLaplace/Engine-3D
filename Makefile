@@ -64,7 +64,7 @@ TEST_NAME 	:=	$(BIN)test_engine.out
 else
 CC			:=	x86_64-w64-mingw32-gcc
 NAME		:=	$(BIN)engine.exe
-SHARE_NAME	:=	$(BIN)libengine.lib
+SHARE_NAME	:=	$(BIN)libengine.dll
 TEST_NAME	:=	$(BIN)test_engine.exe
 endif
 
@@ -120,8 +120,8 @@ lib_debug:
 
 ## ANAYLIZE MODE
 
-gprof: OPTI		= -Og -pipe
-gprof: CFLAGS	= $(FLAGS) $(LDFLAGS) $(OPTI) $(IGNORE) -g3 -ggdb -pg
+gprof: OPTI		+= -fno-omit-frame-pointer
+gprof: CFLAGS	= $(FLAGS) $(LDFLAGS) $(OPTI) $(IGNORE) -pg
 gprof: fclean lib_gprof $(NAME)
 	@-$(ECHO) $(BOLD) $(GREEN)"\n► GPROF MODE 🤖 !"$(DEFAULT)
 

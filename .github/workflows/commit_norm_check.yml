@@ -19,14 +19,14 @@ jobs:
       - name: Commit Name Checker
         run: |
           commit_msg=$(git log --format=%B -n 1 ${{ github.sha }})
-          keyword_regex="^\[[A-Z][@_A-Za-z, ]+\] : "
+          keyword_regex="^\[[A-Z][@_A-Za-z,/| ]+\] : "
+          echo "Commit message: $commit_msg"
 
           if [[ ! $commit_msg =~ $keyword_regex ]]; then
             if [[ $commit_msg =~ ^Merge\ .* ]]; then
               echo "Skipping merge commit"
             else
-              echo $commit_msg
-              echo "Commit message does not match expected format. Please use the following format:\"[Keyword] : comment\""
+              echo "Commit message does not match expected format. Please use the following format: \"[Keyword@file] : comment\""
               exit 1
             fi
           fi

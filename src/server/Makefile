@@ -8,7 +8,6 @@
 -include .env
 export
 
-builder:
 ifeq ($(OS), linux)
 CC := gcc
 NAME :=	server.out
@@ -17,10 +16,16 @@ CC := x86_64-w64-mingw32-gcc
 NAME :=	server.exe
 endif
 
-LDFLAGS		=	-L ../../lib -l my
 
-$(NAME): builder
-	@$(CC) -Os -o $(NAME) server.c $(LDFLAGS) -I ../../includes -I ./includes -lpthread \
+INCLUDES	=	-I ./includes -I ./includes \
+				-I ../../libs/my/include -I ../../libs/link/include
+
+LIB_NAME	=	-L ../../libs -lmy -llink
+
+LDFLAGS		=	$(INCLUDES) $(LIB_NAME) -lpthread
+
+$(NAME):
+	@$(CC) -Os -o $(NAME) server.c $(LDFLAGS) \
 	&& $(ECHO) $(BOLD) $(GREEN)"\n► BUILD SERVER SUCCESS !"$(DEFAULT) \
 	|| ($(ECHO) $(BOLD) $(RED)"\n► BUILD SERVER FAILED"$(DEFAULT) && exit 1)
 

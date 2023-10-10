@@ -24,7 +24,7 @@ static void manage_triangle(link_t *mesh)
     sfVector4f normal;
 
     // Set Lightening
-    static sfVector4f light_dir = (sfVector4f) {0.0f, 1.0f, -1.0f, 1.0f};
+    static sfVector4f light_dir = (sfVector4f){0.0f, 1.0f, -1.0f, 1.0f};
     if (light_dir.z <= 0.999)
         light_dir.z += 0.005f;
     else

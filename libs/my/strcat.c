@@ -15,7 +15,7 @@ char *my_strcat(char const *dest, char const *src)
     unsigned e = 0;
 
     if (!tmp)
-        return NULL;
+        return (NULL);
 
     for (; src && src[i]; ++i)
         tmp[i] = src[i];

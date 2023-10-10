@@ -68,7 +68,7 @@ static void get_nbr(client_t *client, char *buffer UNUSED, server_t *svr)
         return;
     }
 
-    dprintf(CLT_SOCK, "201 %d\r\n", svr->nbr_client);
+    dprintf(CLT_SOCK, "201 %ld\r\n", svr->nbr_client);
 }
 
 const command_t commands[] = {
@@ -220,7 +220,7 @@ static bool help(char const *av[])
 {
     if (strcmp(av[1], "-h") && strcmp(av[1], "-help"))
         return false;
-    two_put((char **) help_msg);
+    two_put(help_msg);
     return true;
 }
 

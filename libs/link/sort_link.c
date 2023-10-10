@@ -75,7 +75,7 @@ void merge_sort_list(link_t **list, bool (*cmp)(void *, void *))
         if (actual->next == NULL) {
             actual->next = (*list);
             (*list)->prev = actual;
-            break;
+            return;
         }
         actual = actual->next;
         actual->prev = prev;

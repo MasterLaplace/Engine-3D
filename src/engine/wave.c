@@ -53,7 +53,7 @@ static wave_t *create_wave(float A, float wavelength, float wave_speed, float wa
     wave->wavelength = wavelength;
     wave->wave_speed = wave_speed;
     wave->wave_direction = wave_dir;
-    wave->k = 2 * 3.14 / wave->wavelength;
+    wave->k = 2 * PI / wave->wavelength;
     wave->omega = wave->k * wave->wave_speed;
     return wave;
 }
