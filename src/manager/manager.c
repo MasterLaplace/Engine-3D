@@ -9,20 +9,28 @@
 #include <string.h>
 #include <stdlib.h>
 
+void create_folder
+
 void create_layer(char *str)
 {
     // create a directory
-    char command[strlen(str) + 50];
+    unsigned int len = strlen(str);
+    char command[len + 50];
 
     sprintf(command, "mkdir ./assets/layer_%s", str);
     system(command);
+    memset(command, 0, len + 50);
+
     // create a subdirectory
     sprintf(command, "mkdir ./assets/layer_%s/MAP", str);
     system(command);
+    memset(command, 0, len + 50);
     sprintf(command, "touch ./assets/layer_%s/MAP/.gitkeep", str);
     system(command);
+    memset(command, 0, len + 50);
     sprintf(command, "mkdir ./assets/layer_%s/MESH", str);
     system(command);
+    memset(command, 0, len + 50);
     sprintf(command, "touch ./assets/layer_%s/MESH/.gitkeep", str);
     system(command);
 }

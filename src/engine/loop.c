@@ -25,10 +25,10 @@ static void manage_triangle(link_t *mesh)
 
     // Set Lightening
     static sfVector4f light_dir = (sfVector4f){0.0f, 1.0f, -1.0f, 1.0f};
-    if (light_dir.z <= 0.999)
-        light_dir.z += 0.005f;
-    else
-        light_dir.z = -1.0f;
+    // if (light_dir.z <= 0.999)
+    //     light_dir.z += 0.005f;
+    // else
+    //     light_dir.z = -1.0f;
 
     if (!actual)
         return;
@@ -102,6 +102,7 @@ static void draw_mesh()
     } while (engine.list_objs && actual != engine.list_objs);
 
     merge_sort_list(&engine.FinalMesh, &cmp_two_triangles);
+    // chek_FinalMesh();
     display_triangles(engine.FinalMesh);
     clean_triangles(engine.FinalMesh);
 }
@@ -122,6 +123,10 @@ static void clock_framerate()
 
         manage_move();
         draw_mesh();
+
+        // /* sfVector3f tri = */get_bvh(engine.root, engine.Pos);
+
+        // printf("tri: %f %f %f VS Pos: %f %f %f\n", tri.x, tri.y, tri.z, engine.Pos.x, engine.Pos.y, engine.Pos.z);
 
         sfRenderWindow_display(WINDOW);
         clock = sfTime_asSeconds(sfClock_getElapsedTime(engine.clock));

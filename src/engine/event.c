@@ -79,7 +79,7 @@ void manage_move()
 
     speed += (KEY_PRESSED(sfKeyLControl))?(speed >= speed_max)?0:friction:(speed <= speed_min)?0:-friction;
 
-    sfVector4f Forward = Vector_Mul(engine.Dir, speed);
+    sfVector4f Forward = Vector_Mul(engine.Dir, speed); // TODO: adapt speed to framerate and direction
     Forward.y = 0;
 
     if (KEY_PRESSED(sfKeyUp))
@@ -101,7 +101,7 @@ void manage_move()
     if (KEY_PRESSED(sfKeyF))
         engine.fawX -= 0.1f;
     manage_mouse();
-    check_collision();
+    // check_collision();
 }
 
 void analyse_events(sfEvent event)

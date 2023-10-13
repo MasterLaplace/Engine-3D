@@ -202,14 +202,6 @@ bool loop(server_t *svr)
     return true;
 }
 
-static bool is_number(const char *str)
-{
-    for (int i = 0; str[i]; i++)
-        if (!isdigit(str[i]))
-            return false;
-    return true;
-}
-
 static const char *help_msg[] = {
     "USAGE: ./myftp port",
     "\tport is the port number on which the server socket listens",

@@ -17,7 +17,7 @@ static int send_recv(int client_socket)
 {
     printf("LOG: %s\n", message);
     if (!strncmp(message, "avance", 6)) {
-        engine.Pos.x += 50;
+        engine.Pos.x += 100;
         printf("LOG: %f\n", engine.Pos.x);
     }
     if (send(client_socket, message, strlen(message), 0) < 0) {
@@ -139,7 +139,15 @@ int main(int ac, char *av[])
     return EXIT_SUCCESS;
 }
 
-int command_handler( void * data __attribute__((unused)) ) {
-    system("python3 ./src/client/vocal.py");
+int command_handler( void * Py_UNUSED(data) ) {
+    static const char filename[] = "./src/client/vocal.py";
+	FILE* fp;
+
+	Py_Initialize();
+
+	fp = _Py_fopen(filename, "r");
+	PyRun_SimpleFile(fp, filename);
+
+	Py_Finalize();
     return thrd_success;
 }

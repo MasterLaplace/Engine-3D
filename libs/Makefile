@@ -20,11 +20,14 @@ OBJ_MY =	$(SRC_MY:.c=.o)
 
 OBJ_TEST =	$(SRC_TEST:.c=.o)
 
-NAME_MY =	libmy.a
+# NAME =		liblaplace.a
+# NAME_LEXER =	liblexer.a
+# NAME_PARSER =	libparser.a
 NAME_LERROR =	liblerror.a
 NAME_LINK =	liblink.a
 NAME_MY =	libmy.a
 
+# override NB := 0
 
 NB_LERROR := 0
 NB_LINK := 0

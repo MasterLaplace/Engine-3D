@@ -70,6 +70,7 @@ static void init_camera()
     engine.fawX = 0.f;
     engine.state = IDLE;
     engine.drunkerMode = false;
+    engine.isVr = false;
     engine.size = 2.f;
 }
 
@@ -122,6 +123,9 @@ bool init_engine()
     engine.clock = sfClock_create();
     engine.textures = init_textures();
     engine.images = init_images();
+    /*z-buffer*/
+    engine.displayer = true;
+    memset(engine.DepthBuffer, 0.f, sizeof(engine.DepthBuffer));
     /*wave*/
     init_wave();
     create_water(MAP_X, MAP_Y);

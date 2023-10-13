@@ -21,6 +21,25 @@
     #include <SFML/System/Vector3.h>
     #include "lib.h"
 
+    #include <setjmp.h>
+
+jmp_buf env;
+
+    #define raise(msg)                                              \
+    do {                                                            \
+        fprintf(stderr, "[%s:%u] : %s\n", __FILE__, __LINE__, msg); \
+        if (env[0] != 0)                                            \
+            longjmp(env, EXIT_FAILURE);                             \
+        abort();                                                    \
+    } while (false)
+
+    #define try(__body__) \
+    do {                 \
+        if (setjmp(env) == 0) { \
+            __body__ \
+        } \
+    } while (false)
+
     #define Max_Port 0xFFFF
     #define Min_Port 0x0001
     #define ADDR svr->address

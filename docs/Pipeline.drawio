@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="4wovr_GFPvuaUTkw3tU6" name="Page-1">
-        <mxGraphModel dx="1108" dy="542" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="964" dy="659" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -47,7 +47,7 @@
                     <mxGeometry x="140" y="480" width="130" height="50" as="geometry"/>
                 </mxCell>
                 <mxCell id="26" value="Pipeline V1.0" style="swimlane;startSize=20;horizontal=1;containerType=tree;" parent="1" vertex="1">
-                    <mxGeometry x="680" y="40" width="400" height="560" as="geometry"/>
+                    <mxGeometry x="680" y="40" width="400" height="660" as="geometry"/>
                 </mxCell>
                 <mxCell id="27" value="" style="edgeStyle=elbowEdgeStyle;elbow=vertical;sourcePerimeterSpacing=0;targetPerimeterSpacing=0;startArrow=none;endArrow=none;rounded=0;curved=0;" parent="26" source="28" target="30" edge="1">
                     <mxGeometry relative="1" as="geometry"/>

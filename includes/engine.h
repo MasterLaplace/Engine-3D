@@ -25,9 +25,9 @@
     #include "link_list.h"
 
     #ifdef __PIC__
-    #define COMPILED_AS_SHARED_LIBRARY 1
+        #define COMPILED_AS_SHARED_LIBRARY 1
     #else
-    #define COMPILED_AS_SHARED_LIBRARY 0
+        #define COMPILED_AS_SHARED_LIBRARY 0
     #endif
 
 typedef struct engine_s engine_t;
@@ -38,7 +38,10 @@ typedef enum {
 } player_state;
 
 typedef enum {
-    HIGH, LOW, WATER, BUBBLE, NONE
+    HIGH, LOW, WATER, BUBBLE, DRAGON, CARPET_RED, MC_FLOW_A, MC_FLOW_KAKINE00, MC_SAND_D, MC_TRITILE, TREE_SHADOW,
+    CONCWALL_32, MC_FLOW_B, MC_KAKINE01, MC_SAND, MC_WINDOW, RENGA_GRASS, WATER_P, MC_BRIDGE, MC_GAKE,
+    MC_ROAD, MC_TIL00, MC_YAMA, RENGA_SHIK00, WATER_SURFACE, MC_FENCE, MC_GRASS, MC_ROOF, MC_TIL_STR,
+    PEACH, NONE
 } texture;
 
 typedef enum {
@@ -50,6 +53,10 @@ typedef enum {
 typedef struct {
     float x, y, z, w;
 } sfVector4f;
+
+typedef struct {
+    float a, b, c;
+} Ellipsoid;
 
 typedef struct {
 	float m[4][4];
@@ -91,12 +98,27 @@ typedef struct wave_s {
     float omega;
 } wave_t;
 
+typedef struct perlin_s {
+    int octaves;
+	int frequence;
+	float persistence;
+    int lissage;
+    // float NoiseSeed[];
+} perlin_t;
+
 typedef struct mesh_s {
     link_t *lTriangle;
     sizint nb_triangles;
     mesh_type type;
 } mesh_t;
 
+/**
+ * @brief  Structure d'un arbre quadtree (BVH)
+ *
+ * @param node Noeuds de l'arbre (0, 1, 2, 3)
+ * @param s_g Vecteurs plus petit et plus grand (0: plus petit, 1: plus grand)
+ * @param triangle Triangle à l'avant du noeud (NULL si noeud)
+ */
 typedef struct Tree_s {
     struct Tree_s *node[4]; // node
     sfVector3f s_g[2]; // smaller/greater vectors
@@ -109,12 +131,39 @@ union vector
     sfVector4f vec4;
 };
 
+/**
+ * @brief  Structure d'un framebuffer (pour le z-buffer)
+ *
+ * @param pixels Pixels du framebuffer (sfUint8) (RGBA)
+ * @param texture Texture du framebuffer (sfTexture) (RGBA)
+ * @param sprite Sprite du framebuffer (sfSprite) (RGBA)
+ */
+typedef struct framebuffer_s {
+    sfUint8 *pixels;
+    sfTexture *texture;
+    sfSprite *sprite;
+} framebuffer_t;
+
+// typedef part_t *(*func)(part_t *part);
+
+typedef struct particule_s {
+    sfVector3f pos;
+    sfVector3f speed;
+    sfVector3f accel;
+
+    void (*update)(struct particule_s *particule);
+} particule_t;
+
 struct engine_s {
     /*graphic*/
     sfRenderWindow *window;
     sfClock *clock;
     sfRenderStates **textures;
     sfImage **images;
+    /*z-buffer*/
+    bool displayer;
+    float DepthBuffer[WIN_Y * WIN_X];
+    framebuffer_t *depth;
     /*camera*/
     sfVector4f Pos;
     sfVector4f Dir;
@@ -122,6 +171,7 @@ struct engine_s {
     float fawY;
     float fawX;
     bool drunkerMode;
+    bool isVr;
     /*player*/
     player_state state;
     sizint size;
@@ -138,6 +188,8 @@ struct engine_s {
     /*water*/
     link_t *wave_list;
     float t;  // Temps
+    /*generator*/
+    perlin_t perlin;
 };
 
 extern engine_t engine;
@@ -180,6 +232,7 @@ bool cmp_av_two_triangles(void *triangle_1, void *triangle_2);
 
 /* CLIPPING */
 void clipping(triangle_t triangle);
+void check_FinalMesh();
 
 /* UTILS */
 sfVector4f Vector_Add(sfVector4f v, sfVector4f w);
@@ -207,6 +260,7 @@ void display_triangles(link_t *mesh);
 void set_bvh(Tree_t *tree, link_t *mesh);
 sfVector3f get_bvh(Tree_t *tree, sfVector4f point);
 void print_bvh(Tree_t *tree);
+void draw_bvh(Tree_t *tree, sfRenderWindow *window);
 
 /* WATER */
 void init_wave();

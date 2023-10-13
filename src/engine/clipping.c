@@ -111,9 +111,86 @@ void clipping(triangle_t triangle)
         triProjected.usemtl = Clipped[i].usemtl;
         triProjected.dp = Clipped[i].dp;
 
+        triProjected.texture[0].x = triProjected.texture[0].x / triProjected.texture[0].z;
+        triProjected.texture[1].x = triProjected.texture[1].x / triProjected.texture[1].z;
+        triProjected.texture[2].x = triProjected.texture[2].x / triProjected.texture[2].z;
+
+        triProjected.texture[0].y = triProjected.texture[0].y / triProjected.texture[0].z;
+        triProjected.texture[1].y = triProjected.texture[1].y / triProjected.texture[1].z;
+        triProjected.texture[2].y = triProjected.texture[2].y / triProjected.texture[2].z;
+
+        triProjected.texture[0].z = 1.f / triProjected.texture[0].z;
+        triProjected.texture[1].z = 1.f / triProjected.texture[1].z;
+        triProjected.texture[2].z = 1.f / triProjected.texture[2].z;
+
         // Scale to Screen (S2S)
         Scale_in_Screen(&triProjected);
 
         add_in_FinalMesh(&triProjected);
     }
 }
+
+// static void draw_triangles(link_t *mesh)
+// {
+//     link_t *actual = mesh;
+//     triangle_t *node = NULL;
+
+//     if (!actual)
+//         return;
+//     do {
+//         node = (triangle_t *) actual->obj;
+//         TexturedTriangle((triangle_t *) actual->obj,
+//             engine.images[node->usemtl], sfTexture_getSize(engine.textures[node->usemtl]->texture));
+//         actual = actual->next;
+//     } while (mesh && actual->next != mesh);
+// }
+
+// void chek_FinalMesh() {
+//     triangle_t *triToRaster = NULL;
+
+//     // Loop through all transformed, viewed, projected, and sorted triangles
+//     if (!engine.FinalMesh)
+//         return;
+//     while (engine.FinalMesh) {
+//         triToRaster = (triangle_t *) engine.FinalMesh->obj;
+//         triangle_t Clipped[2];
+//         link_t *listTriangles = NULL;
+
+//         // Add initial triangle
+//         list_append(&listTriangles, create_link(triToRaster));
+//         int nNewTriangles = 1;
+
+//         for (sizint p = 0; p < 4; p++) {
+//             int nTrisToAdd = 0;
+//             while (nNewTriangles > 0) {
+//                 // Take triangle from front of queue
+//                 triangle_t *test = (triangle_t *) listTriangles->obj;
+//                 list_remove(&(listTriangles), listTriangles);
+//                 nNewTriangles--;
+
+//                 switch (p) {
+//                     case 0:
+//                         nTrisToAdd = Triangle_ClipAgainstPlane((sfVector4f){ 0.0f, 0.0f, 0.0f, 1 }, (sfVector4f){ 0.0f, 1.0f, 0.0f, 1 }, test, &Clipped);
+//                         break;
+//                     case 1:
+//                         nTrisToAdd = Triangle_ClipAgainstPlane((sfVector4f){ 0.0f, (float)WIN_Y - 1, 0.0f, 1 }, (sfVector4f){ 0.0f, -1.0f, 0.0f , 1}, test, &Clipped);
+//                         break;
+//                     case 2:
+//                         nTrisToAdd = Triangle_ClipAgainstPlane((sfVector4f){ 0.0f, 0.0f, 0.0f, 1 }, (sfVector4f){ 1.0f, 0.0f, 0.0f, 1 }, test, &Clipped);
+//                         break;
+//                     case 3:
+//                         nTrisToAdd = Triangle_ClipAgainstPlane((sfVector4f){ (float)WIN_X - 1, 0.0f, 0.0f, 1 }, (sfVector4f){ -1.0f, 0.0f, 0.0f, 1 }, test, &Clipped);
+//                         break;
+//                 }
+//                 for (int w = 0; w < nTrisToAdd; w++)
+//                     list_append(&listTriangles, create_link(&Clipped[w]));
+//             }
+//             nNewTriangles = len_link(listTriangles);
+//         }
+
+//         // Draw the transformed, viewed, clipped, projected, sorted, clipped triangles
+//         draw_triangles(listTriangles);
+//         // clean_triangles(listTriangles);
+//         list_remove(&(engine.FinalMesh), engine.FinalMesh);
+//     }
+// }

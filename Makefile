@@ -29,6 +29,7 @@ SRC		=   $(SRC_DIR)init.c			\
 			$(SRC_DIR)draw.c			\
 			$(SRC_DIR)wave.c			\
 			$(SRC_DIR)bvh.c				\
+			$(SRC_DIR)pvh.c				\
 
 TEST	=	$(TEST_DIR)test.c
 

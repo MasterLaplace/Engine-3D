@@ -34,7 +34,7 @@ void superpose_waves(link_t *list)
     do {
         wave = (wave_t *) actual_wave->obj;
         if (!wave)
-            return;
+            return; // TODO: average waves points on map point
         do {
             triangle = (triangle_t *) actual->obj;
             triangle->sommet[0].y += gerstner_wave(triangle->sommet[0].x, triangle->sommet[0].z, engine.t, wave);
