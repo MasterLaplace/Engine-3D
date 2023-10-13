@@ -1,0 +1,70 @@
+name: Create Release
+
+on:
+    pull_request:
+      branches:
+        - main
+      types:
+        - closed
+
+env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    GH_BOT_ACC_EMAIL: guillaume.papineau@epitech.eu
+    GH_BOT_ACC_NAME: github-actions[bot]
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Check if PR is merged to main
+        id: pr-check
+        run: echo "::set-output name=merged::$(jq -r '.pull_request.merged' $GITHUB_EVENT_PATH)"
+
+      - name: Install GitHub CLI
+        run: |
+          sudo apt update
+          sudo apt install gh
+
+      - name: Set up Git
+        run: |
+            git config --local user.email $GH_BOT_ACC_EMAIL
+            git config --local user.name $GH_BOT_ACC_NAME
+
+      - name: Authenticate GitHub CLI
+        run: gh auth login --with-token <<<"${GITHUB_TOKEN}"
+
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+            python-version: '3.x'
+
+      - name: Increment Version
+        if: steps.pr-check.outputs.merged == 'true'
+        run: |
+          # Read the current version from the VERSION file
+          current_version=$(cat VERSION)
+
+          # Increment the version (you can use any logic you prefer)
+          new_version=$(python3 increment_version.py $current_version)
+
+          # Update the VERSION file with the new version
+          echo "$new_version" > VERSION
+
+          # Commit and push the updated VERSION file
+          git add VERSION
+          git commit -m "chore(VERSION): bump version to $new_version"
+          git push origin main
+
+      - name: Create Tag and Release
+        if: success() && steps.pr-check.outputs.merged == 'true'
+        run: |
+          # Create a new tag with the version
+          git tag -a v$new_version -m "Engine-3D v$new_version"
+          git push origin v$new_version
+
+          # Create a new release
+          gh release create v$new_version

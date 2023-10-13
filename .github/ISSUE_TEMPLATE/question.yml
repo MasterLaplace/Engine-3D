@@ -1,0 +1,24 @@
+name: I have a question
+description: Ask you question, we will answer in documentation () and below your question
+title: '[Question]: '
+labels:
+  - enhancement
+body:
+  - type: input
+    id: questionAbout
+    attributes:
+      label: What is your question is about ?
+    validations:
+      required: true
+  - type: textarea
+    id: questionContent
+    attributes:
+      label: Ask your question here
+    validations:
+      required: true
+  - type: checkboxes
+    attributes:
+      label: I read the Code Of Conduct
+      options:
+        - label: I read the Code Of Conduct and I comply to it
+          required: true

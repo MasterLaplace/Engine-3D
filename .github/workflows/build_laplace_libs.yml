@@ -1,0 +1,28 @@
+name: Build Laplace Libs CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: make lib
+      run: |
+        make lib
+        exit $(($? != 0))
+
+    - name: SonarCloud Scan for C and C++
+      uses: SonarSource/sonarcloud-github-c-cpp@v1.3
+
+    - name: Check if build succeeded
+      run: exit $(($? != 0))

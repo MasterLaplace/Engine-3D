@@ -1,0 +1,48 @@
+on:
+    workflow_run:
+      workflows: ["Publish Release"]
+      types:
+        - completed
+
+env:
+    GH_PAT: ${{ secrets.GITHUB_TOKEN }}
+    GH_BOT_ACC_EMAIL: guillaume.papineau@epitech.eu
+    GH_BOT_ACC_NAME: github-actions[bot]
+
+jobs:
+    readme-update:
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+
+        - name: Set up Git
+          run: |
+            git config --local user.email $GH_BOT_ACC_EMAIL
+            git config --local user.name $GH_BOT_ACC_NAME
+
+        - name: Install Python
+          uses: actions/setup-python@v2
+          with:
+            python-version: '3.x'
+
+        - name: Install requirements
+          run: pip install -r requirements.txt
+
+        - name: Get Latest Release Date
+          id: latest_release_date
+          run: |
+            python3 Scripts/get_latest_release_date.py > latest_release_date.txt
+            echo "::set-output name=release_date::$(cat latest_release_date.txt)"
+
+        - name: Update README.md
+          run: |
+            release_date=$(cat latest_release_date.txt)
+            sed -i "s/- Release Date: \*\*([JFMASOND][a-z]+ \d+, \d+)\*\*/- Release Date: $release_date/" README.md
+
+        - name: Commit and Push Changes
+          run: |
+            git add README.md
+            git commit -m "chore(README): update README.md with latest release date (bot)"
+            git push

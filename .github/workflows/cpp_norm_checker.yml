@@ -1,0 +1,25 @@
+name: C++ Norm Checker
+
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up C++ environment
+        uses: actions/checkout@v3
+
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Check C++ norm by Laplace Linter
+        run: |
+          ./Scripts/norm_checker.py
