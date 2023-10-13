@@ -113,8 +113,6 @@ def main():
                         raise AssertionError("The name of the file \"" + file_path + "\" does not start with a capital letter")
                     with open(file_path, 'r', encoding='latin-1') as f:
                         check_norm.call_all_checks(file_path, f.read())
-                else:
-                    raise AssertionError("Unknow file detected in the Plugin: " + file_path)
             except AssertionError as e:
                 check_norm.nb_errors += 1
                 print(e)

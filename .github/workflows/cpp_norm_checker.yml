@@ -22,4 +22,4 @@ jobs:
 
       - name: Check C++ norm by Laplace Linter
         run: |
-          ./Scripts/cpp_norm_checker.py
+          python3 Scripts/cpp_norm_checker.py
