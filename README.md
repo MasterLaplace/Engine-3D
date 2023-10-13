@@ -1,34 +1,58 @@
-# ME : <p align="center">Rastérisation</p>
+# ME : <p align="center">Engine-3D</p>
 
 <p align="center">
-  <a href="https://github.com/MasterLaplace/Engine-3D/blob/main/LICENSE">
-    <img src="https://img.shields.io/badge/License-MIT-brightgreen.svg?style=for-the-badge" alt="License: MIT">
-  </a><a>
-    <img src="https://img.shields.io/badge/CSFML-2.5-blue?style=for-the-badge" alt="CSFML: 2.5">
-  </a><a>
-    <img src="https://img.shields.io/badge/vosk--api-0.3.30-blue?style=for-the-badge" alt="vosk-api: 0.3.30">
-  </a><a>
-    <img src="https://img.shields.io/badge/C-11-blue?style=for-the-badge" alt="C: 11">
-  </a><a>
-    <img src="https://img.shields.io/badge/OS-Linux-blue?style=for-the-badge" alt="OS: Linux">
-  </a>
-  <a href="https://github.com/MasterLaplace/Engine-3D/actions/workflows/test_engine.yml">
-    <img src="https://github.com/MasterLaplace/Engine-3D/actions/workflows/test_engine.yml/badge.svg" alt="Build Status">
-  </a>
-  <a href="https://github.com/MasterLaplace/Engine-3D/releases/latest/">
-    <img src="https://img.shields.io/github/v/release/MasterLaplace/Engine-3D.svg?label=version" alt="Version">
-  <a>
+    <h3 align="center">📦 Download &#xa0; : &#xa0;
+    <a href="https://github.com/MasterLaplace/Engine-3D/releases/latest/">
+        <img src="https://img.shields.io/github/v/release/MasterLaplace/Engine-3D.svg?label=Latest%20Version&style=for-the-badge" alt="Latest Version">
+    </a>&#xa0; | &#xa0;
+    📜 License &#xa0; : &#xa0;
+    <a href="https://github.com/MasterLaplace/Engine-3D/blob/main/LICENSE">
+        <img src="https://img.shields.io/badge/License-MIT-brightgreen.svg?style=for-the-badge" alt="License: MIT">
+    </a>
+    </h3>
 </p>
-
-Rastérisation in C with CSFML lib
-
-Status: in progress
+<h3 align="center">🌐 Supported Platforms</h3>
+<p align="center">
+    <img src="https://img.shields.io/badge/Linux-blue?style=for-the-badge" alt="Linux"> &#xa0; | &#xa0;
+    <img src="https://img.shields.io/badge/Windows-blue?style=for-the-badge" alt="Windows"> &#xa0; | &#xa0;
+    <img src="https://img.shields.io/badge/MacOS-blue?style=for-the-badge" alt="MacOS">
+</p>
+<h3 align="center">🎮 Supported Graphics Libraries</h3>
+<p align="center">
+    <a href="https://www.sfml-dev.org/download/csfml/">
+        <img src="https://img.shields.io/badge/CSFML-2.5-blue?style=for-the-badge" alt="CSFML: 2.5">
+    </a> &#xa0; | &#xa0;
+    <a href="https://www.sfml-dev.org/">
+        <img src="https://img.shields.io/badge/SFML-2.5-blue?style=for-the-badge" alt="SFML: 2.5">
+    </a> &#xa0; | &#xa0;
+    <a href="https://www.opengl.org/">
+        <img src="https://img.shields.io/badge/OpenGL-4.6-blue?style=for-the-badge" alt="OpenGL: 4.6">
+    </a> &#xa0; | &#xa0;
+    <a href="https://www.khronos.org/vulkan/">
+        <img src="https://img.shields.io/badge/Vulkan-1.2-blue?style=for-the-badge" alt="Vulkan: 1.2">
+    </a> &#xa0; | &#xa0;
+    <a href="https://www.libsdl.org/">
+        <img src="https://img.shields.io/badge/SDL2-2.0-blue?style=for-the-badge" alt="SDL2: 2.0">
+    </a>
+</p>
+<h3 align="center">🚀 Supported Languages</h3>
+<p align="center">
+    <img src="https://img.shields.io/badge/C-11-blue?style=for-the-badge" alt="C: 11"> &#xa0; | &#xa0;
+    <img src="https://img.shields.io/badge/C++-17-blue?style=for-the-badge" alt="C++: 17">
+</p>
+<h3 align="center"> 🛠️ Build Status
+<p align="center">
+    <a href="https://github.com/MasterLaplace/Engine-3D/actions/workflows/test_engine.yml">
+        <img src="https://github.com/MasterLaplace/Engine-3D/actions/workflows/test_engine.yml/badge.svg" alt="Build Status">
+    </a>
+</p>
 
 
 ## :placard: Table of Contents
 - [Description](#description)
 - [Goal](#goal)
 - [Running](#running)
+- [Docker](#docker)
 - [Documentation](#documentation)
 - [License](#license)
 - [Contacts](#contacts)
@@ -71,18 +95,36 @@ $ cd Engine-3D
 # Engine
 $ make re
 $ ./bin/engine.out
+```
 
-# Server
-$ make server
-$ ./src/server/server.out
 
-# Client
-$ make client
-$ ./src/client/client.out [vocal mode: -v]
+<div id='docker'/>
 
-# Manager
-$ make manager
-$ ./src/manager/manager.out [help|clean|create] [layer_name]
+### :whale: **DOCKER RUN**
+
+```bash
+# install docker on ubuntu
+$ sudo apt-get update
+$ sudo apt-get install docker-ce docker-ce-cli containerd.io
+
+# check docker version (optional)
+$ docker --version
+> Docker version 24.0.6, build ed223bc
+
+# build docker image
+$ docker build -t engine-3d .
+
+# run docker image
+$ docker run engine-3d
+
+# list docker images
+$ docker ps
+
+# stop docker image
+$ docker stop <container-id>
+
+# remove docker image
+$ docker rm <container-id>
 ```
 
 
@@ -90,50 +132,31 @@ $ ./src/manager/manager.out [help|clean|create] [layer_name]
 
 | Key | Action |
 | --- | --- |
-| <kbd>`W`</kbd> | Move forward |
-| <kbd>`S`</kbd> | Move backward |
-| <kbd>`A`</kbd> | Move left |
-| <kbd>`D`</kbd> | Move right |
-| <kbd>`Q`</kbd> | Move up |
-| <kbd>`E`</kbd> | Move down |
-| <kbd>`↑`</kbd> | Rotate up |
-| <kbd>`↓`</kbd> | Rotate down |
-| <kbd>`←`</kbd> | Rotate left |
-| <kbd>`→`</kbd> | Rotate right |
-| <kbd>`R`</kbd> | Reset camera |
-| <kbd>`ESC`</kbd> | Quit |
-| <kbd>`SPACE`</kbd> | Pause |
-| <kbd>`ENTER`</kbd> | Next layer |
-| <kbd>`BACKSPACE`</kbd> | Previous layer |
-| <kbd>`TAB`</kbd> | Toggle layer |
-| <kbd>`F1`</kbd> | Toggle debug |
-| <kbd>`F2`</kbd> | Toggle wireframe |
-| <kbd>`F3`</kbd> | Toggle texture |
-| <kbd>`F4`</kbd> | Toggle normals |
-| <kbd>`F5`</kbd> | Toggle lights |
-| <kbd>`F6`</kbd> | Toggle shadows |
-| <kbd>`F7`</kbd> | Toggle ambient occlusion |
-| <kbd>`F8`</kbd> | Toggle bloom |
-| <kbd>`F9`</kbd> | Toggle motion blur |
-| <kbd>`F10`</kbd> | Toggle depth of field |
-| <kbd>`F11`</kbd> | Toggle anti-aliasing |
-| <kbd>`F12`</kbd> | Toggle vignette |
-| <kbd>`MOUSE WHEEL`</kbd> | Zoom |
-| <kbd>`MOUSE LEFT`</kbd> | Rotate |
-| <kbd>`MOUSE RIGHT`</kbd> | Translate |
-| <kbd>`MOUSE MIDDLE`</kbd> | Select |
-| <kbd>`MOUSE LEFT`</kbd> | Select |
-| <kbd>`MOUSE RIGHT`</kbd> | Select |
+| <kbd>`Z`</kbd> | Move forward |
 
 
 <div id='documentation'/>
 
 ### :wrench: **DOCUMENTATION**
 
+Wiki:
+- [**Technical Documentation & Wiki**](https://github.com/MasterLaplace/Engine-3D/wiki)
+
+For detailed documentation on the Laplace Library, see:
+- [**Laplace Library Documentation**](https://github.com/MasterLaplace/Engine-3D/blob/main/Libs/README.md)
+
+External Documentation:
 - [**CSFML**](https://www.sfml-dev.org/download/csfml/)
 - [**vosk-api**](https://alphacephei.com/vosk/)
 - [**GCC-C**](https://gcc.gnu.org/onlinedocs/)
-- [**my and link**](https://github.com/MasterLaplace/Engine-3D/blob/main/libs/README.md)
+
+
+## :rocket: LATEST RELEASE
+
+> :clipboard: [Change Log](CHANGELOG.md).
+
+- [![Latest Release](https://img.shields.io/github/v/release/MasterLaplace/Engine-3D.svg?label=version)](https://github.com/MasterLaplace/Engine-3D/releases/latest/)
+- Release Date: **October 13, 2023**
 
 
 <div id='license'/>
@@ -149,9 +172,15 @@ Copyright © 2023-2024 [Master_Laplace](https://github.com/MasterLaplace).
 
 ### :mailbox_with_mail: **CONTACTS**
 
-This libs has been carried out by:
+This project has been carried out by:
 
-* [![GitHub MasterLaplace](https://img.shields.io/github/followers/MasterLaplace?label=MasterLaplace&style=social)](https://github.com/MasterLaplace)
+<table align="center">
+    <tbody>
+        <tr>
+            <td align="center"><a href="https://github.com/MasterLaplace/"><img src="https://avatars.githubusercontent.com/MasterLaplace?v=4?s=100" width="100px;" alt="MasterLaplace"/><br/><a href="https://github.com/MasterLaplace/"><img src="https://img.shields.io/github/followers/MasterLaplace?label=Master_Laplace&style=social" alt="Master_Laplace"/></a></td>
+        </tr>
+    </tbody>
+</table>
 
 ---
 <p align="center">ME.inc</p>
