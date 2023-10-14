@@ -64,7 +64,7 @@
 
     // Windows compilers need specific (and different) keywords for export and import
     #define LAPLACE_LINK_API_EXPORT extern "C" __declspec(dllexport)
-    #define LAPLACE_LINK_API_IMPORT LINK_EXTERN_C __declspec(dllimport)
+    #define LAPLACE_LINK_API_IMPORT LAPLACE_LINK_EXTERN_C __declspec(dllimport)
 
     // For Visual C++ compilers, we also need to turn off this annoying C4251 warning
     #ifdef _MSC_VER
@@ -80,13 +80,13 @@
         // GCC 4 has special keywords for showing/hidding symbols,
         // the same keyword is used for both importing and exporting
         #define LAPLACE_LINK_API_EXPORT extern "C" __attribute__ ((__visibility__ ("default")))
-        #define LAPLACE_LINK_API_IMPORT LINK_EXTERN_C __attribute__ ((__visibility__ ("default")))
+        #define LAPLACE_LINK_API_IMPORT LAPLACE_LINK_EXTERN_C __attribute__ ((__visibility__ ("default")))
 
     #else
 
         // GCC < 4 has no mechanism to explicitely hide symbols, everything's exported
         #define LAPLACE_LINK_API_EXPORT extern "C"
-        #define LAPLACE_LINK_API_IMPORT LINK_EXTERN_C
+        #define LAPLACE_LINK_API_IMPORT LAPLACE_LINK_EXTERN_C
 
     #endif
 

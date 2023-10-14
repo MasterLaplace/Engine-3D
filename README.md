@@ -15,7 +15,8 @@
 <p align="center">
     <img src="https://img.shields.io/badge/Linux-blue?style=for-the-badge" alt="Linux"> &#xa0; | &#xa0;
     <img src="https://img.shields.io/badge/Windows-blue?style=for-the-badge" alt="Windows"> &#xa0; | &#xa0;
-    <img src="https://img.shields.io/badge/MacOS-blue?style=for-the-badge" alt="MacOS">
+    <img src="https://img.shields.io/badge/MacOS-blue?style=for-the-badge" alt="MacOS"> &#xa0; | &#xa0;
+    <img src="https://img.shields.io/badge/FreeBSD-blue?style=for-the-badge" alt="FreeBSD">
 </p>
 <h3 align="center">🎮 Supported Graphics Libraries</h3>
 <p align="center">

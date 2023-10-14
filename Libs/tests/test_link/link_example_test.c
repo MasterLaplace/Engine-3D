@@ -9,14 +9,12 @@
 
 #include <criterion/criterion.h>
 
-#include <stdio.h>
-#include <stdlib.h>
 #include "laplace_link.h"
 
 #define NB_WAVE 10
 
 typedef struct wave_s {
-    double wavelength;
+    double wave_length;
     double wave_speed;
     double wave_direction;
 } wave_t;
@@ -30,7 +28,7 @@ void init_wave()
 
     for (unsigned i = 0; i < NB_WAVE; i++) {
         wave_t *wave = malloc(sizeof(wave_t));
-        wave->wavelength = 0;
+        wave->wave_length = 0;
         wave->wave_speed = 0;
         wave->wave_direction = 0;
 
@@ -55,7 +53,7 @@ void delete_wave()
     do {
         wave_t *wave = (wave_t *)actual->obj;
 
-        if (wave->wavelength == 0) {
+        if (wave->wave_length == 0) {
             laplace_link_remove(&(wave_list), actual, &free_wave);
             break;
         }
@@ -89,7 +87,7 @@ void print_wave()
     do {
         wave_t *wave = (wave_t *)actual->obj;
 
-        printf("Wavelength: %f\n", wave->wavelength);
+        printf("Wave length: %f\n", wave->wave_length);
         printf("Wave speed: %f\n", wave->wave_speed);
         printf("Wave direction: %f\n", wave->wave_direction);
 
@@ -97,7 +95,7 @@ void print_wave()
     } while (wave_list && actual != wave_list);
 }
 
-Test(link_example, should_be_not_fail) {
+Test(link_example, should_not_fail) {
     init_wave();
     print_wave();
     delete_wave();

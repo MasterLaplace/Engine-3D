@@ -24,7 +24,7 @@
 #include "laplace_lib_version.h"
 
 ////////////////////////////////////////////////////////////
-// Include necessary headers for the library
+// Include necessary headers for the lib library
 ////////////////////////////////////////////////////////////
 #ifdef  __cplusplus
     #include <cstdbool>

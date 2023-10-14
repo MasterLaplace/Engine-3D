@@ -1,4 +1,4 @@
-# ME : Lib<br><br><p align="center">LPALACE LIB LIB/LINK</p>
+# ME : Lib<br><br><p align="center">LPALACE LIBRARY LIB/LINK/MAP</p>
 
 <p align="center">
   <a>
@@ -20,6 +20,7 @@ Status: complete ✅
 - [Description](#description)
   - [Laplace Lib](#laplace-lib)
   - [Laplace Link](#laplace-link)
+  - [Laplace Map](#laplace-map)
 - [Build](#build)
 - [Contacts](#contacts)
 
@@ -61,12 +62,28 @@ Key features of Laplace Link Library include:
 The Laplace Link Library is distributed under the MIT License, making it accessible for various applications. It is version **1.0.0**, and this documentation was last updated on **October 13, 2023**.
 
 
+<div id='laplace-map'/>
+
+#### **LAPLACE MAP**
+
+**Laplace Map Library v1.0.0** is a C library that introduces a user-friendly hash map data structure implementation. This library simplifies the creation, insertion, and removal of key-value pairs in a map, as well as applying functions to each pair, sorting the map, and printing its contents. It is developed and maintained by MasterLaplace.
+
+Key features of Laplace Map Library include:
+- **Hash Map Structure**: The library defines the `map_t` struct to represent individual key-value pairs in the hash map.
+- **Map Operations**: Functions like `laplace_map_create` to create maps with objects, `laplace_map_append` for adding pairs to the map, and `laplace_map_remove` for removing pairs from the map.
+- **List Operations**: Functions for checking if a pair is null, determining the size of the map, and obtaining pairs by the key they contain.
+- **Cross-Platform Compatibility**: The library includes appropriate header files based on the platform in use.
+
+The Laplace Map Library is distributed under the MIT License, making it accessible for various applications. It is version **1.0.0**, and this documentation was last updated on **October 14, 2023**.
+
+
 <div id='build'/>
 
 ## :truck: **BUILD**
 
 ```shell
 # Build
+$ cp ../.env .env
 $ make re
 ```
 
@@ -76,7 +93,13 @@ $ make re
 
 This libs has been carried out by:
 
-* [![GitHub MasterLaplace](https://img.shields.io/github/followers/MasterLaplace?label=MasterLaplace&style=social)](https://github.com/MasterLaplace)
+<table align="center">
+    <tbody>
+        <tr>
+            <td align="center"><a href="https://github.com/MasterLaplace/"><img src="https://avatars.githubusercontent.com/MasterLaplace?v=4?s=100" width="100px;" alt="MasterLaplace"/><br/><a href="https://github.com/MasterLaplace/"><img src="https://img.shields.io/github/followers/MasterLaplace?label=Master_Laplace&style=social" alt="Master_Laplace"/></a></td>
+        </tr>
+    </tbody>
+</table>
 
 ---
 <p align="center">ME.inc</p>

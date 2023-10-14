@@ -24,6 +24,9 @@ file = sys.argv[1]
 nb = sys.argv[2]
 all = sys.argv[3]
 
+if nb > all:
+    nb = all
+
 place = 30
 percentage = int(nb) * 100 / int(all)
 

@@ -13,6 +13,7 @@ void laplace_link_print(link_t *list, void (*print)(void *))
 {
     link_t *actual = list;
 
+    printf("[link_t]:\n");
     if (!actual)
         return;
     do {
