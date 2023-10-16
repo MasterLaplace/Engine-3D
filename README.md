@@ -193,6 +193,12 @@ Wiki:
 For detailed documentation on the Laplace Library, see:
 - [**Laplace Library Documentation**](https://github.com/MasterLaplace/Engine-3D/blob/main/Libs/README.md)
 
+For detailed documentation on the Engine-3D, see:
+- [**Engine-3D Documentation**](https://github.com/MasterLaplace/Engine-3D/blob/main/Engine/README.md)
+
+For detailed documentation on the Launcher, see:
+- [**Launcher Documentation**](https://github.com/MasterLaplace/Engine-3D/blob/main/Launcher/README.md)
+
 External Documentation:
 - [**CSFML**](https://www.sfml-dev.org/download/csfml/)
 - [**vosk-api**](https://alphacephei.com/vosk/)

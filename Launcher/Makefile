@@ -36,4 +36,21 @@ fclean: clean
 
 re: clean all
 
+## HELP MODE
+
+help:
+	@$(ECHO) $(BOLD) $(GREEN)"\n► LAUNCHER HELP 📖 !\n"$(DEFAULT)
+	@$(ECHO) $(BOLD) $(LIGHT_BLUE)"► make install 📦 !"$(DEFAULT)
+	@$(ECHO) $(BOLD) $(LIGHT_BLUE)"► make lint 📦 !"$(DEFAULT)
+	@$(ECHO) $(BOLD) $(LIGHT_BLUE)"► make type 📦 !"$(DEFAULT)
+	@$(ECHO) $(BOLD) $(LIGHT_BLUE)"► make clean 🧹 !"$(DEFAULT)
+	@$(ECHO) $(BOLD) $(LIGHT_BLUE)"► make fclean 🧹 !"$(DEFAULT)
+	@$(ECHO) $(BOLD) $(LIGHT_BLUE)"► make re 🧹 !"$(DEFAULT)
+	@$(ECHO) $(BOLD) $(LIGHT_BLUE)"► make help: Show this help 📜"$(DEFAULT)
+	@$(ECHO) $(BOLD) $(LIGHT_BLUE)"► make version: Show the version of the Laplace Launcher 📜 !"$(DEFAULT)
+
+version:
+	@$(ECHO) $(BOLD) $(GREEN)"\n► LAUNCHER VERSION 📜 !"$(DEFAULT)
+	@$(ECHO) $(BOLD) $(LIGHT_BLUE)"\n► Laplace Launcher: $(shell cat VERSION)"$(DEFAULT)
+
 .PHONY: all install lint type clean

@@ -156,6 +156,6 @@ help:
 
 version:
 	@$(ECHO) $(BOLD) $(GREEN)"\n► LIBS VERSION 📜 !"$(DEFAULT)
-	@$(ECHO) $(BOLD) $(LIGHT_BLUE)"\n► Laplace Library: $(VERSION)"$(DEFAULT)
+	@$(ECHO) $(BOLD) $(LIGHT_BLUE)"\n► Laplace Library:$(shell cat VERSION)"$(DEFAULT)
 
 .PHONY:	all clean fclean re debug tests_run

@@ -1,4 +1,4 @@
-# ME : Lib<br><br><p align="center">LAPLACE LAUNCHER</p>
+# ME : Launcher<br><br><p align="center">LAPLACE LAUNCHER</p>
 
 <p align="center">
   <a>

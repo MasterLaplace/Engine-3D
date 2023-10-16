@@ -217,30 +217,32 @@ lib_tests:
 
 help:
 	@$(ECHO) $(BOLD) $(GREEN)"\n► HELP MODE 📖 !"$(DEFAULT)
-	@$(ECHO) $(BOLD) $(GREEN)"\n► MAKEFILE COMMANDS 📖 !"$(DEFAULT)
-	@$(ECHO) $(BOLD) $(LIGHT_BLUE)"\n► make\
-	\n► make re\
-	\n► make clean\
-	\n► make fclean\
-	\n► make debug\
-	\n► make gprof\
-	\n► make share\
-	\n► make install\
-	\n► make uninstall\
-	\n► make help\
-	\n► make author\
-	\n► make version"$(DEFAULT)
-	@$(ECHO) $(BOLD) $(GREEN)"\n► LIB COMMANDS 📖 !"$(DEFAULT)
-	@$(ECHO) $(BOLD) $(LIGHT_BLUE)"\n► make lib\
-	\n► make lib_debug\
-	\n► make lib_gprof\
-	\n► make lib_tests"$(DEFAULT)
-	@$(ECHO) $(BOLD) $(GREEN)"\n► GRAPHICAL LIBRARIES 📖 !"$(DEFAULT)
-	@$(ECHO) $(BOLD) $(LIGHT_BLUE)"\n► make csfml\
-	\n► make sfml\
-	\n► make sdl2\
-	\n► make opengl\
-	\n► make vulkan"$(DEFAULT)
+	@$(ECHO) $(BOLD) $(GREEN)"\n► MAKEFILE COMMANDS 📖 !\n"$(DEFAULT)
+	@$(ECHO) $(BOLD) $(LIGHT_BLUE)"► make\n \
+	► make re\n \
+	► make clean\n \
+	► make fclean\n \
+	► make debug\n \
+	► make gprof\n \
+	► make share\n \
+	► make install\n \
+	► make uninstall\n \
+	► make help\n \
+	► make author\n \
+	► make version"$(DEFAULT)
+	@$(ECHO) $(BOLD) $(GREEN)"\n► LIB COMMANDS 📖 !\n"$(DEFAULT)
+	@$(ECHO) $(BOLD) $(LIGHT_BLUE)"► make lib\n \
+	► make lib_debug\n \
+	► make lib_gprof\n \
+	► make lib_tests"$(DEFAULT)
+	@$(ECHO) $(BOLD) $(GREEN)"\n► GRAPHICAL LIBRARIES 📖 !\n"$(DEFAULT)
+	@$(ECHO) $(BOLD) $(LIGHT_BLUE)"► make csfml\n \
+	► make sfml\n \
+	► make sdl2\n \
+	► make opengl\n \
+	► make vulkan"$(DEFAULT)
+	@$(ECHO) $(BOLD) $(GREEN)"\n► LAUNCHER COMMANDS 📖 !\n"$(DEFAULT)
+	@$(ECHO) $(BOLD) $(LIGHT_BLUE)"► make launcher"$(DEFAULT)
 
 author:
 	@$(ECHO) $(USER)
@@ -249,6 +251,7 @@ version:
 	@$(ECHO) $(BOLD) $(GREEN)"\n► VERSION 📖 !"$(DEFAULT)
 	@$(ECHO) $(BOLD) $(LIGHT_BLUE)"\n► $(VERSION) 📖 !"$(DEFAULT)
 	@$(MAKE) -C ./Libs version $(NO_PRINT)
+	@$(MAKE) -C ./Launcher version $(NO_PRINT)
 
 
 .PHONY: all re clean fclean debug test %.o
