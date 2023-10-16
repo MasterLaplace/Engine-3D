@@ -523,3 +523,4 @@ dkms.conf
 *.smod
 
 .Test/
+Docs/Engine-3D/

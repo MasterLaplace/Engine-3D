@@ -32,11 +32,11 @@ inline int laplace_lib_open_file(char const *filepath, unsigned oflag)
     if (!filepath)
         return (-1);
     if (access(filepath, F_OK) || fd == -1) {
-        printf("no such file or directory\n");
+        printf("[%s:%u] : no such file or directory\n", __FILE__, __LINE__);
         return (-1);
     }
     if (access(filepath, R_OK)) {
-        printf("Don't have the permission to read the file %s", filepath);
+        printf("[%s:%u] : Don't have the permission to read the file %s", __FILE__, __LINE__, filepath);
         return (-1);
     }
     return fd;

@@ -107,6 +107,7 @@ extern inline void laplace_lib_two_print(const char *tab[]);
  *
  * @param filepath {const char *} - Filepath of the file to open
  * @param oflag {unsigned} - Open flag (O_RDONLY, O_WRONLY, O_RDWR)
+ * @return {int} - File descriptor
  */
 extern inline int laplace_lib_open_file(char const *filepath, unsigned oflag);
 

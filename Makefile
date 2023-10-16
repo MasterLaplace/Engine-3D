@@ -10,11 +10,25 @@
 -include .env
 export
 
+PROJECT_NAME	:=	$(word 2, $(MAKECMDGOALS))
+GRAPHICAL_LIB	:=	$(word 3, $(MAKECMDGOALS))
+
+DEFAULT_GRAPHICAL_LIB := csfml
+
+SRC_DIR		=	./Engine/
+
+# SRC			=	$(shell find $(SRC_DIR) -name '*.c' | grep -v "core.c")
+MAIN		=	$(SRC_DIR)core.c
+
+MAIN_OBJ	=	$(MAIN_SRC:.c=.o)
+
 BIN 		=	bin/
 
-INCLUDES	=	-I ./includes -I ./libs/my/include -I ./libs/link/include
+INCLUDES	=	-I ./Libs/LaplaceLib/include -I ./Libs/LaplaceLink/include \
+				-I ./Libs/LaplaceMap/include -I ./Libs/LaplaceError/include \
+				-I ./Engine/Engine
 
-LIB_NAME	=	-L ./libs -lmy -llink
+LIB_NAME	=	-L ./Libs -l LaplaceLib -l LaplaceLink -l LaplaceMap
 
 OPTI		=	-Ofast -march=native -flto -fuse-linker-plugin -pipe \
 				-fomit-frame-pointer -fopenmp -fprefetch-loop-arrays \
@@ -27,8 +41,35 @@ CSFML		=	-l csfml-graphics \
 				-l csfml-window   \
 				-l csfml-audio
 
+SFML		=	-l sfml-graphics \
+				-l sfml-system   \
+				-l sfml-window   \
+				-l sfml-audio
 
-LDFLAGS		=	$(INCLUDES) $(LIB_NAME) $(CSFML) -lm
+SDL2		=	-l SDL2 -l SDL2_image -l SDL2_ttf -l SDL2_mixer
+
+OPENGL		=	-l glfw -l GLEW -l GL -l GLU -l glut -l X11 -l dl -l pthread -l Xrandr \
+				-l Xi -l Xxf86vm -l Xinerama -l Xcursor
+
+VULKAN		=	-l glfw -l vulkan -l X11 -l dl -l pthread -l Xrandr \
+				-l Xi -l Xxf86vm -l Xinerama -l Xcursor
+
+LDFLAGS :=
+ifeq ($(GRAPHICAL_LIB), csfml)
+    LDFLAGS := $(INCLUDES) $(LIB_NAME) $(CSFML) -lm
+else ifeq ($(GRAPHICAL_LIB), sfml)
+    LDFLAGS := $(INCLUDES) $(LIB_NAME) $(SFML) -lm
+else ifeq ($(GRAPHICAL_LIB), sdl2)
+    LDFLAGS := $(INCLUDES) $(LIB_NAME) $(SDL2) -lm
+else ifeq ($(GRAPHICAL_LIB), opengl)
+    LDFLAGS := $(INCLUDES) $(LIB_NAME) $(OPENGL) -lm
+else ifeq ($(GRAPHICAL_LIB), vulkan)
+    LDFLAGS := $(INCLUDES) $(LIB_NAME) $(VULKAN) -lm
+else
+    # If no graphical lib is specified, use the default one
+    LDFLAGS := $(INCLUDES) $(LIB_NAME) $(CSFML) -lm
+    GRAPHICAL_LIB := $(DEFAULT_GRAPHICAL_LIB)
+endif
 
 CFLAGS		=	$(FLAGS) $(LDFLAGS) $(OPTI) $(IGNORE)
 
@@ -60,11 +101,37 @@ endif
 SRC_COUNT	:=	$(words $(SRC))
 NB	= 0
 
-all: lib $(NAME)
+$(PROJECT_NAME):
+	@$(ECHO) $(BOLD) $(LIGHT_BLUE) "Selected project: $(PROJECT_NAME) 🎮 !" $(DEFAULT)
+
+$(GRAPHICAL_LIB):
+	@$(ECHO) $(BOLD) $(LIGHT_BLUE) "Selected graphical library: $(GRAPHICAL_LIB) 🎮 !" $(DEFAULT)
+
+$(NAME): print lib $(MAIN_OBJ)
+	@$(CC) -o $(NAME) ok.c \
+	&& $(ECHO) $(BOLD) $(GREEN)"\n► BUILD SUCCESS ⛽ !"$(DEFAULT) \
+	|| ($(ECHO) $(BOLD) $(RED)"\n► BUILD FAILED ⛽"$(DEFAULT) && exit 1)
+
+
+all: $(NAME) $(PROJECT_NAME) $(GRAPHICAL_LIB)
+
+print:
+	@$(ECHO) $(BOLD)$(GREEN)"🚀  Engine-3D  🚀"$(DEFAULT)
+	@$(ECHO) $(BOLD) $(GREEN)"\n► MAKEFILE 📖 !"$(DEFAULT)
 
 lib:
 	@$(MAKE) all -C ./Libs $(NO_PRINT)
 	@-$(ECHO) $(BOLD) $(GREEN)"\n► LIB ⛽ !"$(DEFAULT)
+
+launcher:
+	@ln -sf ./Launcher/src/main.py ./launcher
+	@-$(ECHO) $(BOLD) $(GREEN)"\n► LAUNCHER 🚀 !"$(DEFAULT)
+	@$(MAKE) all -C ./Launcher $(NO_PRINT)
+
+run: all
+	@-./bin/engine.out $(PROJECT_NAME) \
+	&& $(ECHO) $(BOLD) $(GREEN)"\n► RUN SUCCESS 🚀 !"$(DEFAULT) \
+	|| ($(ECHO) $(BOLD) $(RED)"\n► RUN FAILED 🚀"$(DEFAULT) && exit 1)
 
 ## CLEAN TARGETS
 
@@ -72,6 +139,7 @@ clean:
 	@$(RM) $(OBJ)
 	@$(RM) $(TEST_OBJ)
 	@$(MAKE) -C ./Libs clean $(NO_PRINT)
+	@$(MAKE) -C ./Launcher clean $(NO_PRINT)
 	@$(RM) *~
 	@$(RM) *#
 	@-$(ECHO) $(BOLD) $(GREEN)✓$(LIGHT_BLUE)" CLEAN 💨"$(DEFAULT)
@@ -81,12 +149,13 @@ fclean:	clean
 	@$(RM) $(SHARE_NAME)
 	@$(RM) $(TEST_NAME)
 	@$(MAKE) -C ./Libs fclean $(NO_PRINT)
+	@$(MAKE) -C ./Launcher fclean $(NO_PRINT)
 	@$(RM) *.gcda
 	@$(RM) *.gcno
 	@$(RM) vgcore.*
 	@-$(ECHO) $(BOLD) $(GREEN)✓$(LIGHT_BLUE)" FCLEAN 🧻"$(DEFAULT)
 
-re: fclean all
+re: fclean all launcher
 
 ## DEBUG MODE
 

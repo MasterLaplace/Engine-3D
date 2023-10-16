@@ -38,3 +38,14 @@ void laplace_map_clean_ptr(map_t *map) {
     free((void *)map->key);
     free((void *)map->obj);
 }
+
+void laplace_map_clean_r(map_t *map)
+{
+    if (!map->next) {
+        free((char *)map->key);
+        free((char *)map->obj);
+        return;
+    }
+    free((char *)map->key);
+    laplace_map_remove(&(map), map, &laplace_map_clean_r);
+}

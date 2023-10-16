@@ -1,4 +1,4 @@
-# ME : <p align="center">Engine-3D</p>
+# ME : <p align="center">Engine-3D<br><br><img src="Images/Logo_1-200x200.png" alt="Engine-3D logo" style="height: 200px"></p>
 
 <p align="center">
     <h3 align="center">📦 Download &#xa0; : &#xa0;
@@ -72,7 +72,50 @@ temps réel.<br>
 
 <div id='goal'/>
 
-### **GOAL**
+### :bookmark: **Chapters**
+
+1. [Rastérisation](./Docs/01_Rastérisation/Fiche%20Hub.pdf)
+    - 1.1 Projection matricielle ✅
+    - 1.2 Clipping de Cohen-Sutherland
+    - 1.3 Déplacement de la caméra
+    - 1.4 Texture mapping
+    - 1.5 Z-buffer/Deph-buffer
+2. [Collision](./Docs/02_Collision/Fiche%20Hub%202.pdf) (en cours)
+    - 2.1 Binary Space Partitioning
+    - 2.2 Octree
+    - 2.3 Bounding Volume Hierarchy
+    - 2.4 World Partitioning
+    - 2.5 R-tree
+3. [Compatibilité](./Docs/03_Compatibilité/Fiche%20Hub%203.pdf) (en cours)
+    - 3.1 Langages
+        - 3.1.1 C ✅
+        - 3.1.1 C++
+    - 3.2 Systèmes d’exploitation
+        - 3.2.1 Linux ✅
+        - 3.2.2 Windows
+        - 3.2.3 MacOS
+        - 3.2.4 FreeBSD
+    - 3.3 Bibliothèques graphiques
+        - 3.3.1 SDL
+        - 3.3.2 CSFML ✅
+        - 3.3.2 SFML
+        - 3.3.1 OpenGL
+        - 3.3.2 Vulkan
+        - 3.3.3 DirectX
+4. Outils de développement (a faire)
+    - 4.1 Gestionnaire de version
+    - 4.2 Gestionnaire de paquets
+    - 4.3 Launcher ✅
+    - 4.4 mode Debug
+    - 4.5 Profiler
+    - 4.6 Documentation ✅
+    - 4.7 Tests
+5. Optimisation (a faire)
+    - 5.1 Multithreading
+    - 5.2 SIMD
+    - 5.3 Cache
+    - 5.4 Mémoire
+    - 5.5 GPU
 
 Il faut : ✅
 
@@ -95,7 +138,11 @@ $ cd Engine-3D
 
 # Engine
 $ make re
-$ ./bin/engine.out
+$ ./bin/engine.out <path-config-file.xml>
+
+# Launcher
+$ make re
+$ ./launcher
 ```
 
 

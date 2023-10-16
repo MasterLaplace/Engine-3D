@@ -96,6 +96,9 @@ extern void laplace_map_clean_ptr_str(map_t *map);
 //* Free a pointer.
 extern void laplace_map_clean_ptr(map_t *map);
 
+//* Free a map_t<char *, map_t> ... map_t<char *, char *>.
+extern void laplace_map_clean_r(map_t *map);
+
 
 //* It returns the map with the key passed in parameter.
 extern map_t *laplace_map_get_at_key(map_t *list, void *key, bool (*cmp)(void *key, void *key2));
