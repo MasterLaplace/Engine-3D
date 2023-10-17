@@ -93,7 +93,7 @@ extern link_t *laplace_link_get_at_index(link_t *list, unsigned index);
 extern link_t *laplace_link_get_at_obj(link_t *list, void *obj);
 
 #ifdef  __cplusplus
-    }
+    }   // extern "C"
 #endif
 
 #endif/* !LAPLACE_LINK_H_ */

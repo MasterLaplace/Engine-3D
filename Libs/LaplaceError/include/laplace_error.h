@@ -7,7 +7,7 @@
 
 #ifndef LERROR_H_
     #define LERROR_H_
-    #define LIB_LERROR_VERSION "1.0.0"
+    #define LIB_LERROR_VERSION "0.0.1"
 
 #include <stdbool.h>
 #include <stdio.h>

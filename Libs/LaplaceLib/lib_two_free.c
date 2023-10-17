@@ -19,10 +19,7 @@ inline void laplace_lib_two_free(char **tab)
 {
     if (!tab)
         return;
-    for (unsigned i = 0; tab[i]; ++i) {
-        free(tab[i]);
-        tab[i] = NULL;
-    }
+    for (unsigned i = 0; tab[i]; free(tab[i]), ++i);
     free(tab);
     tab = NULL;
 }

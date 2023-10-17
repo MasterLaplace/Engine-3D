@@ -83,8 +83,8 @@ The Laplace Map Library is distributed under the MIT License, making it accessib
 
 ```shell
 # Build
-$ cp ../.env .env
-$ make re
+$ cd ..
+$ make lib
 ```
 
 <div id='contacts'/>

@@ -1,4 +1,5 @@
 /*
+** EPITECH PROJECT, 2023
 ** Title: Laplace Link Library v1.0.0
 ** Author: MasterLaplace
 ** Created: 2023-10-13
