@@ -51,49 +51,49 @@ class SceneManager(QMainWindow):
     def HomePage(self)-> Widgets:
         layout = QVBoxLayout()
 
-        layout.addWidget(Widgets.createLabel(0, 0, 'Welcome to Engine-3D Launcher'))
-        layout.addWidget(Widgets.createButton(0, 0, 0, 0, 'Create a new project', self.ShowCreateProject))
-        layout.addWidget(Widgets.createButton(0, 0, 0, 0, 'Open a project (config.xml)', self.ShowFileDialog))
+        layout.addWidget(Widgets.CreateLabel([0, 0], 'Welcome to Engine-3D Launcher'))
+        layout.addWidget(Widgets.CreateButton([0, 0], [0, 0], 'Create a new project', self.ShowCreateProject))
+        layout.addWidget(Widgets.CreateButton([0, 0], [0, 0], 'Open a project (config.xml)', self.ShowFileDialog))
         self.xml_text = QTextEdit(self)
         self.xml_text.setReadOnly(True)
         layout.addWidget(self.xml_text)
-        self.run_button = Widgets.createButton(0, 0, 0, 0, 'Launch project', self.ShowRunProject)
+        self.run_button = Widgets.CreateButton([0, 0], [0, 0], 'Launch project', self.ShowRunProject)
         self.run_button.setEnabled(False)
         layout.addWidget(self.run_button)
-        layout.addWidget(Widgets.createButton(0, 0, 0, 0, 'Credits', self.ShowCredits))
+        layout.addWidget(Widgets.CreateButton([0, 0], [0, 0], 'Credits', self.ShowCredits))
 
         return Widgets(layout)
 
     def CreateProjectPage(self)-> Widgets:
         layout = QVBoxLayout()
 
-        layout.addWidget(Widgets.createLabel(0, 0, 'Engine-3D Create Project:'))
-        layout.addWidget(Widgets.createLabel(0, 0, 'Project name:'))
-        layout.addWidget(Widgets.createLineEdit(0, 0, 0, 0, self.ChangeProjectName))
-        layout.addWidget(Widgets.createLabel(0, 0, 'Graphycal API:'))
-        layout.addWidget(Widgets.createComboBox(0, 0, 0, 0, ['sdl2', 'CSFML', 'SFML', 'OpenGL', 'Vulkan'], self.ChangeProjectGraphycal))
-        layout.addWidget(Widgets.createLabel(0, 0, 'Engine-3D version:'))
-        layout.addWidget(Widgets.createComboBox(0, 0, 0, 0, ['0.2.0', '0.1.0'], self.ChangeProjectVersion))
-        layout.addWidget(Widgets.createButton(0, 0, 0, 0, 'Create', self.CreateProject))
-        layout.addWidget(Widgets.createButton(0, 0, 50, 50, 'Home', self.ShowHome))
+        layout.addWidget(Widgets.CreateLabel([0, 0], 'Engine-3D Create Project:'))
+        layout.addWidget(Widgets.CreateLabel([0, 0], 'Project name:'))
+        layout.addWidget(Widgets.CreateLineEdit([0, 0], [0, 0], self.ChangeProjectName))
+        layout.addWidget(Widgets.CreateLabel([0, 0], 'Graphycal API:'))
+        layout.addWidget(Widgets.CreateComboBox([0, 0], [0, 0], ['sdl2', 'CSFML', 'SFML', 'OpenGL', 'Vulkan'], self.ChangeProjectGraphycal))
+        layout.addWidget(Widgets.CreateLabel([0, 0], 'Engine-3D version:'))
+        layout.addWidget(Widgets.CreateComboBox([0, 0], [0, 0], ['0.2.0', '0.1.0'], self.ChangeProjectVersion))
+        layout.addWidget(Widgets.CreateButton([0, 0], [0, 0], 'Create', self.CreateProject))
+        layout.addWidget(Widgets.CreateButton([0, 0], [0, 0], 'Home', self.ShowHome))
 
         return Widgets(layout)
 
     def SettingsPage(self)-> Widgets:
         layout = QVBoxLayout()
 
-        layout.addWidget(Widgets.createLabel(0, 0, 'Engine-3D Settings:'))
-        layout.addWidget(Widgets.createButton(0, 0, 50, 50, 'Home', self.ShowHome))
+        layout.addWidget(Widgets.CreateLabel([0, 0], 'Engine-3D Settings:'))
+        layout.addWidget(Widgets.CreateButton([0, 0], [0, 0], 'Home', self.ShowHome))
 
         return Widgets(layout)
 
     def CreditsPage(self)-> Widgets:
         layout = QVBoxLayout()
 
-        layout.addWidget(Widgets.createLabel(0, 0, 'Engine-3D Credits:'))
-        layout.addWidget(Widgets.createLabel(0, 0, __CREDITS__))
-        layout.addWidget(Widgets.createLabel(0, 0, 'Engine-3D Launcher version: ' + __VERSION__))
-        layout.addWidget(Widgets.createButton(0, 0, 50, 50, 'Home', self.ShowHome))
+        layout.addWidget(Widgets.CreateLabel([0, 0], 'Engine-3D Credits:'))
+        layout.addWidget(Widgets.CreateLabel([0, 0], __CREDITS__))
+        layout.addWidget(Widgets.CreateLabel([0, 0], 'Engine-3D Launcher version: ' + __VERSION__))
+        layout.addWidget(Widgets.CreateButton([0, 0], [0, 0], 'Home', self.ShowHome))
 
         return Widgets(layout)
 
