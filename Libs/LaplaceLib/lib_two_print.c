@@ -17,6 +17,5 @@ inline void laplace_lib_two_print(const char *tab[])
 {
     if (!tab)
         return;
-    for (; *tab; ++tab)
-        printf("%s\n", *tab);
+    for (; *tab; printf("%s\n", *tab), ++tab);
 }

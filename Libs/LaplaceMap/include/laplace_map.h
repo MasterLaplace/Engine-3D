@@ -129,7 +129,7 @@ extern bool laplace_map_cmp_ptr(void *a, void *b);
 extern bool laplace_map_cmp_bool(void *a, void *b);
 
 #ifdef  __cplusplus
-    }
+    }   // extern "C"
 #endif
 
 #endif/* !LAPLACE_MAP_H_ */

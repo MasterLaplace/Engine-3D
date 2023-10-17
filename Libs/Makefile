@@ -24,10 +24,10 @@ OBJ_LLIB 	=	$(SRC_LLIB:.c=.o)
 
 OBJ_TEST 	=	$(SRC_TEST:.c=.o)
 
-INCLUDE_LERROR =	-I LaplaceError/include
-INCLUDE_LLINK 	=	-I LaplaceLink/include
-INCLUDE_LMAP 	=	-I LaplaceMap/include
-INCLUDE_LLIB 	=	-I LaplaceLib/include
+INCLUDE_LERROR =	-iquote LaplaceError/include
+INCLUDE_LLINK 	=	-iquote LaplaceLink/include
+INCLUDE_LMAP 	=	-iquote LaplaceMap/include
+INCLUDE_LLIB 	=	-iquote LaplaceLib/include
 
 ifeq ($(OS), linux)
 CC			=	gcc
@@ -56,7 +56,7 @@ endif
 
 CFLAGS =	-Wall -Werror -Wpedantic $(INCLUDE_LLIB) $(INCLUDE_LLINK) $(INCLUDE_LMAP) $(INCLUDE_LERROR)
 LDFLAGS =	-L. -lLaplaceLib -lLaplaceLink -lLaplaceMap -lLaplaceError
-FASTFLAGS =	-Ofast -march=native -flto -fomit-frame-pointer \
+FASTFLAGS =	-Ofast -march=native -mtune=native -flto -fomit-frame-pointer \
 			-fopenmp -fprefetch-loop-arrays -pipe
 
 all:	$(NAME_LLIB) $(NAME_LLINK) $(NAME_LMAP) $(NAME_LERROR)
