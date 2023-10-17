@@ -23,4 +23,3 @@ SOFTWARE.
 External libraries/API's used by Engine-3D
 
     CSFML is under the zlib/png license
-    vosk-api is under the Apache License
