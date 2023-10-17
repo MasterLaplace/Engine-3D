@@ -20,3 +20,6 @@
 *.cpp linguist-language=C++
 *.h linguist-language=C
 *.hpp linguist-language=C++
+
+# Handling of Python-specific files
+*.py linguist-language=Python

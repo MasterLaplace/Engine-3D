@@ -28,7 +28,10 @@ if nb > all:
     nb = all
 
 place = 30
-percentage = int(nb) * 100 / int(all)
+if int(all) == 0:
+    percentage = 0
+else:
+    percentage = int(nb) * 100 / int(all)
 
 display = bold + file
 if len(file) < place:

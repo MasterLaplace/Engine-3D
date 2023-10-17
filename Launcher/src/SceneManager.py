@@ -15,22 +15,26 @@ from ParseArgument import __CREDITS__, __VERSION__
 from Widgets import *
 
 class SceneManager(QMainWindow):
-    def __init__(self, fullscreen=False):
+    def __init__(self, fullscreen: bool=False):
         super().__init__()
         self.fullscreen = fullscreen
         self.WIN_X = 600
         self.WIN_Y = 400
-        self.initUI()
+        self.project_graphycal = ''
+        self.project_name = ''
+        self.project_version = ''
+        self.InitUI()
         if self.fullscreen:
             self.setWindowState(Qt.WindowFullScreen)
 
-    def initUI(self):
+    def InitUI(self):
         self.central_widget = QWidget(self)
         self.setCentralWidget(self.central_widget)
 
         self.stacked_widget = QStackedWidget()
 
         self.stacked_widget.addWidget(self.HomePage())
+        self.stacked_widget.addWidget(self.CreateProjectPage())
         self.stacked_widget.addWidget(self.SettingsPage())
         self.stacked_widget.addWidget(self.CreditsPage())
 
@@ -42,20 +46,36 @@ class SceneManager(QMainWindow):
         self.setWindowTitle('Engine-3D Launcher')
         self.setWindowIcon(QIcon('./Image/Logo_1.png'))
         # Create system tray icon
-        self.createSystemTrayIcon()
+        self.CreateSystemTrayIcon()
 
     def HomePage(self)-> Widgets:
         layout = QVBoxLayout()
 
         layout.addWidget(Widgets.createLabel(0, 0, 'Welcome to Engine-3D Launcher'))
-        layout.addWidget(Widgets.createButton(0, 0, 0, 0, 'Open a project (config.xml)', self.showFileDialog))
+        layout.addWidget(Widgets.createButton(0, 0, 0, 0, 'Create a new project', self.ShowCreateProject))
+        layout.addWidget(Widgets.createButton(0, 0, 0, 0, 'Open a project (config.xml)', self.ShowFileDialog))
         self.xml_text = QTextEdit(self)
         self.xml_text.setReadOnly(True)
         layout.addWidget(self.xml_text)
-        self.run_button = Widgets.createButton(0, 0, 0, 0, 'Launch project', self.showRunProject)
+        self.run_button = Widgets.createButton(0, 0, 0, 0, 'Launch project', self.ShowRunProject)
         self.run_button.setEnabled(False)
         layout.addWidget(self.run_button)
-        layout.addWidget(Widgets.createButton(0, 0, 0, 0, 'Credits', self.showCredits))
+        layout.addWidget(Widgets.createButton(0, 0, 0, 0, 'Credits', self.ShowCredits))
+
+        return Widgets(layout)
+
+    def CreateProjectPage(self)-> Widgets:
+        layout = QVBoxLayout()
+
+        layout.addWidget(Widgets.createLabel(0, 0, 'Engine-3D Create Project:'))
+        layout.addWidget(Widgets.createLabel(0, 0, 'Project name:'))
+        layout.addWidget(Widgets.createLineEdit(0, 0, 0, 0, self.ChangeProjectName))
+        layout.addWidget(Widgets.createLabel(0, 0, 'Graphycal API:'))
+        layout.addWidget(Widgets.createComboBox(0, 0, 0, 0, ['sdl2', 'CSFML', 'SFML', 'OpenGL', 'Vulkan'], self.ChangeProjectGraphycal))
+        layout.addWidget(Widgets.createLabel(0, 0, 'Engine-3D version:'))
+        layout.addWidget(Widgets.createComboBox(0, 0, 0, 0, ['0.2.0', '0.1.0'], self.ChangeProjectVersion))
+        layout.addWidget(Widgets.createButton(0, 0, 0, 0, 'Create', self.CreateProject))
+        layout.addWidget(Widgets.createButton(0, 0, 50, 50, 'Home', self.ShowHome))
 
         return Widgets(layout)
 
@@ -63,7 +83,7 @@ class SceneManager(QMainWindow):
         layout = QVBoxLayout()
 
         layout.addWidget(Widgets.createLabel(0, 0, 'Engine-3D Settings:'))
-        layout.addWidget(Widgets.createButton(0, 0, 50, 50, 'Home', self.showHome))
+        layout.addWidget(Widgets.createButton(0, 0, 50, 50, 'Home', self.ShowHome))
 
         return Widgets(layout)
 
@@ -73,44 +93,74 @@ class SceneManager(QMainWindow):
         layout.addWidget(Widgets.createLabel(0, 0, 'Engine-3D Credits:'))
         layout.addWidget(Widgets.createLabel(0, 0, __CREDITS__))
         layout.addWidget(Widgets.createLabel(0, 0, 'Engine-3D Launcher version: ' + __VERSION__))
-        layout.addWidget(Widgets.createButton(0, 0, 50, 50, 'Home', self.showHome))
+        layout.addWidget(Widgets.createButton(0, 0, 50, 50, 'Home', self.ShowHome))
 
         return Widgets(layout)
 
-    def createSystemTrayIcon(self):
+    def CreateSystemTrayIcon(self):
         self.tray_icon = QSystemTrayIcon(QIcon('./Image/Logo_1.png'), self)
         self.tray_icon.show()
 
         tray_menu = QMenu(self)
 
         about_action = QAction('About', self)
-        about_action.triggered.connect(self.showCredits)
+        about_action.triggered.connect(self.ShowCredits)
         tray_menu.addAction(about_action)
         reopen_action = QAction('Open', self)
         reopen_action.triggered.connect(self.show)
         tray_menu.addAction(reopen_action)
         exit_action = QAction('Exit', self)
-        exit_action.triggered.connect(self.closeApplication)
+        exit_action.triggered.connect(self.CloseApplication)
         tray_menu.addAction(exit_action)
 
         self.tray_icon.setContextMenu(tray_menu)
 
-    def showHome(self):
+    def CreateProject(self):
+        if self.project_name == '':
+            self.project_name = 'NewProject'
+        if self.project_graphycal == '':
+            self.project_graphycal = 'CSFML'
+        if self.project_version == '':
+            self.project_version = '0.2.0'
+
+        __XML_TEMPLATE__ = f"""\
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+    <Info name="{self.project_name}" graphycal="{self.project_graphycal.lower()}" version="{self.project_version}"/>
+</sbml>
+"""
+
+        filename = f'Projects/{self.project_name}/config.xml'
+        os.makedirs(os.path.dirname(filename), exist_ok=True)
+        with open(filename, "w", encoding='utf-8') as file:
+            file.write(__XML_TEMPLATE__)
+
+        self.project_graphycal = ''
+        self.project_name = ''
+        self.project_version = ''
+        self.ShowHome()
+
+    def ShowHome(self):
         if not self.isActiveWindow():
             self.show()
         self.stacked_widget.setCurrentIndex(0)
 
-    def showSettings(self):
-        if not self.isActiveWindow():
-            self.show()
-        self.stacked_widget.setCurrentIndex(1)
-
-    def showCredits(self):
+    def ShowSettings(self):
         if not self.isActiveWindow():
             self.show()
         self.stacked_widget.setCurrentIndex(2)
 
-    def showRunProject(self):
+    def ShowCredits(self):
+        if not self.isActiveWindow():
+            self.show()
+        self.stacked_widget.setCurrentIndex(3)
+
+    def ShowCreateProject(self):
+        if not self.isActiveWindow():
+            self.hide()
+        self.stacked_widget.setCurrentIndex(1)
+
+    def ShowRunProject(self):
         if self.isActiveWindow():
             self.hide()
         self.run_button.setEnabled(False)
@@ -124,7 +174,7 @@ class SceneManager(QMainWindow):
             graphycal = match.group(2)
             os.system(f'make run {name} {graphycal} -s')
 
-    def showFileDialog(self):
+    def ShowFileDialog(self):
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
 
@@ -136,7 +186,14 @@ class SceneManager(QMainWindow):
                 self.xml_text.setPlainText(self.xml_content)
                 self.run_button.setEnabled(True)
 
-    def closeApplication(self):
+    def ChangeProjectName(self, name):
+        self.project_name = name
+    def ChangeProjectGraphycal(self, graphycal):
+        self.project_graphycal = graphycal
+    def ChangeProjectVersion(self, version):
+        self.project_version = version
+
+    def CloseApplication(self):
         self.tray_icon.hide()
         sys.exit()
 

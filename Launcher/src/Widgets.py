@@ -102,6 +102,12 @@ class Widgets(QWidget):
 
         Returns:
             _type_: _description_ text
+
+        Examples:
+            >>> def changeText(text):
+            >>>     print(text)
+            >>>
+            >>> line_edit = Widgets.createLineEdit(0, 0, 100, 30, changeText)
         """
         line_edit = QLineEdit()
         line_edit.setGeometry(ax, ay, aw, ah)
@@ -147,7 +153,7 @@ class Widgets(QWidget):
         combo_box = QComboBox()
         combo_box.setGeometry(ax, ay, aw, ah)
         combo_box.addItems(items)
-        combo_box.currentIndexChanged.connect(func)
+        combo_box.currentTextChanged.connect(func)
         return combo_box
 
     @staticmethod

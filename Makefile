@@ -24,14 +24,14 @@ MAIN_OBJ	=	$(MAIN_SRC:.c=.o)
 
 BIN 		=	bin/
 
-INCLUDES	=	-I ./Libs/LaplaceLib/include -I ./Libs/LaplaceLink/include \
-				-I ./Libs/LaplaceMap/include -I ./Libs/LaplaceError/include \
-				-I ./Engine/Engine
+INCLUDES	=	-iquote ./Libs/LaplaceLib/include -iquote ./Libs/LaplaceLink/include \
+				-iquote ./Libs/LaplaceMap/include -iquote ./Libs/LaplaceError/include \
+				-iquote ./Engine/Engine
 
 LIB_NAME	=	-L ./Libs -l LaplaceLib -l LaplaceLink -l LaplaceMap
 
-OPTI		=	-Ofast -march=native -flto -fuse-linker-plugin -pipe \
-				-fomit-frame-pointer -fopenmp -fprefetch-loop-arrays \
+OPTI		=	-Ofast -march=native -mtune=native -flto -fuse-linker-plugin \
+				-pipe -fomit-frame-pointer -fopenmp -fprefetch-loop-arrays \
 				-fno-stack-protector -fno-ident -fno-asynchronous-unwind-tables
 
 IGNORE		= 	-fno-strict-aliasing -Wno-strict-aliasing
@@ -85,7 +85,7 @@ NAME		:=	$(BIN)engine.exe
 SHARE_NAME	:=	$(BIN)libengine.dll
 TEST_NAME	:=	$(BIN)test_engine.exe
 endif
-ifeq ($(OS), macos)
+ifeq ($(OS), macos || $(OS), ios)
 CC			:=	clang
 NAME		:=	$(BIN)engine.out
 SHARE_NAME	:=	$(BIN)libengine.dylib
@@ -124,7 +124,7 @@ lib:
 	@-$(ECHO) $(BOLD) $(GREEN)"\n► LIB ⛽ !"$(DEFAULT)
 
 launcher:
-	@ln -sf ./Launcher/src/main.py ./launcher
+	@ln -sf ./Launcher/src/__main__.py ./launcher
 	@-$(ECHO) $(BOLD) $(GREEN)"\n► LAUNCHER 🚀 !"$(DEFAULT)
 	@$(MAKE) all -C ./Launcher $(NO_PRINT)
 
