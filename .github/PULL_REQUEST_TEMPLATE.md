@@ -32,9 +32,9 @@ For ...
 
 ## Additional information
 
-**Area Dino Client requesting: (if applicable)**
+**Engine-3D Client requesting: (if applicable)**
 
-- [ ] Contributor has read Area Dino's [GitHub code of conduct](https://github.com/MasterLaplace/Engine-3D/blob/main/.github/CODE_OF_CONDUCT.md)
+- [ ] Contributor has read Engine-3D's [GitHub code of conduct](https://github.com/MasterLaplace/Engine-3D/blob/main/.github/CODE_OF_CONDUCT.md)
 - [ ] Contributor would like to be mentioned in the release notes as: (fill in this blank)
 - [ ] Contributor agrees to the license terms of this repository.
 
