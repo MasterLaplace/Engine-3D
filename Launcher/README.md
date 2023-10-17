@@ -27,6 +27,9 @@ Status: **In progress**
 
 **Laplace Launcher v0.1.0** is a python launcher for the Engine-3D. It allows you to launch the Engine-3D with the specified project, and can launch the project with a specific version of the Engine-3D.
 
+> **Warning**
+> The Laplace Launcher is still under development, and is in minor version **0.1.0**.
+
 The Laplace Launcher is distributed under the MIT License, making it accessible for various operating systeme. It is version **0.1.0**, and this documentation was last updated on **October 16, 2023**.
 
 
