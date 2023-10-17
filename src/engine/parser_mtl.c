@@ -84,7 +84,7 @@ static mtl_t mtl_create_from_file(char *buffer[])
     mtl_t mtl = {0};
     bool new = true;
 
-    while (*buffer) {
+    for (; *buffer; buffer++) {
         for (unsigned i = 0; mtl_keys[i].key; i++) {
             if (!strncmp(*buffer , mtl_keys[i].key, strlen(mtl_keys[i].key))) {
                 char tmp[256];
@@ -110,19 +110,17 @@ static mtl_t mtl_create_from_file(char *buffer[])
                 break;
             }
         }
-        *buffer++;
     }
     return mtl;
 }
 
 void loop_in_the_file(char *buffer[])
 {
-    while (*buffer) {
+    for (; *buffer; buffer++) {
         if (!strncmp(*buffer, "newmtl", 6)) {
-            struct mtl_t mtl = mtl_create_from_file(buffer);
+            mtl_t mtl = mtl_create_from_file(buffer);
             mtl_print(mtl);
             mtl_free(mtl);
         }
-        *buffer++;
     }
 }
