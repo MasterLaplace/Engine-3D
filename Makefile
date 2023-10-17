@@ -15,14 +15,13 @@ GRAPHICAL_LIB	:=	$(word 3, $(MAKECMDGOALS))
 
 DEFAULT_GRAPHICAL_LIB := csfml
 
-SRC_DIR		=	./Engine/
+SRC_DIR		=	Engine/
+BIN 		=	bin/
 
-# SRC			=	$(shell find $(SRC_DIR) -name '*.c' | grep -v "core.c")
 MAIN		=	$(SRC_DIR)core.c
 
-MAIN_OBJ	=	$(MAIN_SRC:.c=.o)
+OBJ			=	$(MAIN:.c=.o)
 
-BIN 		=	bin/
 
 INCLUDES	=	-iquote ./Libs/LaplaceLib/include -iquote ./Libs/LaplaceLink/include \
 				-iquote ./Libs/LaplaceMap/include -iquote ./Libs/LaplaceError/include \
@@ -107,13 +106,13 @@ $(PROJECT_NAME):
 $(GRAPHICAL_LIB):
 	@$(ECHO) $(BOLD) $(LIGHT_BLUE) "Selected graphical library: $(GRAPHICAL_LIB) 🎮 !" $(DEFAULT)
 
-$(NAME): print lib $(MAIN_OBJ)
-	@$(CC) -o $(NAME) ok.c \
+$(NAME): $(OBJ)
+	@$(CC) -o $(NAME) $(OBJ) $(CFLAGS) \
 	&& $(ECHO) $(BOLD) $(GREEN)"\n► BUILD SUCCESS ⛽ !"$(DEFAULT) \
 	|| ($(ECHO) $(BOLD) $(RED)"\n► BUILD FAILED ⛽"$(DEFAULT) && exit 1)
 
 
-all: $(NAME) $(PROJECT_NAME) $(GRAPHICAL_LIB)
+all: print lib $(NAME) $(PROJECT_NAME) $(GRAPHICAL_LIB)
 
 print:
 	@$(ECHO) $(BOLD)$(GREEN)"🚀  Engine-3D  🚀"$(DEFAULT)
