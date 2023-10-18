@@ -152,7 +152,7 @@ print:
 	@$(ECHO) $(BOLD) $(GREEN)"\n► MAKEFILE 📖 !"$(DEFAULT)
 
 lib:
-	@$(MAKE) all -C ./Libs $(NO_PRINT)
+	@-$(MAKE) all -C ./Libs $(NO_PRINT)
 	@-$(ECHO) $(BOLD) $(GREEN)"\n► LIB ⛽ !"$(DEFAULT)
 
 launcher: fclean

@@ -10,8 +10,15 @@ DIR="CSFML"
 INSTALL_DIR=~/csfml
 
 # install SFML dependencies
-sudo apt-get update
-sudo apt-get install -y libsfml-dev libcsfml-dev
+if command -v apt-get &> /dev/null; then
+    sudo apt-get update
+    sudo apt-get install -y libsfml-dev libcsfml-dev
+elif command -v dnf &> /dev/null; then
+    sudo dnf update
+else
+    echo "DNF or APT package manager not found, exiting"
+    exit 1
+fi
 
 # clone CSFML repository
 cd build
