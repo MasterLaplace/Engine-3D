@@ -23,14 +23,27 @@ DEFAULT_GRAPHICAL_LIB := csfml
 SRC_DIR		=	Engine/
 BIN 		=	bin/
 
+SRC			=	$(SRC_DIR)Engine/engine.c \
+				$(SRC_DIR)Engine/Window/window.c \
+				$(SRC_DIR)Engine/Math/Vector/vector4.c \
+				$(SRC_DIR)Engine/Math/Vector/vector3.c \
+				$(SRC_DIR)Engine/Math/Point/point.c \
+				$(SRC_DIR)Engine/Math/Matrix/matrix.c \
+				$(SRC_DIR)Engine/Math/Geometry/triangle.c \
+				$(SRC_DIR)Engine/Clock/clock.c \
+
 MAIN		=	$(SRC_DIR)core.c
 
-OBJ			=	$(MAIN:.c=.o)
+OBJ			=	$(MAIN:.c=.o) $(SRC:.c=.o)
 
 
 INCLUDES	=	-iquote ./Libs/LaplaceLib/include -iquote ./Libs/LaplaceLink/include \
 				-iquote ./Libs/LaplaceMap/include -iquote ./Libs/LaplaceError/include \
-				-iquote ./Engine/Engine
+				-iquote ./Engine/Engine -iquote ./Engine/Engine/Window \
+				-iquote ./Engine/Engine/Math/Vector -iquote ./Engine/Engine/Math/Point \
+				-iquote ./Engine/Engine/Math/Matrix -iquote ./Engine/Engine/Math/Geometry \
+				-iquote ./Engine/Engine/Clock -iquote ./Engine/Config \
+				-iquote ./Engine/Engine/Math
 
 LIB_NAME	=	-L ./Libs -l LaplaceLib -l LaplaceLink -l LaplaceMap
 
@@ -90,27 +103,28 @@ CFLAGS		=	$(FLAGS) $(LDFLAGS) $(OPTI) $(IGNORE) $(D_FLAGS)
 
 ifeq ($(OS), linux)
 CC			:=	gcc
+CPP			:=	g++
 NAME		:=	$(BIN)engine.out
 SHARE_NAME	:=	$(BIN)libengine.so
 TEST_NAME 	:=	$(BIN)test_engine.out
 endif
 ifeq ($(OS), windows)
 CC			:=	gcc
+CPP			:=	g++
 NAME		:=	$(BIN)engine.exe
 SHARE_NAME	:=	$(BIN)libengine.dll
 TEST_NAME	:=	$(BIN)test_engine.exe
 endif
-ifeq ($(OS), macos || $(OS), ios)
+ifeq ($(OS), macos || $(OS), ios || $(OS), bsd)
 CC			:=	clang
+CPP			:=	clang++
 NAME		:=	$(BIN)engine.out
 SHARE_NAME	:=	$(BIN)libengine.dylib
 TEST_NAME	:=	$(BIN)test_engine.out
 endif
-ifeq ($(OS), bsd)
-CC			:=	clang
-NAME		:=	$(BIN)engine.out
-SHARE_NAME	:=	$(BIN)libengine.dylib
-TEST_NAME	:=	$(BIN)test_engine.out
+
+ifeq ($(GRAPHICAL_LIB), sfml)
+CC 			:= $(CPP)
 endif
 
 SRC_COUNT	:=	$(words $(SRC))

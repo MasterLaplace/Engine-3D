@@ -17,8 +17,11 @@ PIP		= pip3
 all: install
 
 install:
-	@$(PIP) freeze | grep -v moddb > ./requirements.txt
-	@$(PIP) install -r ./requirements.txt
+	@$(ECHO) $(BOLD) $(GREEN)"\n► INSTALL Launcher 📦 !\n"$(DEFAULT)
+	@$(PYTHON) -m pip install --upgrade pip -q
+	@$(PIP) freeze | grep -v moddb > ./requirements.txt 2> /dev/null
+	@$(PIP) install -r ./requirements.txt -q
+	@$(ECHO) $(BOLD) $(GREEN)✓$(LIGHT_BLUE)" INSTALL Launcher 📦"$(DEFAULT)
 
 lint:
 	@$(PYTHON) -m pylint src/*.py
