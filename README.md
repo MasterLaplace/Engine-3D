@@ -219,7 +219,7 @@ External Documentation:
 
 This project is licensed under the terms of the [MIT License](./LICENSE).
 
-Copyright © 2023-2024 [Master_Laplace](https://github.com/MasterLaplace).
+Copyright © 2022-2023 [Master_Laplace](https://github.com/MasterLaplace).
 
 
 <div id='contacts'/>
