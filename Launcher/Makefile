@@ -19,6 +19,7 @@ all: install
 install:
 	@$(ECHO) $(BOLD) $(GREEN)"\n► INSTALL Launcher 📦 !\n"$(DEFAULT)
 	@$(PYTHON) -m pip install --upgrade pip -q
+	@$(PIP) install PyQt5 -q
 	@$(PIP) freeze | grep -v moddb > ./requirements.txt 2> /dev/null
 	@$(PIP) install -r ./requirements.txt -q
 	@$(ECHO) $(BOLD) $(GREEN)✓$(LIGHT_BLUE)" INSTALL Launcher 📦"$(DEFAULT)

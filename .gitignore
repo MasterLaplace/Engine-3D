@@ -524,3 +524,6 @@ dkms.conf
 
 .Test/
 Docs/Engine-3D/
+launcher
+Projects
+requirements.txt
