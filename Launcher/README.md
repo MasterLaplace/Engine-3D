@@ -40,7 +40,7 @@ The Laplace Launcher is distributed under the MIT License, making it accessible 
 ```shell
 # Build
 $ cd ..
-$ make re
+$ make launcher
 $ ./launcher
 ```
 

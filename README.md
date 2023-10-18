@@ -103,7 +103,7 @@ temps réel.<br>
         - 3.3.2 Vulkan
         - 3.3.3 DirectX
 4. Outils de développement (a faire)
-    - 4.1 Gestionnaire de version
+    - 4.1 Gestionnaire de version ✅
     - 4.2 Gestionnaire de paquets
     - 4.3 Launcher ✅
     - 4.4 mode Debug
@@ -141,7 +141,7 @@ $ make re
 $ ./bin/engine.out <path-config-file.xml>
 
 # Launcher
-$ make re
+$ make launcher
 $ ./launcher
 ```
 

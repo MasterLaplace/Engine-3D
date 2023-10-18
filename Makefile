@@ -155,7 +155,7 @@ lib:
 	@$(MAKE) all -C ./Libs $(NO_PRINT)
 	@-$(ECHO) $(BOLD) $(GREEN)"\n► LIB ⛽ !"$(DEFAULT)
 
-launcher:
+launcher: fclean
 	@ln -sf ./Launcher/src/__main__.py ./launcher
 	@-$(ECHO) $(BOLD) $(GREEN)"\n► LAUNCHER 🚀 !"$(DEFAULT)
 	@$(MAKE) all -C ./Launcher $(NO_PRINT)
