@@ -12,6 +12,11 @@ export
 
 PROJECT_NAME	:=	$(word 2, $(MAKECMDGOALS))
 GRAPHICAL_LIB	:=	$(word 3, $(MAKECMDGOALS))
+VERSION_ENGINE	:=	$(word 4, $(MAKECMDGOALS))
+
+VERSION_MAJOR	:=	$(word 1, $(subst ., ,$(VERSION_ENGINE)))
+VERSION_MINOR	:=	$(word 2, $(subst ., ,$(VERSION_ENGINE)))
+VERSION_PATCH	:=	$(word 3, $(subst ., ,$(VERSION_ENGINE)))
 
 DEFAULT_GRAPHICAL_LIB := csfml
 
@@ -70,7 +75,18 @@ else
     GRAPHICAL_LIB := $(DEFAULT_GRAPHICAL_LIB)
 endif
 
-CFLAGS		=	$(FLAGS) $(LDFLAGS) $(OPTI) $(IGNORE)
+## VERSION
+
+ifeq ($(VERSION_ENGINE),)
+D_FLAGS		:=	-D GRAPHICS_LIBRARY=$(GRAPHICAL_LIB)
+else
+D_FLAGS		:=	-D GRAPHICS_LIBRARY=$(GRAPHICAL_LIB) \
+				-D FLAG_VERSION_MAJOR=$(VERSION_MAJOR) \
+				-D FLAG_VERSION_MINOR=$(VERSION_MINOR) \
+				-D FLAG_VERSION_PATCH=$(VERSION_PATCH)
+endif
+
+CFLAGS		=	$(FLAGS) $(LDFLAGS) $(OPTI) $(IGNORE) $(D_FLAGS)
 
 ifeq ($(OS), linux)
 CC			:=	gcc
@@ -106,13 +122,16 @@ $(PROJECT_NAME):
 $(GRAPHICAL_LIB):
 	@$(ECHO) $(BOLD) $(LIGHT_BLUE) "Selected graphical library: $(GRAPHICAL_LIB) 🎮 !" $(DEFAULT)
 
+$(VERSION_ENGINE):
+	@$(ECHO) $(BOLD) $(LIGHT_BLUE) "Selected version: $(VERSION_ENGINE) 🎮 !" $(DEFAULT)
+
 $(NAME): $(OBJ)
 	@$(CC) -o $(NAME) $(OBJ) $(CFLAGS) \
 	&& $(ECHO) $(BOLD) $(GREEN)"\n► BUILD SUCCESS ⛽ !"$(DEFAULT) \
 	|| ($(ECHO) $(BOLD) $(RED)"\n► BUILD FAILED ⛽"$(DEFAULT) && exit 1)
 
 
-all: print lib $(NAME) $(PROJECT_NAME) $(GRAPHICAL_LIB)
+all: clean print lib $(NAME) $(PROJECT_NAME) $(GRAPHICAL_LIB) $(VERSION_ENGINE)
 
 print:
 	@$(ECHO) $(BOLD)$(GREEN)"🚀  Engine-3D  🚀"$(DEFAULT)

@@ -166,13 +166,14 @@ class SceneManager(QMainWindow):
         self.run_button.setEnabled(False)
         self.stacked_widget.setCurrentIndex(0)
 
-        info_pattern = r'<Info\s+name="([^"]+)"\s+graphycal="([^"]+)"'
+        info_pattern = r'<Info\s+name="([^"]+)"\s+graphycal="([^"]+)"\s+version="([^"]+)"/>'
         match = re.search(info_pattern, self.xml_content)
 
         if match:
             name = match.group(1)
             graphycal = match.group(2)
-            os.system(f'make run {name} {graphycal} -s')
+            version = match.group(3)
+            os.system(f'make run {name} {graphycal} {version} -s')
 
     def ShowFileDialog(self):
         options = QFileDialog.Options()
