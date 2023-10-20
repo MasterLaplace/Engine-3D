@@ -28,7 +28,7 @@
 #ifdef FLAG_VERSION_PATCH
     #define ENGINE_VERSION_PATCH FLAG_VERSION_PATCH
 #else
-    #define ENGINE_VERSION_PATCH 0
+    #define ENGINE_VERSION_PATCH 6
 #endif
 
 ////////////////////////////////////////////////////////////

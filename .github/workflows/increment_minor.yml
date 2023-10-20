@@ -1,0 +1,60 @@
+name: Increment Minor Version
+
+on:
+  pull_request:
+    branches:
+      - 'dev'
+
+jobs:
+  increment_minor_version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Increment Minor Version
+        run: |
+          # Get the latest tag from the repository
+          latest_tag=$(git describe --tags --abbrev=0)
+
+          # Extract the major, minor, and patch versions from the tag
+          regex="([0-9]+)\.([0-9]+)\.([0-9]+)"
+          if [[ $latest_tag =~ $regex ]]; then
+            major_version="${BASH_REMATCH[1]}"
+            minor_version="${BASH_REMATCH[2]}"
+            old_minor_version="${BASH_REMATCH[2]}"
+            patch_version="${BASH_REMATCH[3]}"
+            old_patch_version="${BASH_REMATCH[3]}"
+          else
+            echo "Failed to parse the latest tag version."
+            exit 1
+          fi
+
+          # Increment the minor version
+          ((minor_version++))
+
+          # Set the patch version to 0
+          patch_version=0
+
+          # Construct the new version
+          new_version="v${major_version}.${minor_version}.${patch_version}"
+
+          # Replace the version in all relevant files except those in the 'Launcher' and 'Libs' folders
+          find . -type f -not -path "./Launcher/*" -not -path "./Libs/*" -exec sed -i "s/$latest_tag/$new_version/g" {} \;
+          find ./Engine/Config/Version/version.h -type f -exec sed -i "s/#define ENGINE_VERSION_MINOR $old_minor_version/#define ENGINE_VERSION_MINOR $minor_version/g" {} \;
+          find ./Engine/Config/Version/version.h -type f -exec sed -i "s/#define ENGINE_VERSION_PATCH $old_patch_version/#define ENGINE_VERSION_PATCH $patch_version/g" {} \;
+
+          # Commit the changes
+          git config user.name "Laplace-Engine-3D-Bot"
+          git config user.email "guillaume.papineau@epitech.eu"
+          git add .
+          git commit -m "update(root): Increment minor version to $new_version"
+          git push
+
+          # Create a new tag
+          git tag -a $new_version -m "Engine-3D $new_version"
+          git push --tags
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
