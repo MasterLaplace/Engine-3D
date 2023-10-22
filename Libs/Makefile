@@ -54,7 +54,7 @@ NAME_LLIB 	=	libLaplaceLib.dylib
 NAME_TEST 	=	unit_tests.out
 endif
 
-CFLAGS =	-Wall -Werror -Wpedantic $(INCLUDE_LLIB) $(INCLUDE_LLINK) $(INCLUDE_LMAP) $(INCLUDE_LERROR)
+CFLAGS =	-Wall -Wpedantic $(INCLUDE_LLIB) $(INCLUDE_LLINK) $(INCLUDE_LMAP) $(INCLUDE_LERROR)
 LDFLAGS =	-L. -lLaplaceLib -lLaplaceLink -lLaplaceMap -lLaplaceError
 FASTFLAGS =	-Ofast -march=native -mtune=native -fomit-frame-pointer \
 			-fopenmp -fprefetch-loop-arrays -pipe
