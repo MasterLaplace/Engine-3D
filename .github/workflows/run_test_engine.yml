@@ -15,7 +15,7 @@ jobs:
       run: sudo apt-get install -y cmake build-essential
 
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Install CSFML
       run: ./Scripts/install_csfml.sh
@@ -24,7 +24,7 @@ jobs:
       run: sudo apt-get install libcriterion-dev
 
     - name: Build engine
-      run: make build_tests
+      run: make re
 
     - name: Testing engine
       run: make run_tests

@@ -5,8 +5,6 @@ If you find this project useful and would like to provide financial support, we 
 ## Funding Methods
 
 - [GitHub Sponsors](https://github.com/sponsors/MasterLaplace)
-- [Patreon](https://www.patreon.com/MasterLaplace)
-- [Open Collective](https://opencollective.com/MasterLaplace)
 
 ## Benefits for Financial Contributors
 

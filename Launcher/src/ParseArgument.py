@@ -33,9 +33,16 @@ SOFTWARE.\
 """
 
 __CREDITS__ = """\
-Credits:
+Engine-3D Credits:
 
-Master_Laplace - Creator and maintainer of the project -\
+Website:
+https://github.com/MasterLaplace/Engine-3D
+
+Developer:
+Master_Laplace - Creator and maintainer of the project -
+
+Publicher:
+ME.inc - Publisher of the project -\
 """
 
 class ParseArgument:

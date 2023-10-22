@@ -31,7 +31,7 @@ type:
 	@$(PYTHON) -m mypy src/*.py
 
 clean:
-	@$(RM) __pycache__ .pytest_cache .mypy_cache
+	@$(RM) __pycache__ .pytest_cache .mypy_cache requirements.txt
 	@-$(ECHO) $(BOLD) $(GREEN)✓$(LIGHT_BLUE)" CLEAN Launcher 💨"$(DEFAULT)
 
 fclean: clean

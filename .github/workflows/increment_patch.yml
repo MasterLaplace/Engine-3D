@@ -2,13 +2,7 @@ name: Increment Patch Version
 
 on:
   pull_request:
-    branches:
-      - '*'
-      - '!dev'
-      - '!main'
-      - '!master'
-      - '!release'
-      - '!release/*'
+    branches: [ '*', '!dev', '!main', '!master', '!release', '!release/*' ]
 
 jobs:
   increment_version:
@@ -16,12 +10,17 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Increment Patch Version
         run: |
           # Get the latest tag from the repository
           latest_tag=$(git describe --tags --abbrev=0)
+
+          if [[ -z "$latest_tag" ]]; then
+            echo "Failed to get the latest tag."
+            exit 1
+          fi
 
           # Extract the major, minor, and patch versions from the tag
           regex="([0-9]+)\.([0-9]+)\.([0-9]+)"

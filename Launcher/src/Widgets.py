@@ -155,7 +155,7 @@ class Widgets(QWidget):
             text (str): _description_ text to show
             func (object): _description_ function to call when checked
         """
-        check_box = QCheckBox(text, )
+        check_box = QCheckBox(text)
         check_box.setGeometry(pos[0], pos[1], size[0], size[1])
         check_box.stateChanged.connect(func)
         return check_box

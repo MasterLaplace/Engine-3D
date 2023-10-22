@@ -56,7 +56,7 @@ endif
 
 CFLAGS =	-Wall -Werror -Wpedantic $(INCLUDE_LLIB) $(INCLUDE_LLINK) $(INCLUDE_LMAP) $(INCLUDE_LERROR)
 LDFLAGS =	-L. -lLaplaceLib -lLaplaceLink -lLaplaceMap -lLaplaceError
-FASTFLAGS =	-Ofast -march=native -mtune=native -flto -fomit-frame-pointer \
+FASTFLAGS =	-Ofast -march=native -mtune=native -fomit-frame-pointer \
 			-fopenmp -fprefetch-loop-arrays -pipe
 
 all:	$(NAME_LLIB) $(NAME_LLINK) $(NAME_LMAP) $(NAME_LERROR)

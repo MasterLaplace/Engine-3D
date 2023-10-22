@@ -5,6 +5,7 @@ It is also essential for the development of the project.
 
 See the [Table of Contents](#table-of-contents) for different ways to help and details about how this project handles them. Please make sure to read the relevant section before making your contribution. It will make it a lot easier for us maintainers and smooth out the experience for all involved. The community looks forward to your contributions. 🎉
 
+> **Note:** This project is released with a [Contributor Code of Conduct](.github/CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
 > And if you like the project, but just don't have time to contribute, that's fine. There are other easy ways to support the project and show your appreciation, which we would also be very happy about:
 > - Star the project
 > - Tweet about it
@@ -36,7 +37,7 @@ See the [Table of Contents](#table-of-contents) for different ways to help and d
 
 Here, you can provide a brief overview of what the Engine-3D project is about and why contributions are important.
 
-v0.0.1 of the project is currently under development. You can find the latest release [here]().
+v0.1.6 of the project is currently under development. You can find the latest release [here](https://github.com/MasterLaplace/Engine-3D/releases/latest/) and the changelog [here](CHANGELOG.md).
 
 ----
 

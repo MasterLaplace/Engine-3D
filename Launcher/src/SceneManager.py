@@ -44,7 +44,7 @@ class SceneManager(QMainWindow):
 
         self.setGeometry(int(self.WIN_X/2), int(self.WIN_Y/2), self.WIN_X, self.WIN_Y)
         self.setWindowTitle('Engine-3D Launcher')
-        self.setWindowIcon(QIcon('./Image/Logo_1.png'))
+        self.setWindowIcon(QIcon('./Images/Logo_1.png'))
         # Create system tray icon
         self.CreateSystemTrayIcon()
 
@@ -90,7 +90,6 @@ class SceneManager(QMainWindow):
     def CreditsPage(self)-> Widgets:
         layout = QVBoxLayout()
 
-        layout.addWidget(Widgets.CreateLabel([0, 0], 'Engine-3D Credits:'))
         layout.addWidget(Widgets.CreateLabel([0, 0], __CREDITS__))
         layout.addWidget(Widgets.CreateLabel([0, 0], 'Engine-3D Launcher version: ' + __VERSION__))
         layout.addWidget(Widgets.CreateButton([0, 0], [0, 0], 'Home', self.ShowHome))
@@ -98,7 +97,7 @@ class SceneManager(QMainWindow):
         return Widgets(layout)
 
     def CreateSystemTrayIcon(self):
-        self.tray_icon = QSystemTrayIcon(QIcon('./Image/Logo_1.png'), self)
+        self.tray_icon = QSystemTrayIcon(QIcon('./Images/Logo_1.png'), self)
         self.tray_icon.show()
 
         tray_menu = QMenu(self)
@@ -122,6 +121,8 @@ class SceneManager(QMainWindow):
             self.project_graphycal = 'CSFML'
         if self.project_version == '':
             self.project_version = '0.2.0'
+
+        self.project_name = self.project_name.replace(' ', '_')
 
         __XML_TEMPLATE__ = f"""\
 <?xml version="1.0" encoding="UTF-8"?>
@@ -174,6 +175,7 @@ class SceneManager(QMainWindow):
             graphycal = match.group(2)
             version = match.group(3)
             os.system(f'make run {name} {graphycal} {version} -s')
+            self.show()
 
     def ShowFileDialog(self):
         options = QFileDialog.Options()

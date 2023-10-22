@@ -102,7 +102,7 @@ temps réel.<br>
         - 3.3.1 OpenGL
         - 3.3.2 Vulkan
         - 3.3.3 DirectX
-4. Outils de développement (a faire)
+4. Outils de développement (à faire)
     - 4.1 Gestionnaire de version ✅
     - 4.2 Gestionnaire de paquets
     - 4.3 Launcher ✅
@@ -110,12 +110,15 @@ temps réel.<br>
     - 4.5 Profiler
     - 4.6 Documentation ✅
     - 4.7 Tests
-5. Optimisation (a faire)
-    - 5.1 Multithreading
-    - 5.2 SIMD
-    - 5.3 Cache
-    - 5.4 Mémoire
-    - 5.5 GPU
+5. Réalité mixte (à faire)
+    - 5.1 Réalité augmentée
+    - 5.2 Réalité virtuelle
+6. Optimisation (à faire)
+    - 6.1 Multithreading
+    - 6.2 SIMD
+    - 6.3 Cache
+    - 6.4 Mémoire
+    - 6.5 GPU
 
 Il faut : ✅
 
