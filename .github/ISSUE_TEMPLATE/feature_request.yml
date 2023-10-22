@@ -5,8 +5,6 @@ assignees:
   - {{ github.actor }}
 labels:
   - enhancement
-projects:
-  - '1044'
 body:
   - type: input
     id: featureName
