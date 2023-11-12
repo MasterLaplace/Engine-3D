@@ -69,6 +69,10 @@ Mon objectif final est de pouvoir proposer un rendu 3d graphique de n’importe 
 objet importé ainsi que de pouvoir me déplacer pour l’observer sous d’autres angles en
 temps réel.<br>
 
+> [!IMPORTANT]
+> The project is still under development and may not be stable.
+> The next version is still under development in the `9-create-a-complete-new-architecture` branch.
+
 
 <div id='goal'/>
 
@@ -119,6 +123,17 @@ temps réel.<br>
     - 6.3 Cache
     - 6.4 Mémoire
     - 6.5 GPU
+6. Interface (à faire)
+    - 6.1 Interface graphique
+    - 6.2 Interface en ligne de commande
+    - 6.3 Interface vocale
+    - 6.4 Interface neuronale
+7. Renderer (à faire)
+8. Moteur physique (à faire)
+9. Moteur audio (à faire)
+10. Moteur de jeu (à faire)
+11. Intelligence artificielle (à faire)
+    - 11.1 Machine learning
 
 Il faut : ✅
 
