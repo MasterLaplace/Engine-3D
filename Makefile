@@ -21,16 +21,17 @@ VERSION_PATCH	:=	$(word 3, $(subst ., ,$(VERSION_ENGINE)))
 DEFAULT_GRAPHICAL_LIB := csfml
 
 SRC_DIR		=	Engine/
+ENGINE_DIR	=	Engine/Engine/
 BIN 		=	bin/
 
-SRC			=	$(SRC_DIR)Engine/engine.c \
-				$(SRC_DIR)Engine/Window/window.c \
-				$(SRC_DIR)Engine/Math/Vector/vector4.c \
-				$(SRC_DIR)Engine/Math/Vector/vector3.c \
-				$(SRC_DIR)Engine/Math/Point/point.c \
-				$(SRC_DIR)Engine/Math/Matrix/matrix.c \
-				$(SRC_DIR)Engine/Math/Geometry/triangle.c \
-				$(SRC_DIR)Engine/Clock/clock.c \
+SRC			=	$(ENGINE_DIR)engine.c \
+				$(ENGINE_DIR)Renderer/renderer.c \
+				$(ENGINE_DIR)Renderer/Window/window.c \
+				$(ENGINE_DIR)Event/event.c \
+				$(ENGINE_DIR)Event/Keyboard/keyboard.c \
+				$(ENGINE_DIR)Math/Vector/vector4.c \
+				$(ENGINE_DIR)Math/Vector/vector3.c \
+				$(ENGINE_DIR)Math/Point/point.c \
 
 MAIN		=	$(SRC_DIR)core.c
 
@@ -38,12 +39,19 @@ OBJ			=	$(MAIN:.c=.o) $(SRC:.c=.o)
 
 
 INCLUDES	=	-iquote ./Libs/LaplaceLib/include -iquote ./Libs/LaplaceLink/include \
-				-iquote ./Libs/LaplaceMap/include -iquote ./Libs/LaplaceError/include \
-				-iquote ./Engine/Engine -iquote ./Engine/Engine/Window \
+				-iquote ./Libs/LaplaceMap/include -iquote ./Libs/LaplaceError/include
+
+INCLUDES	+=	-iquote ./Engine/Config
+
+INCLUDES	+=	-iquote ./Engine/Engine -iquote ./Engine/Engine/Renderer
+
+INCLUDES	+=	-iquote ./Engine/Engine/Event -iquote ./Engine/Engine/Event/Keyboard
+
+INCLUDES	+=	-iquote ./Engine/Engine/Math \
 				-iquote ./Engine/Engine/Math/Vector -iquote ./Engine/Engine/Math/Point \
-				-iquote ./Engine/Engine/Math/Matrix -iquote ./Engine/Engine/Math/Geometry \
-				-iquote ./Engine/Engine/Clock -iquote ./Engine/Config \
-				-iquote ./Engine/Engine/Math
+				-iquote ./Engine/Engine/Math/Matrix -iquote ./Engine/Engine/Math/Geometry
+
+INCLUDES	+=	-iquote ./Engine/Engine/Clock
 
 LIB_NAME	=	-L ./Libs -l LaplaceLib -l LaplaceLink -l LaplaceMap
 

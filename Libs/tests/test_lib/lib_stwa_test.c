@@ -95,7 +95,7 @@ Test(laplace_lib_stwa_05, should_return_array_of_strings)
 {
     char *str = "HelloWorld";
     char *delim = " \t";
-    char **expected = malloc(sizeof(char *) * 2);
+    char **expected = malloc(sizeof(char *) << 1);
     expected[0] = "HelloWorld";
     expected[1] = NULL;
 
@@ -111,7 +111,7 @@ Test(laplace_lib_stwa_06, should_return_array_of_strings)
 {
     char *str = "HelloWorld";
     char *delim = "";
-    char **expected = malloc(sizeof(char *) * 2);
+    char **expected = malloc(sizeof(char *) << 1);
     expected[0] = "HelloWorld";
     expected[1] = NULL;
 
@@ -157,7 +157,7 @@ Test(laplace_lib_stwa_09, should_return_array_of_strings)
 {
     char *str = "HelloWorld";
     char *delim = "World";
-    char **expected = malloc(sizeof(char *) * 2);
+    char **expected = malloc(sizeof(char *) << 1);
     expected[0] = "He";
     expected[1] = NULL;
 

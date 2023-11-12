@@ -19,10 +19,10 @@ void laplace_lib_two_free(char **tab);
 
 Test(laplace_lib_two_free_01, should_free_tab)
 {
-    char **tab = malloc(sizeof(char *) * 2);
+    char **tab = malloc(sizeof(char *) << 1);
 
-    tab[0] = malloc(sizeof(char) * 2);
-    tab[1] = malloc(sizeof(char) * 2);
+    tab[0] = malloc(sizeof(char) << 1);
+    tab[1] = malloc(sizeof(char) << 1);
     tab[0][0] = 'a';
     tab[0][1] = '\0';
     tab[1][0] = 'b';
@@ -42,7 +42,7 @@ Test(laplace_lib_two_free_02, should_free_tab)
 
 Test(laplace_lib_two_free_03, should_free_tab)
 {
-    char **tab = malloc(sizeof(char *) * 2);
+    char **tab = malloc(sizeof(char *) << 1);
 
     tab[0] = NULL;
     tab[1] = NULL;

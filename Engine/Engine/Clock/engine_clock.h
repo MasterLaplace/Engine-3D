@@ -20,6 +20,9 @@
 ////////////////////////////////////////////////////////////
 #ifdef __cplusplus
     #include <cstdlib>
+
+    using namespace std;
+    extern "C" {
 #else
     #include <stdlib.h>
 #endif
@@ -28,12 +31,12 @@
  * @brief  Structure containing the clock module
  *
  * @param clock The clock of the clock module
- * @return {clock_t *} - The clock module
+ * @return {engine_clock_t *} - The clock module
  */
 typedef struct {
     #if GRAPHICS_LIBRARY == CSFML
         sfClock *clock;
-    #elif GRAPHICS_LIBRARY == SFML
+    #elif GRAPHICS_LIBRARY == SFML && defined(__cplusplus)
         sf::Clock *clock;
     #elif GRAPHICS_LIBRARY == SDL
         SDL_Clock *clock;
@@ -67,5 +70,9 @@ extern void clock_destroy(engine_clock_t *clock);
  * @return {float} - The delta time
  */
 extern float clock_get_f_delta_time(engine_clock_t *clock);
+
+#ifdef __cplusplus
+    }
+#endif
 
 #endif /* !ENGINE_CLOCK_H_ */
