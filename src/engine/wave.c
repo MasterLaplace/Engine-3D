@@ -60,13 +60,13 @@ static wave_t *create_wave(float A, float wavelength, float wave_speed, float wa
 
 static const sizint NB_WAVE = 2;
 static const wave_t INFO[] = {
-    {.A = 0.05, .wavelength = 20.0, .wave_speed = 5.0, .wave_direction = PI / 2},
-    {.A = 0.05, .wavelength = 15.0, .wave_speed = 4.0, .wave_direction = PI / 6},
-    {.A = 0.05, .wavelength = 10.0, .wave_speed = 3.0, .wave_direction = PI / 3},
-    {.A = 0.05, .wavelength = 20.0, .wave_speed = 2.0, .wave_direction = PI / 0.5},
-    {.A = 0.05, .wavelength = 15.0, .wave_speed = 5.0, .wave_direction = PI / 4},
-    {.A = 0.05, .wavelength = 10.0, .wave_speed = 2.0, .wave_direction = PI / 5},
-    {.A = 0.05, .wavelength = 20.0, .wave_speed = 3.0, .wave_direction = PI / 8}
+    {.A = 0.02, .wavelength = 20.0, .wave_speed = 5.0, .wave_direction = PI / 2},
+    {.A = 0.02, .wavelength = 15.0, .wave_speed = 4.0, .wave_direction = PI / 6},
+    {.A = 0.02, .wavelength = 10.0, .wave_speed = 3.0, .wave_direction = PI / 3},
+    {.A = 0.02, .wavelength = 20.0, .wave_speed = 2.0, .wave_direction = PI / 0.5},
+    {.A = 0.02, .wavelength = 15.0, .wave_speed = 5.0, .wave_direction = PI / 4},
+    {.A = 0.02, .wavelength = 10.0, .wave_speed = 2.0, .wave_direction = PI / 5},
+    {.A = 0.02, .wavelength = 20.0, .wave_speed = 3.0, .wave_direction = PI / 8}
 };
 
 void init_wave()

@@ -20,6 +20,8 @@
     #include <time.h>
     #include <math.h>
     #include <string.h>
+    #include <stdio.h>
+    #include <stdint.h>
     #include "constants.h"
     #include "lib.h"
     #include "link_list.h"
@@ -31,6 +33,7 @@
     #endif
 
 typedef struct engine_s engine_t;
+typedef struct world_partition_s world_partition_t;
 
 typedef enum {
     IDLE,
@@ -42,7 +45,7 @@ typedef enum {
 } texture;
 
 typedef enum {
-    MAP, WAVE, MESH, PLAYER
+    MAP, WAVE, MESH, PLAYER, CUBE
 } mesh_type;
 
 
@@ -98,16 +101,21 @@ typedef struct mesh_s {
 } mesh_t;
 
 typedef struct Tree_s {
-    struct Tree_s *node[4]; // node
+    struct Tree_s *node[8]; // node
     sfVector3f s_g[2]; // smaller/greater vectors
-    triangle_t *triangle; // triangle at front node
+    triangle_t **triangle; // triangles at front node
 } Tree_t;
 
-union vector
-{
-    sfVector3f vec3;
-    sfVector4f vec4;
-};
+typedef struct config_s {
+    char name[64];
+    struct config_s *next;
+    uint8_t collision; // 0 = no collision, 1 = map collision, 2 = sphere box collision, 3 rect box collision
+    bool load;
+    // char *texture;
+    // sfVector3f pos;
+    // sfVector3f rot;
+    // sfVector3f scale;
+} config_t;
 
 struct engine_s {
     /*graphic*/
@@ -116,6 +124,8 @@ struct engine_s {
     sfRenderStates **textures;
     sfImage **images;
     /*camera*/
+    float velocity_y;
+    float radius;
     sfVector4f Pos;
     sfVector4f Dir;
     float fawZ;
@@ -131,22 +141,29 @@ struct engine_s {
     float ViewtoProjection[4][4];
     /*link*/
     link_t *list_objs;
+    link_t *list_octree;
     link_t *FinalMesh;
     /*collide*/
+    world_partition_t *world;
     Tree_t *root;
     sfVector3f s_g[2];
     /*water*/
     link_t *wave_list;
     float t;  // Temps
+    /*config*/
+    config_t *config;
 };
 
 extern engine_t engine;
 
 /* INIT */
+void parse_configs(void);
 bool open_folder(char *path);
 bool init_engine();
 sfRenderStates **init_textures();
 sfImage **init_images();
+void add_cube_box_as_mesh_in_list(sfVector3f s_g[2]);
+void clean_cube_box_from_list(void);
 
 /* CLEAN */
 void clean_triangles(link_t *mesh);
@@ -180,6 +197,7 @@ bool cmp_av_two_triangles(void *triangle_1, void *triangle_2);
 
 /* CLIPPING */
 void clipping(triangle_t triangle);
+int Triangle_ClipAgainstPlane(sfVector4f front, sfVector4f back, triangle_t *intri, triangle_t (*outtri)[2]);
 
 /* UTILS */
 sfVector4f Vector_Add(sfVector4f v, sfVector4f w);
@@ -196,16 +214,18 @@ float calcul_dist(sfVector4f p, sfVector4f pp, sfVector4f n);
 void Matrix_Multiply(float (*m)[4], float (*m1)[4], float (*m2)[4]);
 matrix Matrix_QuickInverse(float (*m)[4]);
 sfVector3f average_triangle(triangle_t *t);
+void print_matrix(float (*m)[4]);
 void print_vector(sfVector4f v);
 void print_triangle(triangle_t *t);
 void print_cube(sfVector3f s_g[2]);
 
 /* DRAW */
 void display_triangles(link_t *mesh);
+void draw_triangle(triangle_t *node);
 
 /* BVH */
-void set_bvh(Tree_t *tree, link_t *mesh);
-sfVector3f get_bvh(Tree_t *tree, sfVector4f point);
+void set_bvh(Tree_t *tree, link_t *mesh, unsigned len);
+void get_bvh(Tree_t *tree, sfVector4f *point, float radius);
 void print_bvh(Tree_t *tree);
 
 /* WATER */

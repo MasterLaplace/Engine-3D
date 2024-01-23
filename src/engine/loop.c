@@ -6,6 +6,7 @@
 */
 
 #include "engine.h"
+#include "WorldPartition.h"
 
 void add_in_FinalMesh(triangle_t *triangle)
 {
@@ -25,10 +26,10 @@ static void manage_triangle(link_t *mesh)
 
     // Set Lightening
     static sfVector4f light_dir = (sfVector4f){0.0f, 1.0f, -1.0f, 1.0f};
-    if (light_dir.z <= 0.999)
-        light_dir.z += 0.005f;
-    else
-        light_dir.z = -1.0f;
+    // if (light_dir.z <= 0.999)
+    //     light_dir.z += 0.005f;
+    // else
+    //     light_dir.z = -1.0f;
 
     if (!actual)
         return;
@@ -47,7 +48,7 @@ static void manage_triangle(link_t *mesh)
         // get surface from View
         sfVector4f CameraRay = Vector_Sub(triTransformed.sommet[0], engine.Pos);
 
-        if (Vector_DotProduct(normal, CameraRay) < 0.0f) {
+        if (Vector_DotProduct(normal, CameraRay) < 0.0f || tetrimi->usemtl == NONE) {
             // Get Lightening
             light_dir = Vector_Normalise(light_dir);
             triViewed.dp = Vector_DotProduct(normal, light_dir);
@@ -68,7 +69,7 @@ static void manage_triangle(link_t *mesh)
     } while (mesh && actual != mesh);
 }
 
-static void draw_mesh()
+static __attribute__((optimize(0))) void draw_mesh()
 {
     link_t *actual = engine.list_objs;
     mesh_t *mesh = NULL;
@@ -86,11 +87,13 @@ static void draw_mesh()
                 Vector_Add(engine.Pos, (sfVector4f){Forward.x, -0.5, Forward.z, 1}),
                 (sfVector3f){0, engine.fawY, engine.fawZ},
                 (sfVector3f){1, 1, 1});
+        #ifdef DEBUG_MODE
         } else if (mesh->type == WAVE) {
             Mesh_Transform(
                 (sfVector4f){20, -12, 80, 1},
                 (sfVector3f){0, 0, 0},
                 (sfVector3f){1, 1, 1});
+        #endif
         } else {
             Mesh_Transform(
                 (sfVector4f){0, 0, 0, 1},
@@ -102,15 +105,68 @@ static void draw_mesh()
     } while (engine.list_objs && actual != engine.list_objs);
 
     merge_sort_list(&engine.FinalMesh, &cmp_two_triangles);
-    display_triangles(engine.FinalMesh);
-    clean_triangles(engine.FinalMesh);
+
+    if (!engine.FinalMesh)
+        return;
+    while (engine.FinalMesh) {
+        triangle_t *triToRaster = (triangle_t *) engine.FinalMesh->obj;
+
+        triangle_t clipped[2] = {0};
+        link_t *listTriangles = NULL;
+        list_append(&listTriangles, create_link(triToRaster));
+        int nNewTriangles = 1;
+
+        for (int p = 0; p < 4; p++)
+        {
+            int nTrisToAdd = 0;
+            while (nNewTriangles > 0)
+            {
+                triangle_t test = *(triangle_t *) listTriangles->obj;
+                free(listTriangles->obj);
+                listTriangles->obj = NULL;
+                list_remove(&listTriangles, listTriangles, NULL);
+                nNewTriangles--;
+
+                switch (p)
+                {
+                case 0: nTrisToAdd = Triangle_ClipAgainstPlane((sfVector4f){0.0f, 0.0f, 0.0f, 1.0f}, (sfVector4f){0.0f, 1.0f, 0.0f, 1.0f}, &test, &clipped); break;
+                case 1: nTrisToAdd = Triangle_ClipAgainstPlane((sfVector4f){0.0f, (float)WIN_Y - 1, 0.0f, 1.0f}, (sfVector4f){0.0f, -1.0f, 0.0f, 1.0f}, &test, &clipped); ;break;
+                case 2: nTrisToAdd = Triangle_ClipAgainstPlane((sfVector4f){0.0f, 0.0f, 0.0f, 1.0f}, (sfVector4f){1.0f, 0.0f, 0.0f, 1.0f}, &test, &clipped); break;
+                case 3: nTrisToAdd = Triangle_ClipAgainstPlane((sfVector4f){(float)WIN_X - 1, 0.0f, 0.0f, 1.0f}, (sfVector4f){-1.0f, 0.0f, 0.0f, 1.0f}, &test, &clipped); break;
+                }
+
+                for (int w = 0; w < nTrisToAdd; w++) {
+                    triangle_t *tri = malloc(sizeof(triangle_t));
+                    memcpy(tri, &clipped[w], sizeof(triangle_t));
+                    list_append(&listTriangles, create_link(tri));
+                }
+            }
+            nNewTriangles = len_link(listTriangles);
+        }
+
+        while (listTriangles) {
+            triangle_t *tri = (triangle_t *) listTriangles->obj;
+            draw_triangle(tri);
+            free((triangle_t *) listTriangles->obj);
+            list_remove(&listTriangles, listTriangles, NULL);
+        }
+
+        list_remove(&(engine.FinalMesh), engine.FinalMesh, NULL);
+    }
+
+    // display_triangles(engine.FinalMesh);
+    // clean_triangles(engine.FinalMesh);
 }
 
 static void clock_framerate()
 {
+    #ifndef DEBUG
     static float clock = 0.0f;
+    #endif
     engine.t = sfTime_asSeconds(sfClock_getElapsedTime(engine.clock));
+    #ifndef DEBUG
     float diff = engine.t - clock;
+    #endif
 
     vectors_3d_to_2d(engine.drunkerMode);
 
@@ -121,11 +177,24 @@ static void clock_framerate()
         sfRenderWindow_clear(WINDOW, sfCyan);
 
         manage_move();
+        // get_bvh(engine.root, &(engine.Pos), engine.radius);
+
+        world_partition_update(engine.world, (sfVector2f){engine.Pos.x, engine.Pos.z}, 200);
+        r_tree_t *tree = world_partition_get_chunk_data(engine.world, (sfVector2f){engine.Pos.x, engine.Pos.z});
+        r_tree_check_collision(tree, &(engine.Pos), engine.radius);
         draw_mesh();
+        #ifdef DEBUG_MODE
+        clean_cube_box_from_list();
+        #endif
 
         sfRenderWindow_display(WINDOW);
-        clock = sfTime_asSeconds(sfClock_getElapsedTime(engine.clock));
+        #ifdef DEBUG
+        sfImage *image = sfRenderWindow_capture(WINDOW);
+        sfImage_saveToFile(image, "screenshot.png");
+        sfImage_destroy(image);
+        #endif
     #ifndef DEBUG
+        clock = sfTime_asSeconds(sfClock_getElapsedTime(engine.clock));
     }
     #endif
 }

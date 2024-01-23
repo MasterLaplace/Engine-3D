@@ -191,6 +191,7 @@ void Mesh_Transform(sfVector4f pos, sfVector3f angle, sfVector3f scale)
     Matrix_MakeRotateZ(RotateZ, angle.z);
     Matrix_Multiply(Rotate, RotateX, RotateY);
     Matrix_Multiply(Rotate, Rotate, RotateZ);
+
     // Translation matrix
     Matrix_MakeTranslate(Translate, pos.x, pos.y, pos.z);
     Matrix_Multiply(engine.ModeltoWorld, Rotate, Translate);

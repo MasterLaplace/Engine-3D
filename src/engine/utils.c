@@ -149,7 +149,7 @@ void print_vector3(sfVector3f v)
 void print_triangle(triangle_t *t)
 {
     printf("Triangle:\r\n");
-    for(sizint i = 0; i < 3; i++) {
+    for (sizint i = 0; i < 3; i++) {
         printf("Sommet %d: ", i);
         print_vector(t->sommet[i]);
     }

@@ -7,7 +7,7 @@
 
 #include "engine.h"
 
-static int Triangle_ClipAgainstPlane(sfVector4f front, sfVector4f back, triangle_t *intri, triangle_t (*outtri)[2])
+int Triangle_ClipAgainstPlane(sfVector4f front, sfVector4f back, triangle_t *intri, triangle_t (*outtri)[2])
 {
     back = Vector_Normalise(back);
 

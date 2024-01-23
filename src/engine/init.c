@@ -6,6 +6,7 @@
 */
 
 #include "engine.h"
+#include "WorldPartition.h"
 #include "signal.h"
 
 static bool load_file(char *filename, char *filepath)
@@ -34,17 +35,25 @@ bool open_folder(char *path)
 {
     DIR *dp = NULL;
     struct dirent *dirp = NULL;
-
+    engine.config = NULL;
     LIST_OBJS = NULL;
+    engine.list_octree = NULL;
+    parse_configs();
+    config_t *tmp = engine.config;
     if (!(dp = opendir(path)))
         return false;
-    while ((dirp = readdir(dp))) {
+    while ((dirp = readdir(dp)) && tmp) {
         if (dirp->d_name[0] == '.' || !(strstr(dirp->d_name, ".obj")))
+            continue;
+        while (tmp && !strstr(dirp->d_name, engine.config->name))
+            tmp = tmp->next;
+        if (!tmp || !tmp->load)
             continue;
         if (!load_file(dirp->d_name, path)) {
             closedir(dp);
             return false;
         }
+        tmp = engine.config;
     }
     closedir(dp);
     return true;
@@ -55,7 +64,7 @@ static void display_init()
     sfVideoMode mode = {WIN_X, WIN_Y, 32};
 
     engine.window = sfRenderWindow_create(mode, "Engine-3D",
-    sfFullscreen | sfClose, NULL); // sfResize/sfFullscreen
+    sfResize | sfClose, NULL); // sfResize/sfFullscreen
     sfRenderWindow_setFramerateLimit(engine.window, FRAMERATE);
     sfRenderWindow_setVerticalSyncEnabled(engine.window, sfTrue);
     sfRenderWindow_setMouseCursorVisible(engine.window, sfFalse);
@@ -63,6 +72,7 @@ static void display_init()
 
 static void init_camera()
 {
+    engine.radius = 2;
     engine.Pos = (sfVector4f){ 0.f, 0.f, 0.f, 1.f };
     engine.Dir = (sfVector4f){ 0.f, 0.f, 0.f, 1.f };
     engine.fawZ = 0.f;
@@ -71,6 +81,7 @@ static void init_camera()
     engine.state = IDLE;
     engine.drunkerMode = false;
     engine.size = 2.f;
+    engine.velocity_y = 5.f;
 }
 
 static void init_collision()
@@ -78,7 +89,7 @@ static void init_collision()
     link_t *actual = engine.list_objs;
     mesh_t *mesh = NULL;
     link_t *new_mesh = NULL;
-    engine.root = malloc(sizeof(Tree_t));
+    engine.root = calloc(1, sizeof(Tree_t));
 
     if (!actual && !engine.root)
         return;
@@ -87,7 +98,7 @@ static void init_collision()
         if (mesh->type == MESH) {
             new_mesh = dup_list(mesh->lTriangle, sizeof(triangle_t));
             merge_sort_list(&new_mesh, &cmp_av_two_triangles);
-            set_bvh(engine.root, new_mesh);
+            set_bvh(engine.root, new_mesh, 0);
         }
 
         actual = actual->next;
@@ -128,6 +139,7 @@ bool init_engine()
     /*camera*/
     init_camera();
     /*collide*/
+    engine.world = init_world((sfVector2f){CHUNK_SIZE, CHUNK_SIZE});
     init_collision();
     /*matrix*/
     memset(engine.ModeltoWorld, 0.f, sizeof(engine.ModeltoWorld));

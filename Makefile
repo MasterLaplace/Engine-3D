@@ -18,6 +18,7 @@ SRC		=   $(SRC_DIR)init.c			\
 			$(SRC_DIR)init_textures.c	\
 			$(SRC_DIR)preset_textures.c	\
 			$(SRC_DIR)clean.c			\
+			$(SRC_DIR)parser_cfg.c		\
 			$(SRC_DIR)parser_obj.c		\
 			$(SRC_DIR)parser_mtl.c		\
 			$(SRC_DIR)help.c			\
@@ -29,6 +30,7 @@ SRC		=   $(SRC_DIR)init.c			\
 			$(SRC_DIR)draw.c			\
 			$(SRC_DIR)wave.c			\
 			$(SRC_DIR)bvh.c				\
+			$(SRC_DIR)WorldPartition.c	\
 
 TEST	=	$(TEST_DIR)test.c
 
@@ -56,6 +58,7 @@ CSFML		=	-l csfml-graphics \
 LDFLAGS		=	$(INCLUDES) $(LIB_NAME) $(CSFML) -lm
 
 CFLAGS		=	$(FLAGS) $(LDFLAGS) $(OPTI) $(IGNORE)
+CFLAGS		=	$(FLAGS) $(LDFLAGS)
 
 ifeq ($(OS), linux)
 CC			:=	gcc
@@ -111,7 +114,7 @@ re: fclean all
 ## DEBUG MODE
 
 debug: OPTI		= -Og -pipe
-debug: CFLAGS	= $(FLAGS) $(LDFLAGS) $(OPTI) $(IGNORE) -g3 -ggdb -DDEBUG
+debug: CFLAGS	= $(FLAGS) $(LDFLAGS) $(OPTI) $(IGNORE) -g3 -ggdb -DDEBUG -DDEBUG_MODE
 debug: fclean lib_debug $(NAME)
 	@-$(ECHO) $(BOLD) $(GREEN)"\n► DEBUG MODE 🔧 !"$(DEFAULT)
 
